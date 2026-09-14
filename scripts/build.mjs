@@ -24,5 +24,5 @@ console.log(`\nbuilt dist/\n${bytes}\n`);
 async function copyStatic() {
   await fs.cp(path.join(root, 'public'), outdir, { recursive: true });
   const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
-  await fs.writeFile(path.join(outdir, 'index.html'), html.replace('/src/main.tsx', '/main.js'));
+  await fs.writeFile(path.join(outdir, 'index.html'), html.replace('./src/main.tsx', './main.js'));
 }

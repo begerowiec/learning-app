@@ -33,15 +33,23 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Bez tego pusty build publikuje się tak samo cicho jak działający.
+      # Bez tego pusty albo źle spięty build publikuje się tak samo cicho jak działający.
+      # grep bez -F traktuje '.' jako dowolny znak, więc /main.js przechodziło check —
+      # a na project Pages (https://user.github.io/repo/) taki URL 404-uje na korzeniu.
       - name: Check the build output
         run: |
           for f in dist/index.html dist/main.js dist/main.css; do
             [ -s "$f" ] || { echo "::error::$f is missing or empty"; exit 1; }
           done
-          grep -q './main.js' dist/index.html \
-            || { echo "::error::dist/index.html does not reference the built bundle"; exit 1; }
-          echo "dist/ looks good:"; ls -lh dist
+          grep -Fq './main.js' dist/index.html \
+            || { echo "::error::dist/index.html must reference ./main.js (not /main.js)"; exit 1; }
+          grep -Fq './main.css' dist/index.html \
+            || { echo "::error::dist/index.html must reference ./main.css (not /main.css)"; exit 1; }
+          if grep -E '(href|src)="/' dist/index.html; then
+            echo "::error::root-absolute asset URLs 404 on GitHub Pages project sites"
+            exit 1
+          fi
+          echo "dist/ looks good:"; ls -lh dist; echo "--- index.html ---"; cat dist/index.html
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

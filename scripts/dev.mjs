@@ -7,7 +7,7 @@ import { buildOptions, outdir, root } from './esbuild.config.mjs';
 await fs.mkdir(outdir, { recursive: true });
 await fs.cp(path.join(root, 'public'), outdir, { recursive: true });
 const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
-await fs.writeFile(path.join(outdir, 'index.html'), html.replace('/src/main.tsx', '/main.js'));
+await fs.writeFile(path.join(outdir, 'index.html'), html.replace('./src/main.tsx', './main.js'));
 
 const ctx = await esbuild.context({ ...buildOptions, sourcemap: 'inline' });
 await ctx.watch();
