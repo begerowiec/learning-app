@@ -1,0 +1,479 @@
+{
+  "id": "typescript-narrowing",
+  "subject": "typescript",
+  "module": "typescript-type-system",
+  "level": "intermediate",
+  "title": "Zawężanie typów",
+  "description": "Strażniki typeof i in, unie z dyskryminantem, zawężanie po prawdziwościowości i wyczerpujące switche.",
+  "estimatedMinutes": 15,
+  "order": 1,
+  "tags": [
+    "narrowing",
+    "unions",
+    "guards"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Zawężanie to sposób, w jaki TypeScript podąża za twoim przepływem sterowania. Wewnątrz gałęzi, w której sprawdzenie przeszło, unia kurczy się do wariantów, które mogą tam jeszcze być, a ich składowe stają się dostępne."
+    },
+    {
+      "type": "example",
+      "title": "Unia z dyskryminantem",
+      "body": "Daj każdemu wariantowi literalny znacznik, a switch zawęzi typ za ciebie — to ten sam wzorzec, na którym stoi typ Exercise w tej aplikacji.",
+      "language": "typescript",
+      "code": "type Shape =\n  | { kind: \"circle\"; r: number }\n  | { kind: \"rect\"; w: number; h: number };\n\nfunction area(s: Shape) {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.r ** 2;\n    case \"rect\":   return s.w * s.h;\n  }\n}"
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "Dodaj gałąź default, która przypisuje wartość do never. Gdy pojawi się nowy wariant unii, ta linia przestaje się kompilować i wskazuje każde miejsce, które trzeba obsłużyć."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-narrowing-001",
+      "type": "flashcard",
+      "topic": "Strażnik typeof",
+      "question": "TypeScript · zawężanie",
+      "front": "typeof x === \"string\"",
+      "back": "Zawęża x do string wewnątrz gałęzi",
+      "explanation": "Strażnik typeof zawęża unię tak, że składowe dostępne tylko dla string stają się widoczne.",
+      "difficulty": 2,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-narrowing-002",
+      "type": "code_multiple_choice",
+      "topic": "Zawężanie przez typeof",
+      "question": "Jaki jest typ x w zaznaczonej linii?",
+      "language": "typescript",
+      "code": "function f(x: string | number) {\n  if (typeof x === \"number\") {\n    return x.toFixed(2);   // <- here\n  }\n  return x;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string | number"
+        },
+        {
+          "id": "b",
+          "text": "unknown"
+        },
+        {
+          "id": "c",
+          "text": "string"
+        },
+        {
+          "id": "d",
+          "text": "number"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Wewnątrz strażnika zostaje tylko wariant number, dlatego toFixed jest dostępne. Po if x ma typ string.",
+      "difficulty": 2,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-003",
+      "type": "concept_question",
+      "topic": "Wyczerpywalność",
+      "question": "Co daje przypisanie wartości switcha do zmiennej typu never w gałęzi default?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Zamienia nowo dodany wariant unii w błąd kompilacji w każdym nieobsłużonym switchu"
+        },
+        {
+          "id": "b",
+          "text": "Rzuca pomocny wyjątek w czasie wykonania"
+        },
+        {
+          "id": "c",
+          "text": "Ucisza ostrzeżenie o braku typu zwracanego"
+        },
+        {
+          "id": "d",
+          "text": "Przyspiesza switch"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Gdy wszystkie warianty są obsłużone, wartość zawęża się do never i przypisanie przechodzi. Dodaj wariant, a przestaje się kompilować.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "exhaustiveness"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-narrowing-004",
+      "type": "code_completion",
+      "topic": "Operator in",
+      "question": "Uzupełnij strażnik rozróżniający dwa kształty po obecności właściwości.",
+      "language": "typescript",
+      "code": "if (\"radius\" ___ shape) {\n  return shape.radius;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "in"
+        },
+        {
+          "id": "b",
+          "text": "of"
+        },
+        {
+          "id": "c",
+          "text": "hasOwnProperty"
+        },
+        {
+          "id": "d",
+          "text": "typeof"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Operator in zawęża unię do wariantów, które deklarują tę właściwość. hasOwnProperty nie zawęża.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-005",
+      "type": "find_error",
+      "topic": "Prawdziwościowość i zero",
+      "question": "Która linia ukrywa błąd, gdy count wynosi 0?",
+      "language": "typescript",
+      "code": "1  function label(count?: number) {\n2    if (count) {\n3      return `${count} items`;\n4    }\n5    return \"unknown\";\n6  }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — 0 jest falsy, więc realne zero raportuje \"unknown\""
+        },
+        {
+          "id": "b",
+          "text": "Linia 3 — szablony wymagają String()"
+        },
+        {
+          "id": "c",
+          "text": "Linia 1 — opcjonalny parametr number jest niedozwolony"
+        },
+        {
+          "id": "d",
+          "text": "Linia 5 — typy zwracane muszą się zgadzać"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Zawężanie po prawdziwościowości usuwa 0 razem z undefined. Testuj count !== undefined, gdy zero jest poprawną wartością.",
+      "difficulty": 4,
+      "tags": [
+        "narrowing",
+        "truthiness"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-narrowing-006",
+      "type": "true_false",
+      "topic": "Predykaty typu",
+      "question": "Funkcja zwracająca `x is Cat` pozwala kompilatorowi zawęzić typ w miejscu wywołania.",
+      "correctAnswer": true,
+      "explanation": "To strażnik typu zdefiniowany przez użytkownika. Kompilator ufa predykatowi, więc ciało musi naprawdę sprawdzać to, co deklaruje.",
+      "difficulty": 4,
+      "tags": [
+        "narrowing",
+        "type-predicates"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-narrowing-007",
+      "type": "fill_blank",
+      "topic": "Dyskryminant",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Unia z dyskryminantem wymaga, żeby każdy wariant miał ___ właściwość o typie literalnym.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "wspólną"
+        },
+        {
+          "id": "b",
+          "text": "unikalną"
+        },
+        {
+          "id": "c",
+          "text": "opcjonalną"
+        },
+        {
+          "id": "d",
+          "text": "readonly"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Dyskryminant to jedna właściwość obecna w każdym wariancie, której typ literalny je rozróżnia — kind, type, status.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "unions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-008",
+      "type": "code_multiple_choice",
+      "topic": "Zawężanie nie przeżywa callbacku",
+      "question": "Dlaczego kompilator protestuje w zaznaczonej linii?",
+      "language": "typescript",
+      "code": "function f(x: string | undefined) {\n  if (!x) return;\n  setTimeout(() => {\n    console.log(x.length);   // <- here, if x were a mutable outer let\n  });\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Przy parametrze nie protestuje — ale zawężanie znika dla zmiennej mutowalnej przechwyconej w domknięciu"
+        },
+        {
+          "id": "b",
+          "text": "Callbacki setTimeout nie mogą czytać zmiennych zewnętrznych"
+        },
+        {
+          "id": "c",
+          "text": "Zawężanie nigdy nie działa w funkcjach strzałkowych"
+        },
+        {
+          "id": "d",
+          "text": "x trzeba adnotować ponownie w callbacku"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Analiza przepływu nie wie, kiedy odroczony callback się wykona, więc zawężanie czegokolwiek przepinalnego jest odrzucane. Skopiuj najpierw do const.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "closures"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-narrowing-009",
+      "type": "multiple_choice",
+      "topic": "Array.isArray",
+      "question": "Które sprawdzenie zawęża `string | string[]` do gałęzi tablicowej?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Array.isArray(value)"
+        },
+        {
+          "id": "b",
+          "text": "typeof value === \"array\""
+        },
+        {
+          "id": "c",
+          "text": "value instanceof String"
+        },
+        {
+          "id": "d",
+          "text": "value.length > 0"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Array.isArray jest otypowane jako strażnik typu. typeof nigdy nie zwraca \"array\", a length istnieje w obu wariantach, więc nic nie zawęża.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "guards",
+        "arrays"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-010",
+      "type": "code_multiple_choice",
+      "topic": "typeof null",
+      "language": "typescript",
+      "question": "Dlaczego ten strażnik nie wyklucza null?",
+      "code": "function f(x: { id: string } | null) {\n  if (typeof x === 'object') {\n    return x.id;\n  }\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "typeof null to \"object\", więc null nadal jest w zawężonym typie"
+        },
+        {
+          "id": "b",
+          "text": "typeof nie działa na typach obiektowych"
+        },
+        {
+          "id": "c",
+          "text": "Unia potrzebuje dyskryminanta"
+        },
+        {
+          "id": "d",
+          "text": "Wyklucza null"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Dziwactwo JavaScriptu, które system typów wiernie modeluje. Sprawdź `if (x)` albo x !== null.",
+      "difficulty": 4,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-narrowing-011",
+      "type": "concept_question",
+      "topic": "Funkcje asercji",
+      "question": "Co robi funkcja zadeklarowana jako `asserts value is string`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Zawęża argument dla reszty zasięgu, na obietnicę, że w przeciwnym razie rzuci wyjątek"
+        },
+        {
+          "id": "b",
+          "text": "Zwraca wartość logiczną, którą wywołujący musi sprawdzić"
+        },
+        {
+          "id": "c",
+          "text": "Automatycznie dodaje sprawdzenie typu w czasie wykonania"
+        },
+        {
+          "id": "d",
+          "text": "Rzutuje wartość bez żadnego efektu"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "W odróżnieniu od predykatu nic nie zwraca: sam fakt, że wykonanie poszło dalej, oznacza, że asercja zaszła. Musi być wywołana na zmiennej z jawną adnotacją typu.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "type-predicates"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-narrowing-012",
+      "type": "code_completion",
+      "topic": "instanceof",
+      "language": "typescript",
+      "question": "Uzupełnij strażnik zawężający nieznany błąd do Error.",
+      "code": "if (error ___ Error) {\n  console.error(error.message);\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "instanceof"
+        },
+        {
+          "id": "b",
+          "text": "typeof"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "catch wiąże unknown przy useUnknownInCatchVariables, więc dopiero ten strażnik udostępnia .message. Błędy przekraczające granicę realmu potrafią instanceof pokonać.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-narrowing-013",
+      "type": "true_false",
+      "topic": "Zawężanie właściwości",
+      "question": "Zawężenie obj.value strażnikiem typeof przeżywa wywołanie funkcji w międzyczasie.",
+      "correctAnswer": false,
+      "explanation": "Każde wywołanie mogło przepiąć właściwość, więc analiza przepływu odrzuca zawężenie. Skopiuj najpierw do const.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-014",
+      "type": "find_error",
+      "topic": "Array.filter i null",
+      "language": "typescript",
+      "question": "Dlaczego items w linii 2 nadal ma typ (string | null)[]?",
+      "code": "1  const raw: (string | null)[] = ['a', null];\n2  const items = raw.filter((x) => x !== null);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "filter jest otypowane tak, że zwraca ten sam typ elementu, chyba że callback jest predykatem typu"
+        },
+        {
+          "id": "b",
+          "text": "filter nie przyjmuje funkcji strzałkowych"
+        },
+        {
+          "id": "c",
+          "text": "Porównanie powinno być != null"
+        },
+        {
+          "id": "d",
+          "text": "Zawężenie jest poprawne"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Napisz `(x): x is string => x !== null` — albo, od TypeScriptu 5.5, wnioskowanie zrobi to za ciebie dla prostych predykatów.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "arrays"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-narrowing-015",
+      "type": "multiple_choice",
+      "topic": "Zawężanie przez równość",
+      "question": "Dla `a: string | number` i `b: string | boolean` jaki jest typ a wewnątrz `if (a === b)`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string — jedyny typ wspólny dla obu unii"
+        },
+        {
+          "id": "b",
+          "text": "string | number"
+        },
+        {
+          "id": "c",
+          "text": "never"
+        },
+        {
+          "id": "d",
+          "text": "string | boolean"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Równość zawęża oba operandy do wspólnych wariantów, bo tylko one mogą być sobie równe przy ścisłym porównaniu.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "unions"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

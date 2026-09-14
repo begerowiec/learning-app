@@ -1,0 +1,437 @@
+{
+  "id": "english-connectors",
+  "subject": "english",
+  "module": "english-everyday-vocabulary",
+  "level": "intermediate",
+  "title": "Konektory",
+  "description": "although, despite, however, therefore — łączenie myśli bez gubienia gramatyki.",
+  "estimatedMinutes": 11,
+  "order": 0,
+  "tags": [
+    "connectors",
+    "vocabulary",
+    "linking-words"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Po co one są",
+      "body": "Konektory sygnalizują relację między dwiema myślami: kontrast, przyczynę, skutek, dodanie. Wybór właściwego to połowa roboty; druga połowa to wiedzieć, co gramatycznie musi po nim nastąpić."
+    },
+    {
+      "type": "theory",
+      "title": "Wzorzec, na którym wszyscy się potykają",
+      "body": "although + zdanie (podmiot + orzeczenie). despite / in spite of + rzeczownik albo forma -ing. However otwiera nowe zdanie i bierze przecinek. Opanuj te trzy, a twoje pisanie od razu brzmi jak C1."
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "\"Despite of\" nie istnieje. Jest albo despite, albo in spite of — nigdy hybryda."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-conn-001",
+      "type": "flashcard",
+      "topic": "although",
+      "question": "Słownictwo",
+      "front": "although",
+      "back": "chociaż / mimo że",
+      "explanation": "Konektor wprowadzający kontrast: Although it was late, she kept studying.",
+      "difficulty": 2,
+      "tags": [
+        "connectors",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-conn-002",
+      "type": "fill_blank",
+      "topic": "despite + rzeczownik",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "___ the delay, the release went out on time.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "However"
+        },
+        {
+          "id": "b",
+          "text": "Although"
+        },
+        {
+          "id": "c",
+          "text": "Despite"
+        },
+        {
+          "id": "d",
+          "text": "Because"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To, co następuje, jest frazą rzeczownikową, więc poprawne jest despite. Although wymagałoby pełnego zdania: Although it was delayed, ...",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-003",
+      "type": "multiple_choice",
+      "topic": "however",
+      "question": "Które zdanie używa however poprawnie?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "However the tests passed, the build failed."
+        },
+        {
+          "id": "b",
+          "text": "The tests passed. However, the build failed."
+        },
+        {
+          "id": "c",
+          "text": "The tests passed however the build failed."
+        },
+        {
+          "id": "d",
+          "text": "The tests passed, however failed the build."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "However jest przysłówkiem, nie spójnikiem: otwiera nowe zdanie (albo stoi po średniku) i bierze przecinek.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "punctuation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-conn-004",
+      "type": "translation",
+      "topic": "therefore",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "The API was down, therefore the tests failed.",
+      "sourceLanguage": "en",
+      "targetLanguage": "pl",
+      "answers": [
+        {
+          "id": "a",
+          "text": "API nie działało, dlatego testy się wywaliły."
+        },
+        {
+          "id": "b",
+          "text": "API nie działało, chociaż testy się wywaliły."
+        },
+        {
+          "id": "c",
+          "text": "API nie działało, mimo że testy przeszły."
+        },
+        {
+          "id": "d",
+          "text": "API nie działało, o ile testy się wywaliły."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "therefore sygnalizuje skutek, więc po polsku używamy dlatego / w związku z tym.",
+      "difficulty": 2,
+      "tags": [
+        "connectors",
+        "translation"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-005",
+      "type": "true_false",
+      "topic": "despite of",
+      "question": "\"Despite of the rain, we went out\" jest poprawne.",
+      "correctAnswer": false,
+      "explanation": "Poprawnie jest despite the rain albo in spite of the rain. \"Despite of\" miesza obie formy.",
+      "difficulty": 2,
+      "tags": [
+        "connectors",
+        "grammar"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "english-conn-006",
+      "type": "concept_question",
+      "topic": "although kontra despite",
+      "question": "Co musi nastąpić po \"although\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Zdanie z własnym podmiotem i orzeczeniem"
+        },
+        {
+          "id": "b",
+          "text": "Fraza rzeczownikowa"
+        },
+        {
+          "id": "c",
+          "text": "Forma z -ing"
+        },
+        {
+          "id": "d",
+          "text": "Nic — może kończyć zdanie"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Although jest spójnikiem i łączy dwa zdania. despite i in spite of są przyimkami i biorą rzeczownik albo -ing.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "grammar"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-conn-007",
+      "type": "fill_blank",
+      "topic": "in order to",
+      "question": "Uzupełnij zdanie wyrażające cel.",
+      "sentence": "We added retries ___ to make the suite less flaky.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "in order"
+        },
+        {
+          "id": "b",
+          "text": "so that"
+        },
+        {
+          "id": "c",
+          "text": "because"
+        },
+        {
+          "id": "d",
+          "text": "for"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "in order to + bezokolicznik wyraża cel. so that wymagałoby pełnego zdania: so that the suite is less flaky.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "purpose"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-008",
+      "type": "multiple_choice",
+      "topic": "whereas",
+      "question": "Co sygnalizuje whereas?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "An example"
+        },
+        {
+          "id": "b",
+          "text": "A cause"
+        },
+        {
+          "id": "c",
+          "text": "A direct contrast between two facts"
+        },
+        {
+          "id": "d",
+          "text": "A time sequence"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Unit tests are fast, whereas end-to-end tests are slow. Zestawia dwie rzeczy, nie sugerując, że któraś jest zaskakująca.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-009",
+      "type": "flashcard",
+      "topic": "nevertheless",
+      "question": "Słownictwo",
+      "front": "nevertheless",
+      "back": "niemniej jednak — a formal however",
+      "explanation": "Ta sama robota co however, jeden rejestr wyżej. Częste w pisanych raportach, rzadkie w mowie.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-conn-010",
+      "type": "fill_blank",
+      "topic": "due to kontra because",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "The release slipped ___ a failing integration test.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "because"
+        },
+        {
+          "id": "b",
+          "text": "due to"
+        },
+        {
+          "id": "c",
+          "text": "therefore"
+        },
+        {
+          "id": "d",
+          "text": "although"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "due to i because of biorą frazę rzeczownikową; because bierze pełne zdanie: because an integration test failed.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-011",
+      "type": "multiple_choice",
+      "topic": "in addition",
+      "question": "Które zdanie poprawnie dodaje informację?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "In addition of the report, we sent the metrics."
+        },
+        {
+          "id": "b",
+          "text": "In addition the report, we sent the metrics."
+        },
+        {
+          "id": "c",
+          "text": "In addition to the report, we sent the metrics."
+        },
+        {
+          "id": "d",
+          "text": "In addition with the report, we sent the metrics."
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "in addition to + rzeczownik. Samodzielnie \"In addition,\" otwiera zdanie z przecinkiem.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-012",
+      "type": "translation",
+      "topic": "as a result",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "W rezultacie musieliśmy wycofać wdrożenie.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "As a result, we had to roll back the release."
+        },
+        {
+          "id": "b",
+          "text": "In result, we had to roll back the release."
+        },
+        {
+          "id": "c",
+          "text": "As result we had to roll back the release."
+        },
+        {
+          "id": "d",
+          "text": "On the result, we had to roll back the release."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Utartą frazą jest \"as a result\", z rodzajnikiem, a po niej przecinek, gdy otwiera zdanie.",
+      "difficulty": 2,
+      "tags": [
+        "connectors",
+        "translation"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-conn-013",
+      "type": "true_false",
+      "topic": "Zaczynanie od and",
+      "question": "Rozpoczynanie zdania od \"And\" albo \"But\" to błąd gramatyczny.",
+      "correctAnswer": false,
+      "explanation": "To preferencja stylistyczna, nie reguła, i występuje w dobrym pisaniu. W formalnym raporcie However albo In addition po prostu czyta się lepiej.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "register"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-conn-014",
+      "type": "concept_question",
+      "topic": "Moreover kontra also",
+      "question": "Co odróżnia moreover od also?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Rejestr — moreover jest formalne i dokłada mocniejszy argument; also jest neutralne i stoi w środku zdania"
+        },
+        {
+          "id": "b",
+          "text": "Moreover można użyć tylko w pytaniach"
+        },
+        {
+          "id": "c",
+          "text": "Also nie może zaczynać zdania"
+        },
+        {
+          "id": "d",
+          "text": "Są wymienne w każdym kontekście"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Moreover sygnalizuje, że to, co następuje, wzmacnia argument. Nadużywane w mowie brzmi sztucznie.",
+      "difficulty": 4,
+      "tags": [
+        "connectors",
+        "register"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-conn-015",
+      "type": "flashcard",
+      "topic": "regardless of",
+      "question": "Słownictwo",
+      "front": "regardless of",
+      "back": "niezależnie od — followed by a noun, never by that",
+      "explanation": "Regardless of the result, we ship on Friday. \"Irregardless\" nie jest słowem w standardowej angielszczyźnie.",
+      "difficulty": 3,
+      "tags": [
+        "connectors",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "id": "python-dictionaries",
+  "subject": "python",
+  "module": "python-core",
+  "level": "intermediate",
+  "title": "Dictionaries",
+  "description": "Key/value lookup, safe access with get(), iteration, and dict comprehensions.",
+  "estimatedMinutes": 9,
+  "order": 2,
+  "tags": [
+    "dictionaries",
+    "collections",
+    "lookup"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A dict maps hashable keys to values and looks a key up in roughly constant time regardless of size. Since Python 3.7 it also preserves insertion order."
+    },
+    {
+      "type": "example",
+      "title": "Safe access",
+      "body": "Indexing a missing key raises KeyError. get() returns a default instead, which is usually what you want when reading external data.",
+      "language": "python",
+      "code": "user = {\"name\": \"Anna\"}\n\nprint(user[\"email\"])          # KeyError\nprint(user.get(\"email\"))       # None\nprint(user.get(\"email\", \"-\"))  # -"
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "Iterate with .items() when you need both halves. Plain `for k in d` gives you the keys only, which is the most common source of confusion."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-dicts-001",
+      "type": "code_multiple_choice",
+      "topic": "Missing key",
+      "question": "What happens on the last line?",
+      "language": "python",
+      "code": "user = {\"name\": \"Anna\"}\nprint(user[\"age\"])",
+      "answers": [
+        {
+          "id": "a",
+          "text": "None"
+        },
+        {
+          "id": "b",
+          "text": "IndexError"
+        },
+        {
+          "id": "c",
+          "text": "An empty string"
+        },
+        {
+          "id": "d",
+          "text": "KeyError"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Square-bracket access on a missing key raises KeyError. Use .get(\"age\") to get None instead.",
+      "difficulty": 2,
+      "tags": [
+        "dictionaries",
+        "errors"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-dicts-002",
+      "type": "code_completion",
+      "topic": "Iterating pairs",
+      "question": "Complete the loop so it walks keys and values together.",
+      "language": "python",
+      "code": "for key, value in scores.___():\n    print(key, value)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "values"
+        },
+        {
+          "id": "b",
+          "text": "pairs"
+        },
+        {
+          "id": "c",
+          "text": "items"
+        },
+        {
+          "id": "d",
+          "text": "keys"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": ".items() yields (key, value) tuples. .keys() and .values() each give you one half.",
+      "difficulty": 2,
+      "tags": [
+        "dictionaries",
+        "iteration"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-dicts-003",
+      "type": "concept_question",
+      "topic": "Valid keys",
+      "question": "Which value cannot be used as a dictionary key?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A string"
+        },
+        {
+          "id": "b",
+          "text": "A tuple of strings"
+        },
+        {
+          "id": "c",
+          "text": "A list"
+        },
+        {
+          "id": "d",
+          "text": "An integer"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Keys must be hashable, and hashability requires immutability. A list is mutable, so it raises TypeError: unhashable type.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "lookup"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-dicts-004",
+      "type": "code_multiple_choice",
+      "topic": "Overwriting keys",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "d = {\"a\": 1, \"b\": 2, \"a\": 3}\nprint(len(d), d[\"a\"])",
+      "answers": [
+        {
+          "id": "a",
+          "text": "3 1"
+        },
+        {
+          "id": "b",
+          "text": "SyntaxError"
+        },
+        {
+          "id": "c",
+          "text": "2 1"
+        },
+        {
+          "id": "d",
+          "text": "2 3"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A duplicated key is not an error — the later value simply wins, and the dict holds two entries.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "lookup"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-dicts-005",
+      "type": "true_false",
+      "topic": "Insertion order",
+      "question": "In modern Python a dict remembers the order in which keys were inserted.",
+      "correctAnswer": true,
+      "explanation": "Ordering became an implementation detail in 3.6 and a language guarantee in 3.7.",
+      "difficulty": 2,
+      "tags": [
+        "dictionaries",
+        "iteration"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-dicts-006",
+      "type": "find_error",
+      "topic": "Mutating during iteration",
+      "question": "Which line raises RuntimeError?",
+      "language": "python",
+      "code": "1  d = {\"a\": 1, \"b\": 0}\n2  for key in d:\n3      if d[key] == 0:\n4          del d[key]",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 2 — a dict cannot be iterated directly"
+        },
+        {
+          "id": "b",
+          "text": "Line 3 — comparison with 0 is not allowed"
+        },
+        {
+          "id": "c",
+          "text": "Line 4 — the dict changed size during iteration"
+        },
+        {
+          "id": "d",
+          "text": "No line raises anything"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Deleting while iterating invalidates the iterator. Iterate over list(d) or build a new dict instead.",
+      "difficulty": 4,
+      "tags": [
+        "dictionaries",
+        "mutation",
+        "errors"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "python-dicts-007",
+      "type": "fill_blank",
+      "topic": "Dict comprehension",
+      "question": "Complete the comprehension that inverts a dict.",
+      "sentence": "inverted = {v: k for k, v ___ d.items()}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "from"
+        },
+        {
+          "id": "b",
+          "text": "of"
+        },
+        {
+          "id": "c",
+          "text": "in"
+        },
+        {
+          "id": "d",
+          "text": "at"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A dict comprehension uses the same for ... in ... clause as a list one, with a key: value expression in front.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "comprehensions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-dicts-008",
+      "type": "flashcard",
+      "topic": "setdefault",
+      "question": "Method",
+      "front": "d.setdefault(key, [])",
+      "back": "Returns the existing value, or inserts the default and returns that",
+      "explanation": "Handy for grouping: d.setdefault(k, []).append(v). collections.defaultdict(list) does the same thing more explicitly.",
+      "difficulty": 4,
+      "tags": [
+        "dictionaries",
+        "lookup"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-dicts-009",
+      "type": "multiple_choice",
+      "topic": "Merging dicts",
+      "question": "Which expression merges two dicts, letting the right-hand one win on conflicts?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "a + b"
+        },
+        {
+          "id": "b",
+          "text": "{**a, **b}"
+        },
+        {
+          "id": "c",
+          "text": "a.append(b)"
+        },
+        {
+          "id": "d",
+          "text": "a & b"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Double-star unpacking merges into a new dict; a | b does the same from Python 3.9. Dicts do not support +.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

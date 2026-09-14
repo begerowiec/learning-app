@@ -1,0 +1,301 @@
+{
+  "id": "python-loops",
+  "subject": "python",
+  "module": "python-basics",
+  "level": "beginner",
+  "title": "Loops",
+  "description": "for and while, range(), enumerate(), and how break, continue and else behave.",
+  "estimatedMinutes": 9,
+  "order": 2,
+  "tags": [
+    "loops",
+    "control-flow",
+    "iteration"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A for loop walks over an iterable — a list, a string, a range, a file. A while loop repeats as long as a condition holds. In Python you almost always want for: it cannot run past the end of the data."
+    },
+    {
+      "type": "example",
+      "title": "Index and value together",
+      "body": "Reach for enumerate() instead of building an index by hand; it keeps the loop readable and off-by-one errors out.",
+      "language": "python",
+      "code": "for i, name in enumerate([\"a\", \"b\", \"c\"], start=1):\n    print(i, name)\n\n# 1 a\n# 2 b\n# 3 c"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "range(1, 5) yields 1, 2, 3, 4 — the stop value is excluded. And mutating a list while iterating over it silently skips elements; iterate over a copy instead."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-loops-001",
+      "type": "code_multiple_choice",
+      "topic": "range bounds",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "for i in range(1, 4):\n    print(i, end=\" \")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "1 2 3 4"
+        },
+        {
+          "id": "b",
+          "text": "2 3 4"
+        },
+        {
+          "id": "c",
+          "text": "1 2 3"
+        },
+        {
+          "id": "d",
+          "text": "0 1 2 3"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "range(start, stop) includes start and excludes stop, so range(1, 4) gives 1, 2, 3.",
+      "difficulty": 1,
+      "tags": [
+        "loops",
+        "range"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-loops-002",
+      "type": "concept_question",
+      "topic": "break vs continue",
+      "question": "What does continue do inside a loop?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Leaves the loop entirely"
+        },
+        {
+          "id": "b",
+          "text": "Skips the rest of the current iteration and moves to the next one"
+        },
+        {
+          "id": "c",
+          "text": "Restarts the loop from the first item"
+        },
+        {
+          "id": "d",
+          "text": "Repeats the current iteration"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "continue jumps to the next iteration; break leaves the loop. Neither one restarts it.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "control-flow"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-loops-003",
+      "type": "find_error",
+      "topic": "Infinite while",
+      "question": "Which line makes this loop run forever?",
+      "language": "python",
+      "code": "1  n = 5\n2  while n > 0:\n3      print(n)\n4      n = n\n5  print(\"done\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 2 — while needs a range()"
+        },
+        {
+          "id": "b",
+          "text": "Line 4 — n is never decreased, so the condition stays true"
+        },
+        {
+          "id": "c",
+          "text": "Line 5 — it should be indented"
+        },
+        {
+          "id": "d",
+          "text": "Line 3 — print inside a while is not allowed"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A while loop needs its condition to change. n = n - 1 (or n -= 1) is what the body is missing.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "errors"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-loops-004",
+      "type": "code_completion",
+      "topic": "enumerate",
+      "question": "Complete the loop so it prints both the position and the value.",
+      "language": "python",
+      "code": "for i, item in ___(items):\n    print(i, item)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "zip"
+        },
+        {
+          "id": "b",
+          "text": "enumerate"
+        },
+        {
+          "id": "c",
+          "text": "items.index"
+        },
+        {
+          "id": "d",
+          "text": "range"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "enumerate() yields (index, value) pairs. zip() would pair two separate iterables instead.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "iteration"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-loops-005",
+      "type": "code_multiple_choice",
+      "topic": "for/else",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "for n in [1, 2, 3]:\n    if n == 9:\n        break\nelse:\n    print(\"not found\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "not found"
+        },
+        {
+          "id": "b",
+          "text": "nothing"
+        },
+        {
+          "id": "c",
+          "text": "found"
+        },
+        {
+          "id": "d",
+          "text": "SyntaxError"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A loop's else block runs when the loop finished without hitting break — which is exactly a \"nothing matched\" search result.",
+      "difficulty": 4,
+      "tags": [
+        "loops",
+        "control-flow"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "python-loops-006",
+      "type": "true_false",
+      "topic": "Iterating strings",
+      "question": "Iterating over a string yields its characters one at a time.",
+      "correctAnswer": true,
+      "explanation": "A str is an iterable of one-character strings, so for ch in \"abc\" gives \"a\", \"b\", \"c\".",
+      "difficulty": 1,
+      "tags": [
+        "loops",
+        "strings"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "python-loops-007",
+      "type": "fill_blank",
+      "topic": "Comprehension",
+      "question": "Complete the comprehension that squares every number.",
+      "sentence": "squares = [n * n ___ n in numbers]",
+      "answers": [
+        {
+          "id": "a",
+          "text": "while"
+        },
+        {
+          "id": "b",
+          "text": "for"
+        },
+        {
+          "id": "c",
+          "text": "each"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A list comprehension reads expression + for + target + in + iterable, with an optional if at the end.",
+      "difficulty": 3,
+      "tags": [
+        "loops",
+        "comprehensions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-loops-008",
+      "type": "flashcard",
+      "topic": "zip",
+      "question": "Built-in",
+      "front": "zip(a, b)",
+      "back": "Pairs two iterables item by item and stops at the shorter one",
+      "explanation": "for name, score in zip(names, scores) walks both lists in step. Anything past the shorter list is dropped silently.",
+      "difficulty": 3,
+      "tags": [
+        "loops",
+        "iteration"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-loops-009",
+      "type": "code_multiple_choice",
+      "topic": "Accumulator",
+      "question": "What is the final value of total?",
+      "language": "python",
+      "code": "total = 0\nfor n in range(4):\n    total += n\nprint(total)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "10"
+        },
+        {
+          "id": "b",
+          "text": "4"
+        },
+        {
+          "id": "c",
+          "text": "3"
+        },
+        {
+          "id": "d",
+          "text": "6"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "range(4) is 0, 1, 2, 3 and those sum to 6. range(5) would have given 10.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "range"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

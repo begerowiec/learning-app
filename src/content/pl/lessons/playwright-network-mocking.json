@@ -1,0 +1,378 @@
+{
+  "id": "playwright-network-mocking",
+  "subject": "playwright",
+  "module": "playwright-reliability",
+  "level": "intermediate",
+  "title": "Mockowanie sieci",
+  "description": "route() i fulfill(), dopasowanie glob kontra regex, odtwarzanie HAR i kiedy mockowanie przestaje cokolwiek testować.",
+  "estimatedMinutes": 11,
+  "order": 1,
+  "tags": [
+    "network",
+    "mocking",
+    "routing"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Przechwyć, potem zdecyduj",
+      "body": "page.route() daje ci każde pasujące żądanie, zanim opuści przeglądarkę. Stamtąd możesz je spełnić własną odpowiedzią, przepuścić dalej (opcjonalnie ze zmianami) albo przerwać — tak testuje się stany błędu, których backend na żądanie nie wyprodukuje."
+    },
+    {
+      "type": "example",
+      "title": "Deterministyczna awaria",
+      "body": "Zarejestruj route przed nawigacją, która wywołuje żądanie, bo inaczej już poszło.",
+      "language": "typescript",
+      "code": "await page.route('**/api/orders', (route) =>\n  route.fulfill({ status: 500, json: { error: 'boom' } }),\n);\nawait page.goto('/orders');\nawait expect(page.getByRole('alert')).toHaveText(/try again/i);"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Zamockowana odpowiedź to kopia kontraktu, a kopie się rozjeżdżają. Mockuj przypadki brzegowe i ścieżki błędów; zostaw przynajmniej jeden test chodzący po prawdziwym API, żeby rozjazd wyszedł na jaw."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-network-001",
+      "type": "code_multiple_choice",
+      "topic": "Kolejność rejestracji route",
+      "question": "Dlaczego ten test nadal uderza w prawdziwe API?",
+      "language": "typescript",
+      "code": "await page.goto('/orders');\nawait page.route('**/api/orders', (route) => route.fulfill({ json: [] }));\nawait expect(page.getByText('No orders')).toBeVisible();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Żądanie poleciało w trakcie goto, zanim route został zarejestrowany"
+        },
+        {
+          "id": "b",
+          "text": "fulfill wymaga kodu statusu"
+        },
+        {
+          "id": "c",
+          "text": "Glob powinien zaczynać się od ukośnika"
+        },
+        {
+          "id": "d",
+          "text": "route() dotyczy tylko XHR, nie fetch"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Route dotyczy żądań wykonanych po jego zainstalowaniu. Rejestruj przed nawigacją albo w fixture, który wykonuje się przed ciałem testu.",
+      "difficulty": 3,
+      "tags": [
+        "network",
+        "routing"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-network-002",
+      "type": "concept_question",
+      "topic": "fulfill kontra continue kontra abort",
+      "question": "Chcesz, żeby żądanie doszło do serwera, ale z dodatkowym nagłówkiem. Co jest właściwe?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "route.continue({ headers: { ...route.request().headers(), 'x-test': '1' } })"
+        },
+        {
+          "id": "b",
+          "text": "route.fulfill({ headers: { 'x-test': '1' } })"
+        },
+        {
+          "id": "c",
+          "text": "route.abort('failed')"
+        },
+        {
+          "id": "d",
+          "text": "route.fallback()"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "fulfill odpowiada za ciebie i nic nie dociera do serwera; abort je zabija. continue przepuszcza dalej, z opcjonalnymi nadpisaniami — rozprosz istniejące nagłówki, inaczej resztę zgubisz.",
+      "difficulty": 3,
+      "tags": [
+        "network",
+        "routing"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-network-003",
+      "type": "true_false",
+      "topic": "Dopasowanie glob",
+      "question": "Glob \"**/api/orders\" pasuje też do \"/api/orders?page=2\".",
+      "correctAnswer": true,
+      "explanation": "Playwright ignoruje query string przy dopasowaniu globa, który go nie zawiera. Dopasuj query jawnie albo użyj regexa, gdy różne parametry mają dawać różne odpowiedzi.",
+      "difficulty": 4,
+      "tags": [
+        "routing",
+        "network"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-network-004",
+      "type": "code_completion",
+      "topic": "Odcinanie szumu third-party",
+      "question": "Zablokuj analitykę, żeby nie spowalniała ani nie destabilizowała przebiegu. Uzupełnij handler.",
+      "language": "typescript",
+      "code": "await page.route('**/analytics/**', (route) => route.___());",
+      "answers": [
+        {
+          "id": "a",
+          "text": "abort"
+        },
+        {
+          "id": "b",
+          "text": "cancel"
+        },
+        {
+          "id": "c",
+          "text": "reject"
+        },
+        {
+          "id": "d",
+          "text": "drop"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Blokowanie beaconów i fontów third-party to jedna z najtańszych wygranych stabilnościowych w suicie i usuwa całą klasę problemów z network idle.",
+      "difficulty": 2,
+      "tags": [
+        "network",
+        "routing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-network-005",
+      "type": "multiple_choice",
+      "topic": "Pierwszeństwo route",
+      "question": "Dwa route pasują do tego samego URL-a. Który handler się wykona?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Ten zarejestrowany jako ostatni"
+        },
+        {
+          "id": "b",
+          "text": "Ten zarejestrowany jako pierwszy"
+        },
+        {
+          "id": "c",
+          "text": "Oba, w kolejności rejestracji"
+        },
+        {
+          "id": "d",
+          "text": "Bardziej szczegółowy wzorzec"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Późniejsze route mają pierwszeństwo, co pozwala testowi nadpisać szeroki route zainstalowany przez fixture. route.fallback() oddaje sterowanie wcześniejszemu handlerowi.",
+      "difficulty": 4,
+      "tags": [
+        "routing"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-network-006",
+      "type": "find_error",
+      "topic": "Zamockowanie tego, co się testuje",
+      "question": "To jest test przepływu checkoutu. Co poszło nie tak?",
+      "language": "typescript",
+      "code": "1  await page.route('**/api/**', (route) =>\n2    route.fulfill({ json: fixtures[route.request().url()] }),\n3  );\n4  await page.goto('/checkout');\n5  await page.getByRole('button', { name: 'Pay' }).click();\n6  await expect(page.getByText('Thank you')).toBeVisible();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — fulfill nie przyjmuje opcji json"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — zamockowanie każdego wywołania API sprawia, że test dowodzi renderowania fixture'ów, a nie działania checkoutu"
+        },
+        {
+          "id": "c",
+          "text": "Linia 5 — kliknięcie wymaga force: true"
+        },
+        {
+          "id": "d",
+          "text": "Linia 6 — toBeVisible powinno być toHaveText"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Wywołanie płatności to zachowanie będące przedmiotem testu. Mockuj otaczający szum, jeśli musisz, ale zostaw w spokoju endpoint, od którego test bierze nazwę.",
+      "difficulty": 4,
+      "tags": [
+        "mocking",
+        "network"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-network-007",
+      "type": "fill_blank",
+      "topic": "Odtwarzanie HAR",
+      "question": "Uzupełnij wywołanie odtwarzające nagraną sesję zamiast ręcznie pisanych fixture'ów.",
+      "sentence": "await page.___('fixtures/orders.har', { update: false });",
+      "answers": [
+        {
+          "id": "a",
+          "text": "routeFromHAR"
+        },
+        {
+          "id": "b",
+          "text": "replayHAR"
+        },
+        {
+          "id": "c",
+          "text": "loadHAR"
+        },
+        {
+          "id": "d",
+          "text": "routeHAR"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Z update: true nagrywa względem żywego API i nadpisuje plik; z false odtwarza. Odświeżenie mocków staje się jedną komendą zamiast ręcznej edycji JSON-a.",
+      "difficulty": 4,
+      "tags": [
+        "mocking",
+        "network"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-network-008",
+      "type": "code_multiple_choice",
+      "topic": "Asercja na żądaniu",
+      "question": "Co weryfikuje ten kod?",
+      "language": "typescript",
+      "code": "const request = page.waitForRequest(\n  (r) => r.url().includes('/api/search') && r.method() === 'GET',\n);\nawait page.getByLabel('Search').fill('acme');\nconst sent = await request;\nexpect(new URL(sent.url()).searchParams.get('q')).toBe('acme');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Że pisanie wywołało GET na endpoint wyszukiwania z wpisaną frazą"
+        },
+        {
+          "id": "b",
+          "text": "Że wyszukiwanie zwróciło wyniki"
+        },
+        {
+          "id": "c",
+          "text": "Że żądanie zostało zamockowane"
+        },
+        {
+          "id": "d",
+          "text": "Że endpoint odpowiedział w limicie czasu"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "waitForRequest bada, co aplikacja wysłała — to właściwy poziom dla błędów debounce i budowania query; żadna asercja o odpowiedzi nie jest tu zaangażowana.",
+      "difficulty": 4,
+      "tags": [
+        "network",
+        "assertions"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-network-009",
+      "type": "flashcard",
+      "topic": "Routing na poziomie kontekstu",
+      "question": "Playwright · sieć",
+      "front": "context.route() vs page.route()",
+      "back": "Route kontekstu obejmują każdą stronę i popup w tym kontekście",
+      "explanation": "Wspólne blokowanie — analityka, fonty, widgety third-party — dawaj na kontekst w fixture, a nadpisania per test trzymaj na stronie.",
+      "difficulty": 3,
+      "tags": [
+        "routing",
+        "fixtures"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-network-010",
+      "type": "concept_question",
+      "topic": "Testowanie stanu ładowania",
+      "question": "Jak pewnie zaasertować, że szkielet pokazuje się podczas ładowania danych?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Opóźnij handler route, zaasertuj szkielet, potem spełnij żądanie"
+        },
+        {
+          "id": "b",
+          "text": "Użyj waitForTimeout(50) zaraz po nawigacji"
+        },
+        {
+          "id": "c",
+          "text": "Zdławij całą przeglądarkę przez CDP"
+        },
+        {
+          "id": "d",
+          "text": "Nie da się tego testować deterministycznie"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Przytrzymanie odpowiedzi w handlerze oddaje sterowanie czasem testowi: stan ładowania trwa dokładnie tyle, ile test potrzebuje.",
+      "difficulty": 5,
+      "tags": [
+        "mocking",
+        "network"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-network-011",
+      "type": "true_false",
+      "topic": "Route a service worker",
+      "question": "Handler route przechwytuje też żądania wykonywane przez service workera.",
+      "correctAnswer": false,
+      "explanation": "Ruch service workera domyślnie omija route strony. Ustaw serviceWorkers: \"block\" w kontekście, gdy worker przechwytuje wywołania, które chciałeś zamockować.",
+      "difficulty": 5,
+      "tags": [
+        "routing",
+        "network"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-network-012",
+      "type": "code_multiple_choice",
+      "topic": "unroute po asercji",
+      "question": "Dlaczego ten fixture wywołuje unroute na końcu?",
+      "language": "typescript",
+      "code": "await page.route('**/api/me', (route) => route.fulfill({ json: admin }));\nawait use(page);\nawait page.unroute('**/api/me');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Żeby mock nie wyciekł do późniejszych nawigacji ani kroków sprzątania w tym samym kontekście"
+        },
+        {
+          "id": "b",
+          "text": "Bo route jest ograniczone do dziesięciu na stronę"
+        },
+        {
+          "id": "c",
+          "text": "Żeby zwolnić pamięć w przeglądarce"
+        },
+        {
+          "id": "d",
+          "text": "Jest wymagane przed zamknięciem strony"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Konteksty są per test, więc wyciek jest ograniczony — ale teardown rozmawiający z aplikacją nadal widziałby mock, a jawne unroute dokumentuje intencję.",
+      "difficulty": 4,
+      "tags": [
+        "routing",
+        "fixtures"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

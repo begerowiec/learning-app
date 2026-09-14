@@ -1,0 +1,62 @@
+{
+  "subjects": {
+    "python": {
+      "name": "Python",
+      "description": "Składnia, czytanie kodu i praktyka — od zmiennych po słowniki.",
+      "blurb": "Składnia, czytanie kodu, praktyka",
+      "levelLabels": { "beginner": "Podstawy", "intermediate": "Średni", "advanced": "Zaawansowany" }
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "description": "Typy, interfejsy, generyki i zawężanie, czytane wprost z realnego kodu.",
+      "blurb": "Typy, generyki, zawężanie",
+      "levelLabels": { "beginner": "Podstawy", "intermediate": "Średni", "advanced": "Zaawansowany" }
+    },
+    "playwright": {
+      "name": "Playwright",
+      "description": "Lokatory, auto-waiting, izolacja testów i debugowanie flaky — od strony praktyki QA.",
+      "blurb": "Lokatory, flaky, debugowanie",
+      "levelLabels": { "beginner": "Podstawy", "intermediate": "Średni", "advanced": "Zaawansowany" }
+    },
+    "english": {
+      "name": "Angielski",
+      "description": "Gramatyka, czasy i słownictwo codzienne z polskimi tłumaczeniami.",
+      "blurb": "Gramatyka, czasy, słownictwo",
+      "levelLabels": { "beginner": "Początkujący", "intermediate": "Średni", "advanced": "Zaawansowany" }
+    }
+  },
+  "modules": {
+    "python-basics": {
+      "title": "Podstawy Pythona",
+      "description": "Nazwy, wartości i sterowanie przepływem — fundament każdej kolejnej lekcji."
+    },
+    "python-core": {
+      "title": "Funkcje i kolekcje",
+      "description": "Wielokrotnie używane zachowanie i kontenery, po które sięgasz codziennie."
+    },
+    "typescript-basics": {
+      "title": "Podstawy TypeScriptu",
+      "description": "Adnotacje, kształty obiektów i typowane funkcje."
+    },
+    "typescript-type-system": {
+      "title": "Praca z systemem typów",
+      "description": "Generyki, zawężanie i typy narzędziowe, które oszczędzają pisanie tego samego dwa razy."
+    },
+    "playwright-locators": {
+      "title": "Lokatory i czekanie",
+      "description": "Jak wskazać element, żeby test nie pękał, i dlaczego sleep to zawsze zły pomysł."
+    },
+    "playwright-reliability": {
+      "title": "Stabilność i debugowanie",
+      "description": "Izolacja testów, mockowanie sieci i czytanie trace'a, gdy test padł tylko na CI."
+    },
+    "english-present-tenses": {
+      "title": "Czasy teraźniejsze",
+      "description": "Present Simple, Present Continuous i Present Perfect — i kiedy który jest błędem."
+    },
+    "english-everyday-vocabulary": {
+      "title": "Słownictwo codzienne",
+      "description": "Konektory, język biurowy i phrasal verbs, które padają na każdym spotkaniu."
+    }
+  }
+}

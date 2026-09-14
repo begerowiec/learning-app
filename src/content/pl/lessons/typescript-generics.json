@@ -1,0 +1,479 @@
+{
+  "id": "typescript-generics",
+  "subject": "typescript",
+  "module": "typescript-type-system",
+  "level": "intermediate",
+  "title": "Generyki",
+  "description": "Parametry typu, wnioskowanie z argumentów, ograniczenia przez extends i domyślne argumenty typu.",
+  "estimatedMinutes": 15,
+  "order": 0,
+  "tags": [
+    "generics",
+    "types",
+    "inference"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Generyk to parametr typu: miejsce, które wypełnia wywołujący. Pozwala jednej funkcji albo typowi zachować dokładną zależność między wejściem a wyjściem zamiast schodzić do any."
+    },
+    {
+      "type": "example",
+      "title": "Wnioskowanie z miejsca wywołania",
+      "body": "Rzadko podajesz argumenty typu ręcznie — TypeScript odczytuje je z argumentów.",
+      "language": "typescript",
+      "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\n\nconst a = first([1, 2, 3]);      // number | undefined\nconst b = first([\"x\", \"y\"]);     // string | undefined"
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "Ogranicz parametr typu, gdy musisz z niego czytać: <T extends { id: string }> pozwala sięgnąć po .id, zachowując dokładny typ wywołującego w wyniku."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-generics-001",
+      "type": "code_multiple_choice",
+      "topic": "Wnioskowanie typu generycznego",
+      "question": "Jaki jest wywnioskowany typ x?",
+      "language": "typescript",
+      "code": "function first<T>(items: T[]) {\n  return items[0];\n}\n\nconst x = first([1, 2, 3]);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "T"
+        },
+        {
+          "id": "b",
+          "text": "number[]"
+        },
+        {
+          "id": "c",
+          "text": "number"
+        },
+        {
+          "id": "d",
+          "text": "unknown"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "T jest wnioskowane jako number z argumentu, więc items[0] to number.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "inference"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-generics-002",
+      "type": "code_completion",
+      "topic": "Ograniczenia",
+      "question": "Uzupełnij ograniczenie tak, żeby ciało mogło czytać entity.id.",
+      "language": "typescript",
+      "code": "function idOf<T ___ { id: string }>(entity: T) {\n  return entity.id;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "extends"
+        },
+        {
+          "id": "b",
+          "text": "implements"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": "of"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "extends ogranicza parametr typu. Bez tego T mogłoby być czymkolwiek i .id nie byłoby znane.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "constraints"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-003",
+      "type": "concept_question",
+      "topic": "Generyki kontra any",
+      "question": "Co daje generyk, czego nie daje any?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Zachowuje zależność między argumentem a typem zwracanym, więc wywołujący nie traci informacji o typie"
+        },
+        {
+          "id": "b",
+          "text": "Przyspiesza funkcję w czasie wykonania"
+        },
+        {
+          "id": "c",
+          "text": "Waliduje wartości w czasie wykonania"
+        },
+        {
+          "id": "d",
+          "text": "Pozwala przekazać więcej typów wartości"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "any przyjmuje wszystko i zwraca wszystko, gubiąc powiązanie. Parametr typu przenosi typ wywołującego przez całą funkcję.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "types"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-generics-004",
+      "type": "find_error",
+      "topic": "Nieograniczony parametr",
+      "question": "Którą linię kompilator odrzuci?",
+      "language": "typescript",
+      "code": "1  function longest<T>(items: T[]) {\n2    return items.sort((a, b) => b.length - a.length)[0];\n3  }\n4  longest([\"aa\", \"b\"]);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — length nie istnieje na nieograniczonym T"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — generyk wymaga domyślnego argumentu typu"
+        },
+        {
+          "id": "c",
+          "text": "Linia 4 — argument typu trzeba podać jawnie"
+        },
+        {
+          "id": "d",
+          "text": "Żadna linia nie jest odrzucana"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "T jest nieznane w ciele, dopóki go nie ograniczysz. <T extends { length: number }> czyni linię 2 legalną.",
+      "difficulty": 4,
+      "tags": [
+        "generics",
+        "constraints"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-generics-005",
+      "type": "true_false",
+      "topic": "Koszt w czasie wykonania",
+      "question": "Generyki są usuwane przy kompilacji i nie dokładają żadnego kodu w czasie wykonania.",
+      "correctAnswer": true,
+      "explanation": "Jak każdy inny typ w TypeScripcie, parametr typu znika w wygenerowanym JavaScripcie.",
+      "difficulty": 2,
+      "tags": [
+        "generics",
+        "runtime"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-generics-006",
+      "type": "code_multiple_choice",
+      "topic": "Interfejsy generyczne",
+      "question": "Jaki jest typ result?",
+      "language": "typescript",
+      "code": "interface Box<T> { value: T }\n\nconst b: Box<string[]> = { value: [\"a\"] };\nconst result = b.value.length;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "number"
+        },
+        {
+          "id": "b",
+          "text": "unknown"
+        },
+        {
+          "id": "c",
+          "text": "string[]"
+        },
+        {
+          "id": "d",
+          "text": "string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "T to string[], więc b.value jest tablicą, a .length liczbą.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "interfaces"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-generics-007",
+      "type": "fill_blank",
+      "topic": "Domyślny argument typu",
+      "question": "Uzupełnij deklarację tak, żeby Box domyślnie trzymał string.",
+      "sentence": "interface Box<T ___ string> { value: T }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "="
+        },
+        {
+          "id": "b",
+          "text": "extends"
+        },
+        {
+          "id": "c",
+          "text": "as"
+        },
+        {
+          "id": "d",
+          "text": ":"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Domyślny argument typu zapisuje się przez =. Można go łączyć z ograniczeniem: <T extends object = {}>.",
+      "difficulty": 4,
+      "tags": [
+        "generics",
+        "defaults"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-008",
+      "type": "flashcard",
+      "topic": "keyof z generykami",
+      "question": "TypeScript · generyki",
+      "front": "function get<T, K extends keyof T>(o: T, k: K): T[K]",
+      "back": "Typowany getter właściwości — typ zwracany podąża za przekazanym kluczem",
+      "explanation": "To kanoniczna para generyków: K ograniczone do kluczy obiektu, a T[K] to typ dostępu indeksowanego.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "keyof"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-009",
+      "type": "multiple_choice",
+      "topic": "Kiedy nie używać generyka",
+      "question": "Parametr typu pojawia się dokładnie raz, w jednej pozycji parametru, i nigdzie w typie zwracanym. Co to sugeruje?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Generyk na nic nie pracuje — wystarczyłoby samo ograniczenie"
+        },
+        {
+          "id": "b",
+          "text": "Powinien dostać domyślny argument typu"
+        },
+        {
+          "id": "c",
+          "text": "Powinien być ograniczony ściślej"
+        },
+        {
+          "id": "d",
+          "text": "Nic — to normalny kształt generyka"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Parametr typu wiąże dwie pozycje. Użyty raz dokłada tylko szumu: weź ograniczenie wprost jako typ parametru.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "design"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-generics-010",
+      "type": "code_multiple_choice",
+      "topic": "Wnioskowanie z callbacku",
+      "language": "typescript",
+      "question": "Jaki jest typ result?",
+      "code": "function mapAll<T, U>(items: T[], fn: (item: T) => U): U[] {\n  return items.map(fn);\n}\n\nconst result = mapAll(['1', '2'], Number);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "number[]"
+        },
+        {
+          "id": "b",
+          "text": "string[]"
+        },
+        {
+          "id": "c",
+          "text": "unknown[]"
+        },
+        {
+          "id": "d",
+          "text": "(string | number)[]"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "T pochodzi z tablicy, U z typu zwracanego callbacku. Dwa parametry wywnioskowane z dwóch pozycji to esencja generyków.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "inference"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-generics-011",
+      "type": "concept_question",
+      "topic": "Typy warunkowe",
+      "question": "Co znaczy `T extends string ? A : B` w pozycji typu?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Typ warunkowy: daje A, gdy T jest przypisywalne do string, w przeciwnym razie B"
+        },
+        {
+          "id": "b",
+          "text": "Ograniczenie wymagające, żeby T było stringiem"
+        },
+        {
+          "id": "c",
+          "text": "Sprawdzenie w czasie wykonania wkompilowane w wynik"
+        },
+        {
+          "id": "d",
+          "text": "Deklarację, że T dziedziczy po string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "To if na poziomie typów. Nad unią rozdziela się wariant po wariancie — tak zbudowane są Exclude i NonNullable.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "conditional-types"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-generics-012",
+      "type": "code_completion",
+      "topic": "infer",
+      "language": "typescript",
+      "question": "Uzupełnij typ warunkowy wyciągający typ elementu z tablicy.",
+      "code": "type ElementOf<T> = T extends (___ U)[] ? U : never;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "infer"
+        },
+        {
+          "id": "b",
+          "text": "extract"
+        },
+        {
+          "id": "c",
+          "text": "keyof"
+        },
+        {
+          "id": "d",
+          "text": "typeof"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "infer wprowadza zmienną typową wewnątrz warunku i wiąże ją z tym, co dopasowano. ReturnType i Awaited napisane są tak samo.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "infer"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-generics-013",
+      "type": "true_false",
+      "topic": "Jawne argumenty typu",
+      "question": "Podanie argumentu typu wprost, jak w first<string>(items), wyłącza dla tego wywołania wnioskowanie.",
+      "correctAnswer": true,
+      "explanation": "Wyłącza też błąd, który dostałbyś przy niezgodności, więc na review warto się takim wywołaniom przyjrzeć, gdy typ dało się wywnioskować.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "inference"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-014",
+      "type": "find_error",
+      "topic": "Zbyt luźne ograniczenie",
+      "language": "typescript",
+      "question": "Dlaczego linia 2 się nie kompiluje?",
+      "code": "1  function merge<T extends object>(a: T, b: T): T {\n2    return { ...a, ...b, mergedAt: Date.now() };\n3  }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Rozpraszanie generyków jest niedozwolone"
+        },
+        {
+          "id": "b",
+          "text": "T to dokładny typ wywołującego, a dodatkowa właściwość sprawia, że wynik nie jest do niego przypisywalny"
+        },
+        {
+          "id": "c",
+          "text": "Date.now() zwraca string"
+        },
+        {
+          "id": "d",
+          "text": "Ograniczeniem powinno być unknown"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Zwracanie T to obietnica oddania dokładnie typu wywołującego. Zadeklaruj zamiast tego typ zwracany jako T & { mergedAt: number }.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "constraints"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-generics-015",
+      "type": "multiple_choice",
+      "topic": "Domyślne z ograniczeniem",
+      "question": "Co deklaruje `<T extends object = Record<string, unknown>>`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Parametr ograniczony do typów obiektowych, domyślnie string-kluczowany rekord, gdy pominięty"
+        },
+        {
+          "id": "b",
+          "text": "Parametr, który musi być dokładnie Record<string, unknown>"
+        },
+        {
+          "id": "c",
+          "text": "Błąd składni — ograniczenia i domyślnej nie da się łączyć"
+        },
+        {
+          "id": "d",
+          "text": "Parametr, którego wartość domyślna jest sprawdzana w czasie wykonania"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Ograniczenie i wartość domyślna są niezależne, a domyślna musi sama spełniać ograniczenie.",
+      "difficulty": 4,
+      "tags": [
+        "generics",
+        "defaults"
+      ],
+      "estimatedSeconds": 40
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "id": "playwright-locator-strategy",
+  "subject": "playwright",
+  "module": "playwright-locators",
+  "level": "beginner",
+  "title": "Locator strategy",
+  "description": "Why getByRole beats a CSS chain, what strict mode is actually protecting you from, and how to scope instead of index.",
+  "estimatedMinutes": 10,
+  "order": 0,
+  "tags": ["locators", "strict-mode", "selectors"],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Locators are lazy",
+      "body": "A locator is not an element — it is a description of how to find one, re-resolved on every action. That is why a locator created before a re-render still works, and why there is no such thing as a stale element reference in Playwright."
+    },
+    {
+      "type": "example",
+      "title": "The order to reach for",
+      "body": "Role first, then label or text, then test id. A CSS chain is the last resort: it encodes the DOM shape, which is the part most likely to change.",
+      "language": "typescript",
+      "code": "page.getByRole('button', { name: 'Save' });   // best\npage.getByLabel('Email');\npage.getByTestId('submit');\npage.locator('.form > div:nth-child(3) button'); // brittle"
+    },
+    {
+      "type": "callout",
+      "title": "Strict mode",
+      "variant": "warning",
+      "body": "Any action on a locator that matches more than one element throws instead of silently picking the first. That error is a real ambiguity in the page, not Playwright being difficult — .first() hides it, scoping fixes it."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-locator-001",
+      "type": "concept_question",
+      "topic": "Why role-based locators",
+      "question": "Why is getByRole usually preferred over a CSS selector?",
+      "answers": [
+        { "id": "a", "text": "It is faster to evaluate in the browser" },
+        { "id": "b", "text": "It targets what the user and assistive tech perceive, so it survives refactors of the markup" },
+        { "id": "c", "text": "It is the only locator that supports auto-waiting" },
+        { "id": "d", "text": "CSS selectors do not work in Playwright" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Role and accessible name are part of the contract with the user; class names and DOM depth are implementation details. A role locator also fails loudly when accessibility regresses.",
+      "difficulty": 2,
+      "tags": ["locators", "selectors"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-locator-002",
+      "type": "find_error",
+      "topic": "Strict mode violation",
+      "question": "The page has three \"Delete\" buttons, one per row. Which line throws?",
+      "language": "typescript",
+      "code": "1  const rows = page.getByRole('row');\n2  await expect(rows).toHaveCount(3);\n3  await page.getByRole('button', { name: 'Delete' }).click();\n4  await expect(page.getByText('Deleted')).toBeVisible();",
+      "answers": [
+        { "id": "a", "text": "Line 2 — toHaveCount needs a single element" },
+        { "id": "b", "text": "Line 4 — getByText matches partial strings" },
+        { "id": "c", "text": "Line 3 — the locator resolves to three elements and strict mode refuses to guess" },
+        { "id": "d", "text": "Line 1 — getByRole('row') is not a valid role" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Assertions on a collection are fine; actions are not. Scope it: page.getByRole('row', { name: 'Invoice 12' }).getByRole('button', { name: 'Delete' }).",
+      "difficulty": 3,
+      "tags": ["strict-mode", "locators"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-locator-003",
+      "type": "code_multiple_choice",
+      "topic": "Scoping over indexing",
+      "question": "Which version survives a new row being added at the top of the table?",
+      "language": "typescript",
+      "code": "// A\nawait page.getByRole('button', { name: 'Edit' }).nth(2).click();\n\n// B\nawait page\n  .getByRole('row', { name: 'ACME Ltd' })\n  .getByRole('button', { name: 'Edit' })\n  .click();",
+      "answers": [
+        { "id": "a", "text": "B — it identifies the row by its content, so position does not matter" },
+        { "id": "b", "text": "A — nth() is re-evaluated on every action" },
+        { "id": "c", "text": "Both, because Playwright re-resolves locators" },
+        { "id": "d", "text": "Neither — you have to use a test id" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Re-resolving does not help when the index itself is the wrong idea. nth() is fine for genuinely positional things (\"the first item\"), not for identifying a record.",
+      "difficulty": 3,
+      "tags": ["locators", "selectors"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-locator-004",
+      "type": "true_false",
+      "topic": "Locator laziness",
+      "question": "A locator stored in a variable before the page re-renders becomes stale and must be recreated.",
+      "correctAnswer": false,
+      "explanation": "The locator holds the query, not the element. It is resolved again at the moment of each action or assertion, which is precisely why Playwright has no stale-element errors.",
+      "difficulty": 2,
+      "tags": ["locators"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-locator-005",
+      "type": "code_completion",
+      "topic": "Exact text matching",
+      "question": "getByText('Save') also matches \"Save and close\". Complete the call so it matches only the exact label.",
+      "language": "typescript",
+      "code": "await page.getByText('Save', { ___: true }).click();",
+      "answers": [
+        { "id": "a", "text": "strict" },
+        { "id": "b", "text": "exact" },
+        { "id": "c", "text": "full" },
+        { "id": "d", "text": "whole" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Text matching is substring and case-insensitive by default. exact: true makes it case-sensitive and whole-string — and getByRole with a name is usually better still.",
+      "difficulty": 2,
+      "tags": ["locators", "selectors"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-locator-006",
+      "type": "multiple_choice",
+      "topic": "filter vs and",
+      "question": "You need the list item that contains the text \"Overdue\" and has a visible \"Pay\" button. Which reads best?",
+      "answers": [
+        { "id": "a", "text": "page.getByRole('listitem').filter({ hasText: 'Overdue' }).filter({ has: page.getByRole('button', { name: 'Pay' }) })" },
+        { "id": "b", "text": "page.locator('li:has-text(\"Overdue\"):has(button)')" },
+        { "id": "c", "text": "page.getByRole('listitem').nth(0)" },
+        { "id": "d", "text": "page.getByText('Overdue').locator('..')" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "filter() composes readable conditions and keeps the strict-mode guarantee. Climbing with '..' works but couples the test to the DOM shape.",
+      "difficulty": 4,
+      "tags": ["locators", "filtering"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-locator-007",
+      "type": "fill_blank",
+      "topic": "Test ids",
+      "question": "Complete the sentence.",
+      "sentence": "A data-testid is the right choice when the element has ___ that identifies it for a user.",
+      "answers": [
+        { "id": "a", "text": "no accessible role or name" },
+        { "id": "b", "text": "more than one role" },
+        { "id": "c", "text": "a dynamic class name" },
+        { "id": "d", "text": "no id attribute" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Test ids are an escape hatch for genuinely unlabelled elements — a chart canvas, a decorative wrapper. Reaching for them first means accessibility problems never surface in the tests.",
+      "difficulty": 3,
+      "tags": ["locators", "test-ids"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-locator-008",
+      "type": "code_multiple_choice",
+      "topic": "Shadow DOM and frames",
+      "question": "The widget renders inside an iframe. What does this do?",
+      "language": "typescript",
+      "code": "await page.getByRole('button', { name: 'Pay' }).click();",
+      "answers": [
+        { "id": "a", "text": "Times out — page locators do not pierce an iframe, you need frameLocator()" },
+        { "id": "b", "text": "Works — Playwright searches every frame by default" },
+        { "id": "c", "text": "Throws a strict mode violation" },
+        { "id": "d", "text": "Works only if the iframe is same-origin" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "page.frameLocator('#checkout').getByRole('button', { name: 'Pay' }) crosses the boundary. Shadow DOM is different — locators pierce open shadow roots automatically.",
+      "difficulty": 4,
+      "tags": ["locators", "frames"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-locator-009",
+      "type": "flashcard",
+      "topic": "getByRole name matching",
+      "question": "Playwright · locators",
+      "front": "getByRole('button', { name: 'Save' })",
+      "back": "Matches the accessible name — substring, case-insensitive, whitespace-normalised",
+      "explanation": "Add exact: true when \"Save\" must not match \"Save draft\". The accessible name comes from the text, aria-label, or the associated label element.",
+      "difficulty": 2,
+      "tags": ["locators", "selectors"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-locator-010",
+      "type": "concept_question",
+      "topic": "first() as a smell",
+      "question": "A colleague fixes a strict mode error by appending .first(). When is that actually correct?",
+      "answers": [
+        { "id": "a", "text": "Whenever the error appears — it is the documented fix" },
+        { "id": "b", "text": "Only when the page legitimately renders a list and any element of it would do" },
+        { "id": "c", "text": "Never — .first() is deprecated" },
+        { "id": "d", "text": "Only in tests marked as flaky" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Strict mode caught a real ambiguity. If there should have been one match, .first() converts a clear failure into a test that passes against the wrong element.",
+      "difficulty": 4,
+      "tags": ["strict-mode", "locators"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-locator-011",
+      "type": "true_false",
+      "topic": "Chaining",
+      "question": "Chaining locators (parent.getByRole(...)) narrows the search to that parent's subtree.",
+      "correctAnswer": true,
+      "explanation": "That is the main tool against strict mode violations: scope to the card, row or dialog you mean, then look for the control inside it.",
+      "difficulty": 2,
+      "tags": ["locators"],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "playwright-locator-012",
+      "type": "find_error",
+      "topic": "CSS coupling",
+      "question": "This selector broke after a CSS-only refactor. Which part is responsible?",
+      "language": "typescript",
+      "code": "await page\n  .locator('div.card__wrapper > div:nth-child(2) .btn-primary')\n  .click();",
+      "answers": [
+        { "id": "a", "text": "The .btn-primary class — classes never change" },
+        { "id": "b", "text": "nth-child and the direct-child combinator, which encode the DOM structure" },
+        { "id": "c", "text": "locator() itself — it should be getByTestId" },
+        { "id": "d", "text": "Nothing — CSS refactors cannot affect selectors" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Anything positional or structural breaks when a wrapper div is added. Role plus accessible name describes the thing the user sees, which is what the refactor kept.",
+      "difficulty": 3,
+      "tags": ["selectors", "locators"],
+      "estimatedSeconds": 40
+    }
+  ]
+}

@@ -1,0 +1,481 @@
+{
+  "id": "typescript-functions",
+  "subject": "typescript",
+  "module": "typescript-basics",
+  "level": "beginner",
+  "title": "Functions",
+  "description": "Parameter and return annotations, optional and default parameters, void vs never.",
+  "estimatedMinutes": 13,
+  "order": 2,
+  "tags": [
+    "functions",
+    "types",
+    "signatures"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A function type describes what goes in and what comes out. Parameters are checked by position, and the return type is usually better left to inference — except on exported API, where an explicit return type stops a refactor from silently widening it."
+    },
+    {
+      "type": "example",
+      "title": "Optional vs default",
+      "body": "An optional parameter may be omitted and is then undefined. A default parameter may also be omitted but never is undefined inside the body.",
+      "language": "typescript",
+      "code": "function greet(name: string, title?: string) {\n  return title ? `${title} ${name}` : name;\n}\n\nfunction scale(x: number, factor = 2) {\n  return x * factor;   // factor: number, never undefined\n}"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "void means \"ignore whatever is returned\", not \"returns nothing\". never means the function cannot return at all — it throws or loops forever."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-functions-001",
+      "type": "code_multiple_choice",
+      "topic": "Return inference",
+      "question": "What is the inferred return type?",
+      "language": "typescript",
+      "code": "function area(w: number, h: number) {\n  return w * h;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "any"
+        },
+        {
+          "id": "b",
+          "text": "void"
+        },
+        {
+          "id": "c",
+          "text": "unknown"
+        },
+        {
+          "id": "d",
+          "text": "number"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Multiplying two numbers yields a number, so TypeScript infers it without an annotation.",
+      "difficulty": 1,
+      "tags": [
+        "functions",
+        "inference"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-002",
+      "type": "concept_question",
+      "topic": "void vs never",
+      "question": "When is never the right return type?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "When the return value should be ignored"
+        },
+        {
+          "id": "b",
+          "text": "When the function returns nothing useful"
+        },
+        {
+          "id": "c",
+          "text": "When the function returns undefined"
+        },
+        {
+          "id": "d",
+          "text": "When the function cannot return normally — it always throws or never terminates"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "void covers \"returns nothing useful\". never is the empty type: no value inhabits it, so the function has no normal exit.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "never"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-functions-003",
+      "type": "find_error",
+      "topic": "Parameter order",
+      "question": "Which line does the compiler reject?",
+      "language": "typescript",
+      "code": "1  function tag(label?: string, value: number) {\n2    return `${label}:${value}`;\n3  }\n4  console.log(tag(\"a\", 1));",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 1 — a required parameter cannot follow an optional one"
+        },
+        {
+          "id": "b",
+          "text": "Line 4 — the call passes too many arguments"
+        },
+        {
+          "id": "c",
+          "text": "Line 2 — template literals need String()"
+        },
+        {
+          "id": "d",
+          "text": "No line is rejected"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Optional parameters must come last, otherwise a caller could not skip them. Swap the order or give value a default.",
+      "difficulty": 3,
+      "tags": [
+        "functions",
+        "optional"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-functions-004",
+      "type": "code_completion",
+      "topic": "Function type alias",
+      "question": "Complete the alias describing a function that takes a number and returns a string.",
+      "language": "typescript",
+      "code": "type Formatter = (value: number) ___ string;",
+      "answers": [
+        {
+          "id": "a",
+          "text": ":"
+        },
+        {
+          "id": "b",
+          "text": "=>"
+        },
+        {
+          "id": "c",
+          "text": "->"
+        },
+        {
+          "id": "d",
+          "text": "returns"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A function type uses => for its return type. A colon is used inside interfaces and object type literals for method shorthand.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "signatures"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-005",
+      "type": "true_false",
+      "topic": "Default parameters",
+      "question": "A parameter with a default value still has undefined in its type inside the function body.",
+      "correctAnswer": false,
+      "explanation": "The default is applied before the body runs, so the parameter's type inside the body excludes undefined — unlike an optional parameter.",
+      "difficulty": 3,
+      "tags": [
+        "functions",
+        "optional"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-006",
+      "type": "code_multiple_choice",
+      "topic": "Rest parameters",
+      "question": "What is the type of values?",
+      "language": "typescript",
+      "code": "function sum(...values: number[]) {\n  return values.reduce((a, b) => a + b, 0);\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "number[]"
+        },
+        {
+          "id": "b",
+          "text": "IArguments"
+        },
+        {
+          "id": "c",
+          "text": "number"
+        },
+        {
+          "id": "d",
+          "text": "[number]"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A rest parameter collects the remaining arguments into a real array, so it is annotated as an array type.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "rest-parameters"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-functions-007",
+      "type": "fill_blank",
+      "topic": "Async return type",
+      "question": "Complete the annotation for an async function resolving to a User.",
+      "sentence": "async function load(): ___<User> { ... }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Future"
+        },
+        {
+          "id": "b",
+          "text": "Promise"
+        },
+        {
+          "id": "c",
+          "text": "Awaited"
+        },
+        {
+          "id": "d",
+          "text": "Async"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An async function always returns a promise, so its annotated return type has to be Promise<T>.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "async"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-008",
+      "type": "flashcard",
+      "topic": "Overload signatures",
+      "question": "TypeScript · functions",
+      "front": "Two signatures above one implementation",
+      "back": "Function overloads — callers see only the signatures, never the implementation one",
+      "explanation": "The implementation signature must be compatible with every overload but is not itself callable from outside.",
+      "difficulty": 5,
+      "tags": [
+        "functions",
+        "overloads"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-009",
+      "type": "multiple_choice",
+      "topic": "Callback parameter counts",
+      "question": "Why may a callback of type (a: number) => void be passed where (a: number, b: number) => void is expected?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Because void return types disable parameter checks"
+        },
+        {
+          "id": "b",
+          "text": "It may not — the arities must match exactly"
+        },
+        {
+          "id": "c",
+          "text": "A function that ignores trailing parameters is always safe to call with more arguments"
+        },
+        {
+          "id": "d",
+          "text": "TypeScript pads the missing parameter with undefined"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Fewer parameters is always compatible: the extra arguments are simply unused. This is why arr.map(n => n * 2) type-checks despite map passing three arguments.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "signatures",
+        "variance"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-010",
+      "type": "code_multiple_choice",
+      "topic": "this in arrow functions",
+      "language": "typescript",
+      "question": "Why does the arrow version work and the other one not?",
+      "code": "class Counter {\n  n = 0;\n  incArrow = () => { this.n += 1; };\n  incMethod() { this.n += 1; }\n}\nconst { incArrow, incMethod } = new Counter();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "An arrow function captures this from the class instance; a detached method loses it"
+        },
+        {
+          "id": "b",
+          "text": "Methods cannot be destructured in TypeScript"
+        },
+        {
+          "id": "c",
+          "text": "Arrow properties are static"
+        },
+        {
+          "id": "d",
+          "text": "There is no difference"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Passing a method as a callback is the usual way this goes wrong. Arrow properties cost one closure per instance, which is the trade.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "this"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-011",
+      "type": "concept_question",
+      "topic": "Explicit return types on exports",
+      "question": "Why annotate the return type of an exported function even though inference works?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It stops a refactor silently widening the public contract, and keeps errors at the definition"
+        },
+        {
+          "id": "b",
+          "text": "Inference does not work across modules"
+        },
+        {
+          "id": "c",
+          "text": "It is required by strict mode"
+        },
+        {
+          "id": "d",
+          "text": "It makes the build faster at runtime"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Without it, returning null from a new branch changes every consumer's type instead of failing where the change was made.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "signatures"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-012",
+      "type": "code_completion",
+      "topic": "Type predicate",
+      "language": "typescript",
+      "question": "Complete the signature so callers narrow after the check.",
+      "code": "function isCat(pet: Cat | Dog): pet ___ Cat {\n  return 'meow' in pet;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "as"
+        },
+        {
+          "id": "b",
+          "text": "extends"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": "satisfies"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A type predicate is a promise the compiler takes at face value, so the body has to actually test what it claims.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "narrowing"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-functions-013",
+      "type": "true_false",
+      "topic": "Optional chaining and calls",
+      "question": "`callback?.()` calls the function only when callback is neither null nor undefined.",
+      "correctAnswer": true,
+      "explanation": "It short-circuits to undefined otherwise. Note that it does not guard against callback being a non-callable value of another type.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "optional"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-014",
+      "type": "find_error",
+      "topic": "Async without await",
+      "language": "typescript",
+      "question": "Which line makes the error disappear silently?",
+      "code": "1  async function save(): Promise<void> {\n2    await db.write();\n3  }\n4\n5  function handler() {\n6    save();\n7  }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 2 — await is not allowed there"
+        },
+        {
+          "id": "b",
+          "text": "Line 1 — Promise<void> is not a valid return type"
+        },
+        {
+          "id": "c",
+          "text": "Line 6 — the promise is not awaited, so a rejection becomes an unhandled rejection"
+        },
+        {
+          "id": "d",
+          "text": "Line 5 — handler must be async"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The compiler allows it; the no-floating-promises lint rule is what catches it. Either await it or mark the intent with void save().",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "async"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-015",
+      "type": "multiple_choice",
+      "topic": "never in exhaustive switches",
+      "question": "What does a helper with the signature `(value: never) => never` buy you in a switch default?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A compile error the moment a new union member is not handled"
+        },
+        {
+          "id": "b",
+          "text": "A runtime exception for unknown values"
+        },
+        {
+          "id": "c",
+          "text": "Faster switch dispatch"
+        },
+        {
+          "id": "d",
+          "text": "Automatic handling of the new case"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "If every case is handled, the value is narrowed to never and the call type-checks. Add a member and it stops compiling — which is the point.",
+      "difficulty": 5,
+      "tags": [
+        "functions",
+        "never",
+        "narrowing"
+      ],
+      "estimatedSeconds": 50
+    }
+  ]
+}

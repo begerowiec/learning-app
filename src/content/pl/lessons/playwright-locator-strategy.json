@@ -1,0 +1,377 @@
+{
+  "id": "playwright-locator-strategy",
+  "subject": "playwright",
+  "module": "playwright-locators",
+  "level": "beginner",
+  "title": "Strategia lokatorów",
+  "description": "Dlaczego getByRole bije łańcuch CSS, przed czym naprawdę chroni tryb strict i jak zawężać zamiast indeksować.",
+  "estimatedMinutes": 10,
+  "order": 0,
+  "tags": [
+    "locators",
+    "strict-mode",
+    "selectors"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Lokatory są leniwe",
+      "body": "Lokator to nie element, tylko opis tego, jak go znaleźć — rozwiązywany od nowa przy każdej akcji. Dlatego lokator utworzony przed przerysowaniem strony nadal działa i dlatego w Playwrighcie nie istnieje błąd nieaktualnej referencji do elementu."
+    },
+    {
+      "type": "example",
+      "title": "Kolejność, po którą sięgać",
+      "body": "Najpierw rola, potem etykieta albo tekst, potem test id. Łańcuch CSS to ostateczność: koduje kształt DOM-u, czyli tę część, która najczęściej się zmienia.",
+      "language": "typescript",
+      "code": "page.getByRole('button', { name: 'Save' });   // best\npage.getByLabel('Email');\npage.getByTestId('submit');\npage.locator('.form > div:nth-child(3) button'); // brittle"
+    },
+    {
+      "type": "callout",
+      "title": "Tryb strict",
+      "variant": "warning",
+      "body": "Każda akcja na lokatorze pasującym do więcej niż jednego elementu rzuca wyjątek zamiast po cichu brać pierwszy. Ten błąd to realna niejednoznaczność na stronie, a nie złośliwość Playwrighta — .first() ją ukrywa, zawężenie naprawia."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-locator-001",
+      "type": "concept_question",
+      "topic": "Dlaczego lokatory po roli",
+      "question": "Dlaczego getByRole jest zwykle lepsze niż selektor CSS?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Szybciej się wylicza w przeglądarce"
+        },
+        {
+          "id": "b",
+          "text": "Celuje w to, co widzi użytkownik i technologie asystujące, więc przeżywa refaktory znaczników"
+        },
+        {
+          "id": "c",
+          "text": "To jedyny lokator wspierający auto-waiting"
+        },
+        {
+          "id": "d",
+          "text": "Selektory CSS nie działają w Playwrighcie"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rola i dostępna nazwa są częścią kontraktu z użytkownikiem; nazwy klas i głębokość DOM-u to szczegóły implementacji. Lokator po roli dodatkowo wysypuje się głośno, gdy dostępność się psuje.",
+      "difficulty": 2,
+      "tags": [
+        "locators",
+        "selectors"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-locator-002",
+      "type": "find_error",
+      "topic": "Naruszenie trybu strict",
+      "question": "Strona ma trzy przyciski \"Delete\", po jednym w wierszu. Która linia rzuca wyjątek?",
+      "language": "typescript",
+      "code": "1  const rows = page.getByRole('row');\n2  await expect(rows).toHaveCount(3);\n3  await page.getByRole('button', { name: 'Delete' }).click();\n4  await expect(page.getByText('Deleted')).toBeVisible();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — toHaveCount wymaga pojedynczego elementu"
+        },
+        {
+          "id": "b",
+          "text": "Linia 4 — getByText dopasowuje fragmenty tekstu"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — lokator wskazuje trzy elementy, a tryb strict nie zgaduje"
+        },
+        {
+          "id": "d",
+          "text": "Linia 1 — getByRole(\"row\") to niepoprawna rola"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Asercje na kolekcji są w porządku, akcje nie. Zawęź: page.getByRole(\"row\", { name: \"Invoice 12\" }).getByRole(\"button\", { name: \"Delete\" }).",
+      "difficulty": 3,
+      "tags": [
+        "strict-mode",
+        "locators"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-locator-003",
+      "type": "code_multiple_choice",
+      "topic": "Zawężanie zamiast indeksowania",
+      "question": "Która wersja przeżyje dodanie nowego wiersza na górze tabeli?",
+      "language": "typescript",
+      "code": "// A\nawait page.getByRole('button', { name: 'Edit' }).nth(2).click();\n\n// B\nawait page\n  .getByRole('row', { name: 'ACME Ltd' })\n  .getByRole('button', { name: 'Edit' })\n  .click();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "B — identyfikuje wiersz po jego treści, więc pozycja nie ma znaczenia"
+        },
+        {
+          "id": "b",
+          "text": "A — nth() jest przeliczane przy każdej akcji"
+        },
+        {
+          "id": "c",
+          "text": "Obie, bo Playwright rozwiązuje lokatory od nowa"
+        },
+        {
+          "id": "d",
+          "text": "Żadna — trzeba użyć test id"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Ponowne rozwiązanie nie pomaga, gdy to sam indeks jest złym pomysłem. nth() nadaje się do rzeczy faktycznie pozycyjnych (\"pierwszy element\"), a nie do identyfikowania rekordu.",
+      "difficulty": 3,
+      "tags": [
+        "locators",
+        "selectors"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-locator-004",
+      "type": "true_false",
+      "topic": "Lenistwo lokatorów",
+      "question": "Lokator zapisany w zmiennej przed przerysowaniem strony staje się nieaktualny i trzeba go utworzyć od nowa.",
+      "correctAnswer": false,
+      "explanation": "Lokator trzyma zapytanie, a nie element. Jest rozwiązywany ponownie w momencie każdej akcji i asercji — dlatego Playwright nie ma błędów stale element.",
+      "difficulty": 2,
+      "tags": [
+        "locators"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-locator-005",
+      "type": "code_completion",
+      "topic": "Dokładne dopasowanie tekstu",
+      "question": "getByText(\"Save\") pasuje też do \"Save and close\". Uzupełnij wywołanie tak, żeby pasowała tylko dokładna etykieta.",
+      "language": "typescript",
+      "code": "await page.getByText('Save', { ___: true }).click();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "strict"
+        },
+        {
+          "id": "b",
+          "text": "exact"
+        },
+        {
+          "id": "c",
+          "text": "full"
+        },
+        {
+          "id": "d",
+          "text": "whole"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Dopasowanie tekstu domyślnie działa na fragmentach i bez rozróżniania wielkości liter. exact: true wymusza pełny ciąg z wielkością liter — a getByRole z nazwą i tak jest zwykle lepsze.",
+      "difficulty": 2,
+      "tags": [
+        "locators",
+        "selectors"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-locator-006",
+      "type": "multiple_choice",
+      "topic": "filter kontra and",
+      "question": "Potrzebujesz elementu listy, który zawiera tekst \"Overdue\" i ma widoczny przycisk \"Pay\". Co czyta się najlepiej?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "page.getByRole('listitem').filter({ hasText: 'Overdue' }).filter({ has: page.getByRole('button', { name: 'Pay' }) })"
+        },
+        {
+          "id": "b",
+          "text": "page.locator('li:has-text(\"Overdue\"):has(button)')"
+        },
+        {
+          "id": "c",
+          "text": "page.getByRole('listitem').nth(0)"
+        },
+        {
+          "id": "d",
+          "text": "page.getByText('Overdue').locator('..')"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "filter() składa czytelne warunki i zachowuje gwarancję trybu strict. Wspinanie się przez \"..\" działa, ale wiąże test z kształtem DOM-u.",
+      "difficulty": 4,
+      "tags": [
+        "locators",
+        "filtering"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-locator-007",
+      "type": "fill_blank",
+      "topic": "Test id",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "data-testid jest właściwym wyborem, gdy element ___, co identyfikowałoby go dla użytkownika.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "nie ma dostępnej roli ani nazwy"
+        },
+        {
+          "id": "b",
+          "text": "ma więcej niż jedną rolę"
+        },
+        {
+          "id": "c",
+          "text": "ma dynamiczną nazwę klasy"
+        },
+        {
+          "id": "d",
+          "text": "nie ma atrybutu id"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Test id to wyjście awaryjne dla elementów naprawdę nieopisanych — canvasu wykresu, dekoracyjnego wrappera. Sięganie po nie w pierwszej kolejności sprawia, że problemy z dostępnością nigdy nie wypływają w testach.",
+      "difficulty": 3,
+      "tags": [
+        "locators",
+        "test-ids"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-locator-008",
+      "type": "code_multiple_choice",
+      "topic": "Shadow DOM i ramki",
+      "question": "Widget renderuje się wewnątrz iframe. Co zrobi ten kod?",
+      "language": "typescript",
+      "code": "await page.getByRole('button', { name: 'Pay' }).click();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Przekroczy limit czasu — lokatory strony nie wchodzą do iframe, potrzebny jest frameLocator()"
+        },
+        {
+          "id": "b",
+          "text": "Zadziała — Playwright domyślnie przeszukuje każdą ramkę"
+        },
+        {
+          "id": "c",
+          "text": "Rzuci naruszenie trybu strict"
+        },
+        {
+          "id": "d",
+          "text": "Zadziała tylko, jeśli iframe jest z tego samego origin"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "page.frameLocator(\"#checkout\").getByRole(\"button\", { name: \"Pay\" }) przekracza granicę. Shadow DOM działa inaczej — lokatory wchodzą do otwartych shadow rootów automatycznie.",
+      "difficulty": 4,
+      "tags": [
+        "locators",
+        "frames"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-locator-009",
+      "type": "flashcard",
+      "topic": "Dopasowanie nazwy w getByRole",
+      "question": "Playwright · lokatory",
+      "front": "getByRole('button', { name: 'Save' })",
+      "back": "Dopasowuje dostępną nazwę — fragment, bez rozróżniania wielkości liter, z normalizacją spacji",
+      "explanation": "Dodaj exact: true, gdy \"Save\" nie może pasować do \"Save draft\". Dostępna nazwa bierze się z tekstu, aria-label albo powiązanej etykiety.",
+      "difficulty": 2,
+      "tags": [
+        "locators",
+        "selectors"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-locator-010",
+      "type": "concept_question",
+      "topic": "first() jako zapach",
+      "question": "Kolega naprawia błąd trybu strict, dopisując .first(). Kiedy to jest naprawdę poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Zawsze, gdy pojawi się błąd — to udokumentowana naprawa"
+        },
+        {
+          "id": "b",
+          "text": "Tylko gdy strona faktycznie renderuje listę i każdy jej element by pasował"
+        },
+        {
+          "id": "c",
+          "text": "Nigdy — .first() jest przestarzałe"
+        },
+        {
+          "id": "d",
+          "text": "Tylko w testach oznaczonych jako flaky"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Tryb strict wychwycił realną niejednoznaczność. Jeśli dopasowanie miało być jedno, .first() zamienia czytelną porażkę w test przechodzący na złym elemencie.",
+      "difficulty": 4,
+      "tags": [
+        "strict-mode",
+        "locators"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-locator-011",
+      "type": "true_false",
+      "topic": "Łańcuchowanie",
+      "question": "Łańcuchowanie lokatorów (parent.getByRole(...)) zawęża wyszukiwanie do poddrzewa tego rodzica.",
+      "correctAnswer": true,
+      "explanation": "To główne narzędzie przeciwko naruszeniom trybu strict: zawęź do karty, wiersza albo dialogu, który masz na myśli, a potem szukaj kontrolki w środku.",
+      "difficulty": 2,
+      "tags": [
+        "locators"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "playwright-locator-012",
+      "type": "find_error",
+      "topic": "Sprzężenie z CSS",
+      "question": "Ten selektor przestał działać po refaktorze samego CSS. Która część za to odpowiada?",
+      "language": "typescript",
+      "code": "await page\n  .locator('div.card__wrapper > div:nth-child(2) .btn-primary')\n  .click();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Klasa .btn-primary — klasy nigdy się nie zmieniają"
+        },
+        {
+          "id": "b",
+          "text": "nth-child i kombinator dziecka bezpośredniego, które kodują strukturę DOM-u"
+        },
+        {
+          "id": "c",
+          "text": "Samo locator() — powinno być getByTestId"
+        },
+        {
+          "id": "d",
+          "text": "Nic — refaktor CSS nie może wpłynąć na selektory"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Wszystko, co pozycyjne albo strukturalne, pęka po dodaniu jednego diva. Rola plus dostępna nazwa opisują rzecz, którą widzi użytkownik — czyli to, co refaktor zostawił bez zmian.",
+      "difficulty": 3,
+      "tags": [
+        "selectors",
+        "locators"
+      ],
+      "estimatedSeconds": 40
+    }
+  ]
+}

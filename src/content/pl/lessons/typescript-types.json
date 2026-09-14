@@ -1,0 +1,481 @@
+{
+  "id": "typescript-types",
+  "subject": "typescript",
+  "module": "typescript-basics",
+  "level": "beginner",
+  "title": "Typy",
+  "description": "Adnotacje, wnioskowanie, typy literalne i unie oraz dlaczego any przekreśla cały sens.",
+  "estimatedMinutes": 13,
+  "order": 0,
+  "tags": [
+    "types",
+    "inference",
+    "unions"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Typ opisuje zbiór wartości, jakie wyrażenie może przyjąć. TypeScript sprawdza te opisy w czasie kompilacji, a potem je usuwa — nic z typów nie trafia do wygenerowanego JavaScriptu."
+    },
+    {
+      "type": "example",
+      "title": "Wnioskowanie bije adnotacje",
+      "body": "Adnotuj parametry funkcji i publiczne granice; resztę zostaw wnioskowaniu. Nadmiarowe adnotacje szybko się rozjeżdżają z kodem.",
+      "language": "typescript",
+      "code": "let count = 3;              // inferred: number\nconst name = \"Anna\";        // inferred: \"Anna\"\nlet ids: number[] = [];     // annotation needed — [] alone infers never[]\n\nfunction area(w: number, h: number) {\n  return w * h;             // inferred return: number\n}"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "any wyłącza sprawdzanie dla wszystkiego, czego dotknie. unknown to bezpieczny odpowiednik: przed użyciem musisz go zawęzić."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-types-001",
+      "type": "code_multiple_choice",
+      "topic": "Wnioskowanie przy const",
+      "question": "Jaki typ TypeScript wywnioskuje dla name?",
+      "language": "typescript",
+      "code": "const name = \"Anna\";",
+      "answers": [
+        {
+          "id": "a",
+          "text": "\"Anna\" — typ literalny"
+        },
+        {
+          "id": "b",
+          "text": "string"
+        },
+        {
+          "id": "c",
+          "text": "any"
+        },
+        {
+          "id": "d",
+          "text": "String"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Wiązania const nie da się przepiąć, więc najwęższym użytecznym typem jest literał. let name = \"Anna\" rozszerzyłoby go do string.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "inference"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-002",
+      "type": "concept_question",
+      "topic": "any kontra unknown",
+      "question": "Jaka jest praktyczna różnica między any a unknown?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "unknown trzeba zawęzić przed użyciem; any pozwala na dowolną operację bez kontroli"
+        },
+        {
+          "id": "b",
+          "text": "To aliasy tego samego typu"
+        },
+        {
+          "id": "c",
+          "text": "unknown przyjmuje tylko wartości obiektowe"
+        },
+        {
+          "id": "d",
+          "text": "any działa w czasie wykonania, unknown w czasie kompilacji"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Oba przyjmują dowolną wartość na wejściu. Tylko unknown zmusza cię do udowodnienia, czym jest, zanim z niego odczytasz — dlatego pasuje na granicach API.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "unknown"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-types-003",
+      "type": "code_completion",
+      "topic": "Typ unii",
+      "question": "Uzupełnij adnotację tak, żeby parametr przyjmował i string, i number.",
+      "language": "typescript",
+      "code": "function format(id: string ___ number) {\n  return String(id);\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "&"
+        },
+        {
+          "id": "b",
+          "text": "|"
+        },
+        {
+          "id": "c",
+          "text": "or"
+        },
+        {
+          "id": "d",
+          "text": ","
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "| tworzy unię (jedno albo drugie). & tworzy przecięcie, które wymagałoby wartości będącej jednym i drugim naraz.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "unions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-types-004",
+      "type": "find_error",
+      "topic": "Typy elementów tablicy",
+      "question": "Którą linię kompilator odrzuci?",
+      "language": "typescript",
+      "code": "1  const scores: number[] = [90, 85];\n2  scores.push(70);\n3  scores.push(\"80\");\n4  console.log(scores.length);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 3 — string nie jest przypisywalny do number"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — adnotacja tablicy musi używać Array<number>"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — push jest niedozwolony na typowanej tablicy"
+        },
+        {
+          "id": "d",
+          "text": "Linia 4 — length wymaga asercji typu"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "number[] ogranicza każdy element, a push jest odpowiednio otypowany. Zwróć uwagę, że const zamraża tylko wiązanie, nie zawartość.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "arrays"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-005",
+      "type": "true_false",
+      "topic": "Wymazywanie typów",
+      "question": "Typy TypeScriptu są dostępne w czasie wykonania i można je sprawdzić przez typeof.",
+      "correctAnswer": false,
+      "explanation": "Typy znikają przy kompilacji. typeof to operator JavaScriptu działający w czasie wykonania i nic nie wie o twoich interfejsach ani uniach.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "runtime"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-types-006",
+      "type": "multiple_choice",
+      "topic": "Unia literałów",
+      "question": "Która adnotacja ogranicza wartość do dokładnie trzech nazwanych stanów?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "type Status = \"new\" & \"active\" & \"done\""
+        },
+        {
+          "id": "b",
+          "text": "type Status = string[3]"
+        },
+        {
+          "id": "c",
+          "text": "type Status = enum(\"new\", \"active\", \"done\")"
+        },
+        {
+          "id": "d",
+          "text": "type Status = \"new\" | \"active\" | \"done\""
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Unia literałów stringowych to idiomatyczny sposób modelowania zamkniętego zbioru stanów i ładnie się zawęża w switchu.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "unions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-007",
+      "type": "fill_blank",
+      "topic": "Wnioskowanie dla pustej tablicy",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Bez adnotacji const ids = [] jest wnioskowane jako ___[].",
+      "answers": [
+        {
+          "id": "a",
+          "text": "any"
+        },
+        {
+          "id": "b",
+          "text": "never"
+        },
+        {
+          "id": "c",
+          "text": "unknown"
+        },
+        {
+          "id": "d",
+          "text": "object"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Pusty literał tablicy zaczyna jako any[] i TypeScript rozszerza go na podstawie kolejnych push. W pozycji nieewoluującej przy noImplicitAny jest to błąd.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "inference",
+        "arrays"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-008",
+      "type": "flashcard",
+      "topic": "Asercja typu",
+      "question": "Składnia",
+      "front": "value as string",
+      "back": "Mówi kompilatorowi, żeby ci zaufał — żadna kontrola w czasie wykonania się nie dzieje",
+      "explanation": "Asercja ucisza kontrolę, niczego nie sprawdzając. Jeśli się mylisz, awaria wypłynie później i dalej od przyczyny.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "assertions"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-types-009",
+      "type": "code_multiple_choice",
+      "topic": "Dostęp do składowych unii",
+      "question": "Dlaczego kompilator odrzuca linię 2?",
+      "language": "typescript",
+      "code": "function shout(x: string | number) {\n  return x.toUpperCase();\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "toUpperCase nie istnieje na number, więc jest niedostępne dopóki x nie zostanie zawężone"
+        },
+        {
+          "id": "b",
+          "text": "Typ unii nie może być parametrem"
+        },
+        {
+          "id": "c",
+          "text": "Brakuje typu zwracanego"
+        },
+        {
+          "id": "d",
+          "text": "toUpperCase wymaga argumentu"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Na unii wolno używać tylko składowych wspólnych dla wszystkich wariantów. Strażnik typeof czyni gałąź string bezpieczną.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "unions",
+        "narrowing"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-010",
+      "type": "code_multiple_choice",
+      "topic": "Rozszerzanie przy let",
+      "language": "typescript",
+      "question": "Jakie typy zostaną wywnioskowane dla a i b?",
+      "code": "let a = 'draft';\nconst b = 'draft';",
+      "answers": [
+        {
+          "id": "a",
+          "text": "a: string, b: \"draft\""
+        },
+        {
+          "id": "b",
+          "text": "oba string"
+        },
+        {
+          "id": "c",
+          "text": "oba \"draft\""
+        },
+        {
+          "id": "d",
+          "text": "a: \"draft\", b: string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Wiązanie let da się przepiąć, więc TypeScript rozszerza literał do typu bazowego. const nie da się, więc literał zostaje — dlatego const lepiej sprawdza się przy dyskryminantach unii.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "inference"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-011",
+      "type": "concept_question",
+      "topic": "strictNullChecks",
+      "question": "Co zmienia włączenie strictNullChecks?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "null i undefined przestają być przypisywalne do każdego typu i muszą być jawnie w unii"
+        },
+        {
+          "id": "b",
+          "text": "Każda zmienna musi być zainicjalizowana przy deklaracji"
+        },
+        {
+          "id": "c",
+          "text": "Właściwości opcjonalne przestają być dozwolone"
+        },
+        {
+          "id": "d",
+          "text": "Sprawdzenia null są wstawiane w czasie wykonania"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Bez tego string po cichu zawiera null. Z tym string | null to inny typ, a kompilator wymusza sprawdzenie przed odczytem.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "strict-mode"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-types-012",
+      "type": "code_completion",
+      "topic": "Asercja const",
+      "language": "typescript",
+      "question": "Uzupełnij asercję tak, żeby LEVELS stało się readonly krotką literałów zamiast string[].",
+      "code": "const LEVELS = ['beginner', 'intermediate'] ___ const;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "satisfies"
+        },
+        {
+          "id": "b",
+          "text": "as"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": ":"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "as const zamraża literały — tak wyprowadza się unię z tablicy: type Level = (typeof LEVELS)[number].",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "const-assertion"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-013",
+      "type": "true_false",
+      "topic": "satisfies",
+      "question": "Operator satisfies sprawdza wartość względem typu, nie rozszerzając wywnioskowanego typu samej wartości.",
+      "correctAnswer": true,
+      "explanation": "O to dokładnie chodzi: obiekt konfiguracji można zweryfikować względem Record<string, string>, zachowując jego dokładne klucze do podpowiedzi.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "satisfies"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-014",
+      "type": "find_error",
+      "topic": "Asercja ukrywająca błąd",
+      "language": "typescript",
+      "question": "To się kompiluje i wywala w czasie wykonania. Która linia za to odpowiada?",
+      "code": "1  const raw = await response.json();\n2  const user = raw as { id: string; name: string };\n3  console.log(user.name.toUpperCase());",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 3 — toUpperCase nie istnieje na string"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — json() powinno być otypowane"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — asercja każe kompilatorowi zaufać niezweryfikowanym danym"
+        },
+        {
+          "id": "d",
+          "text": "Nic — to jest bezpieczne"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "json() zwraca any (albo unknown). Asercja to obietnica złożona kompilatorowi; prawdziwą czyni ją dopiero walidacja danych.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "assertions"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-types-015",
+      "type": "multiple_choice",
+      "topic": "Przecięcie kontra unia",
+      "question": "Co dla dwóch typów obiektowych opisuje `A & B`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Wartość mającą składowe obu"
+        },
+        {
+          "id": "b",
+          "text": "Wartość będącą albo A, albo B"
+        },
+        {
+          "id": "c",
+          "text": "Tylko składowe wspólne dla A i B"
+        },
+        {
+          "id": "d",
+          "text": "Błąd, bo obiektów nie da się przecinać"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Unie ograniczają to, co wolno odczytać; przecięcia łączą to, co jest obecne. Przecięcie sprzecznych składowych prymitywnych daje never.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "unions"
+      ],
+      "estimatedSeconds": 35
+    }
+  ]
+}

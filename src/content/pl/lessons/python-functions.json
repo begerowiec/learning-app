@@ -1,0 +1,300 @@
+{
+  "id": "python-functions",
+  "subject": "python",
+  "module": "python-core",
+  "level": "intermediate",
+  "title": "Funkcje i zasięg",
+  "description": "Definiowanie funkcji, wartości zwracane, argumenty domyślne, *args/**kwargs i zasięg lokalny.",
+  "estimatedMinutes": 8,
+  "order": 0,
+  "tags": [
+    "functions",
+    "scope",
+    "syntax"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Funkcja grupuje fragment zachowania pod nazwą. Wykonuje się tylko wtedy, gdy ją wywołasz, i oddaje wartość przez return."
+    },
+    {
+      "type": "example",
+      "title": "Zasięg",
+      "body": "Nazwy utworzone wewnątrz funkcji są lokalne: istnieją w czasie wywołania i są niewidoczne na zewnątrz.",
+      "language": "python",
+      "code": "def total(items):\n    n = 0            # local\n    for i in items:\n        n += i\n    return n\n\nprint(n)             # NameError"
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "Zwracaj wartości zamiast je wypisywać i trzymaj jedną funkcję przy jednym zadaniu. To sprawia, że kod da się testować i czytać po miesiącach."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-functions-001",
+      "type": "concept_question",
+      "topic": "Niejawny return",
+      "question": "Co zwraca funkcja Pythona, która nie ma instrukcji return?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "None"
+        },
+        {
+          "id": "b",
+          "text": "0"
+        },
+        {
+          "id": "c",
+          "text": "Pusty string"
+        },
+        {
+          "id": "d",
+          "text": "Rzuca błąd"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Każda funkcja w Pythonie zwraca wartość. Bez jawnego return tą wartością jest None.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "return"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-functions-002",
+      "type": "code_multiple_choice",
+      "topic": "Argumenty domyślne",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "def scale(x, factor=2):\n    return x * factor\n\nprint(scale(3), scale(3, 3))",
+      "answers": [
+        {
+          "id": "a",
+          "text": "6 9"
+        },
+        {
+          "id": "b",
+          "text": "6 6"
+        },
+        {
+          "id": "c",
+          "text": "TypeError"
+        },
+        {
+          "id": "d",
+          "text": "3 3"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Domyślne factor=2 jest użyte w pierwszym wywołaniu, a przekazane 3 nadpisuje je w drugim.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "arguments"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-functions-003",
+      "type": "find_error",
+      "topic": "Składnia funkcji",
+      "question": "Która linia psuje tę funkcję?",
+      "language": "python",
+      "code": "1  def greet(name)\n2      message = \"Hi \" + name\n3      return message\n4\n5  print(greet(\"Anna\"))",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 1 — brak dwukropka po liście parametrów"
+        },
+        {
+          "id": "b",
+          "text": "Linia 2 — stringów nie da się sklejać"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — return wymaga nawiasów"
+        },
+        {
+          "id": "d",
+          "text": "Linia 5 — greet musi być wywołane przez argument nazwany"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Nagłówek def zawsze kończy się dwukropkiem: def greet(name):",
+      "difficulty": 1,
+      "tags": [
+        "functions",
+        "syntax"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-functions-004",
+      "type": "code_completion",
+      "topic": "return kontra print",
+      "question": "Uzupełnij funkcję tak, żeby oddawała sumę wywołującemu.",
+      "language": "python",
+      "code": "def add(a, b):\n    ___ a + b",
+      "answers": [
+        {
+          "id": "a",
+          "text": "return"
+        },
+        {
+          "id": "b",
+          "text": "yield"
+        },
+        {
+          "id": "c",
+          "text": "print"
+        },
+        {
+          "id": "d",
+          "text": "pass"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "return odsyła wartość do wywołującego. print tylko pisze na konsolę i zwraca None.",
+      "difficulty": 1,
+      "tags": [
+        "functions",
+        "return"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-functions-005",
+      "type": "fill_blank",
+      "topic": "Zasięg lokalny",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Zmienne przypisane wewnątrz funkcji mają zasięg ___.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "lokalny"
+        },
+        {
+          "id": "b",
+          "text": "globalny"
+        },
+        {
+          "id": "c",
+          "text": "modułu"
+        },
+        {
+          "id": "d",
+          "text": "statyczny"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Przypisanie wewnątrz funkcji tworzy nazwę lokalną, chyba że zadeklarujesz ją jako global albo nonlocal.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "scope"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-functions-006",
+      "type": "code_multiple_choice",
+      "topic": "Domknięcia",
+      "question": "Jaka jest wartość counter() przy drugim wywołaniu?",
+      "language": "python",
+      "code": "def make_counter():\n    n = 0\n    def counter():\n        nonlocal n\n        n += 1\n        return n\n    return counter\n\ntick = make_counter()\ntick()\ntick()",
+      "answers": [
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "1"
+        },
+        {
+          "id": "c",
+          "text": "2"
+        },
+        {
+          "id": "d",
+          "text": "None"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Funkcja wewnętrzna domyka się nad n, więc wartość przeżywa między wywołaniami. Dwa wywołania dają 2.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "closures",
+        "scope"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "python-functions-007",
+      "type": "true_false",
+      "topic": "args i kwargs",
+      "question": "*args zbiera nadmiarowe argumenty pozycyjne do krotki.",
+      "correctAnswer": true,
+      "explanation": "*args zbiera pozostałe argumenty pozycyjne jako krotkę; **kwargs zbiera argumenty nazwane jako słownik.",
+      "difficulty": 3,
+      "tags": [
+        "functions",
+        "arguments"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-functions-008",
+      "type": "concept_question",
+      "topic": "global kontra nonlocal",
+      "question": "Które słowo kluczowe pozwala funkcji przepiąć nazwę zdefiniowaną na poziomie modułu?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "global"
+        },
+        {
+          "id": "b",
+          "text": "nonlocal"
+        },
+        {
+          "id": "c",
+          "text": "extern"
+        },
+        {
+          "id": "d",
+          "text": "static"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "global celuje w nazwy z poziomu modułu; nonlocal w nazwę z najbliższej funkcji otaczającej.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "scope"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-functions-009",
+      "type": "flashcard",
+      "topic": "Mutowalny argument domyślny",
+      "question": "Pułapka",
+      "front": "def add(item, bucket=[])",
+      "back": "Lista powstaje raz, przy definicji, i jest współdzielona przez każde wywołanie",
+      "explanation": "Użyj bucket=None i zbuduj świeżą listę w ciele. To jeden z najczęstszych błędów Pythona wyłapywanych na review.",
+      "difficulty": 5,
+      "tags": [
+        "functions",
+        "arguments"
+      ],
+      "estimatedSeconds": 25
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "id": "python-loops",
+  "subject": "python",
+  "module": "python-basics",
+  "level": "beginner",
+  "title": "Pętle",
+  "description": "for i while, range(), enumerate() oraz jak zachowują się break, continue i else.",
+  "estimatedMinutes": 9,
+  "order": 2,
+  "tags": [
+    "loops",
+    "control-flow",
+    "iteration"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Pętla for przechodzi po iterowalnym obiekcie — liście, stringu, range, pliku. Pętla while powtarza się, dopóki warunek zachodzi. W Pythonie prawie zawsze chcesz for: nie potrafi wyjść poza koniec danych."
+    },
+    {
+      "type": "example",
+      "title": "Indeks i wartość razem",
+      "body": "Sięgaj po enumerate() zamiast budować indeks ręcznie; pętla zostaje czytelna, a błędy o jeden nie mają jak wejść.",
+      "language": "python",
+      "code": "for i, name in enumerate([\"a\", \"b\", \"c\"], start=1):\n    print(i, name)\n\n# 1 a\n# 2 b\n# 3 c"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "range(1, 5) daje 1, 2, 3, 4 — wartość końcowa jest wykluczona. A modyfikowanie listy w trakcie iterowania po niej po cichu pomija elementy; iteruj po kopii."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-loops-001",
+      "type": "code_multiple_choice",
+      "topic": "Zakres range",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "for i in range(1, 4):\n    print(i, end=\" \")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "1 2 3 4"
+        },
+        {
+          "id": "b",
+          "text": "2 3 4"
+        },
+        {
+          "id": "c",
+          "text": "1 2 3"
+        },
+        {
+          "id": "d",
+          "text": "0 1 2 3"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "range(start, stop) zawiera start i wyklucza stop, więc range(1, 4) daje 1, 2, 3.",
+      "difficulty": 1,
+      "tags": [
+        "loops",
+        "range"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-loops-002",
+      "type": "concept_question",
+      "topic": "break kontra continue",
+      "question": "Co robi continue w pętli?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Pomija resztę bieżącej iteracji i przechodzi do następnej"
+        },
+        {
+          "id": "b",
+          "text": "Wychodzi z pętli całkowicie"
+        },
+        {
+          "id": "c",
+          "text": "Zaczyna pętlę od pierwszego elementu"
+        },
+        {
+          "id": "d",
+          "text": "Powtarza bieżącą iterację"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "continue przeskakuje do następnej iteracji; break wychodzi z pętli. Żadne z nich jej nie restartuje.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "control-flow"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-loops-003",
+      "type": "find_error",
+      "topic": "Nieskończone while",
+      "question": "Która linia sprawia, że ta pętla nigdy się nie kończy?",
+      "language": "python",
+      "code": "1  n = 5\n2  while n > 0:\n3      print(n)\n4      n = n\n5  print(\"done\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 4 — n nigdy nie maleje, więc warunek pozostaje prawdziwy"
+        },
+        {
+          "id": "b",
+          "text": "Linia 2 — while potrzebuje range()"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — print w while jest niedozwolony"
+        },
+        {
+          "id": "d",
+          "text": "Linia 5 — powinna mieć wcięcie"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Pętla while wymaga, żeby warunek się zmieniał. Ciału brakuje n = n - 1 (albo n -= 1).",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "errors"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-loops-004",
+      "type": "code_completion",
+      "topic": "enumerate",
+      "question": "Uzupełnij pętlę tak, żeby wypisywała pozycję i wartość.",
+      "language": "python",
+      "code": "for i, item in ___(items):\n    print(i, item)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "enumerate"
+        },
+        {
+          "id": "b",
+          "text": "range"
+        },
+        {
+          "id": "c",
+          "text": "zip"
+        },
+        {
+          "id": "d",
+          "text": "items.index"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "enumerate() zwraca pary (indeks, wartość). zip() sparowałby dwa osobne iterowalne obiekty.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "iteration"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-loops-005",
+      "type": "code_multiple_choice",
+      "topic": "for/else",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "for n in [1, 2, 3]:\n    if n == 9:\n        break\nelse:\n    print(\"not found\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "not found"
+        },
+        {
+          "id": "b",
+          "text": "nic"
+        },
+        {
+          "id": "c",
+          "text": "SyntaxError"
+        },
+        {
+          "id": "d",
+          "text": "found"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Blok else pętli wykonuje się, gdy pętla skończyła się bez break — czyli dokładnie jako wynik wyszukiwania \"nic nie pasuje\".",
+      "difficulty": 4,
+      "tags": [
+        "loops",
+        "control-flow"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "python-loops-006",
+      "type": "true_false",
+      "topic": "Iterowanie po stringu",
+      "question": "Iterowanie po stringu zwraca kolejne znaki.",
+      "correctAnswer": true,
+      "explanation": "str jest iterowalny po jednoznakowych stringach, więc for ch in \"abc\" daje \"a\", \"b\", \"c\".",
+      "difficulty": 1,
+      "tags": [
+        "loops",
+        "strings"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "python-loops-007",
+      "type": "fill_blank",
+      "topic": "Wyrażenie listowe",
+      "question": "Uzupełnij wyrażenie listowe, które podnosi każdą liczbę do kwadratu.",
+      "sentence": "squares = [n * n ___ n in numbers]",
+      "answers": [
+        {
+          "id": "a",
+          "text": "for"
+        },
+        {
+          "id": "b",
+          "text": "in"
+        },
+        {
+          "id": "c",
+          "text": "while"
+        },
+        {
+          "id": "d",
+          "text": "each"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Wyrażenie listowe czyta się jako wyrażenie + for + zmienna + in + iterowalne, z opcjonalnym if na końcu.",
+      "difficulty": 3,
+      "tags": [
+        "loops",
+        "comprehensions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-loops-008",
+      "type": "flashcard",
+      "topic": "zip",
+      "question": "Funkcja wbudowana",
+      "front": "zip(a, b)",
+      "back": "Paruje dwa iterowalne element po elemencie i kończy na krótszym",
+      "explanation": "for name, score in zip(names, scores) idzie po obu listach równolegle. Nadmiar z dłuższej znika po cichu.",
+      "difficulty": 3,
+      "tags": [
+        "loops",
+        "iteration"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-loops-009",
+      "type": "code_multiple_choice",
+      "topic": "Akumulator",
+      "question": "Jaka jest końcowa wartość total?",
+      "language": "python",
+      "code": "total = 0\nfor n in range(4):\n    total += n\nprint(total)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "10"
+        },
+        {
+          "id": "b",
+          "text": "4"
+        },
+        {
+          "id": "c",
+          "text": "3"
+        },
+        {
+          "id": "d",
+          "text": "6"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "range(4) to 0, 1, 2, 3, co sumuje się do 6. range(5) dałoby 10.",
+      "difficulty": 2,
+      "tags": [
+        "loops",
+        "range"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

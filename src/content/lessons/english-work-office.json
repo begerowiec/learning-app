@@ -1,0 +1,437 @@
+{
+  "id": "english-work-office",
+  "subject": "english",
+  "module": "english-everyday-vocabulary",
+  "level": "intermediate",
+  "title": "Work & office",
+  "description": "Meeting language, deadlines and status updates — the vocabulary of a working day.",
+  "estimatedMinutes": 11,
+  "order": 1,
+  "tags": [
+    "work",
+    "vocabulary",
+    "business-english"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Why this set",
+      "body": "Most professional English is a small, repeated vocabulary: scheduling, reporting status, flagging risk, asking for time. Knowing forty phrases well beats knowing four hundred vaguely."
+    },
+    {
+      "type": "theory",
+      "title": "Collocations, not single words",
+      "body": "Learn the whole phrase: meet a deadline, raise a concern, follow up on an email, take minutes, be on annual leave. The verb is the part that is hard to guess."
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "\"I will revert to you\" is common in some regions but reads oddly to most native speakers — \"I'll get back to you\" is the safe choice."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-work-001",
+      "type": "fill_blank",
+      "topic": "Deadline collocation",
+      "question": "Complete the sentence.",
+      "sentence": "We need to ___ the deadline on Friday.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "catch"
+        },
+        {
+          "id": "b",
+          "text": "meet"
+        },
+        {
+          "id": "c",
+          "text": "arrive"
+        },
+        {
+          "id": "d",
+          "text": "reach"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The collocation is meet a deadline. You can also miss or extend one, but never reach or catch one.",
+      "difficulty": 2,
+      "tags": [
+        "work",
+        "collocations"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-work-002",
+      "type": "multiple_choice",
+      "topic": "Scheduling",
+      "question": "Which phrase proposes moving a meeting to a later date?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Shall we push the meeting up to Thursday?"
+        },
+        {
+          "id": "b",
+          "text": "Shall we push the meeting back to Thursday?"
+        },
+        {
+          "id": "c",
+          "text": "Shall we push out of the meeting on Thursday?"
+        },
+        {
+          "id": "d",
+          "text": "Shall we push away the meeting to Thursday?"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "push back means delay; push up (or bring forward) means make earlier.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "phrasal-verbs"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-work-003",
+      "type": "translation",
+      "topic": "Status update",
+      "question": "Translate the sentence.",
+      "sentence": "Jestem w trakcie — skończę do czwartku.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It's in progress — I'll have it done since Thursday."
+        },
+        {
+          "id": "b",
+          "text": "It's on progress — I'll have it done until Thursday."
+        },
+        {
+          "id": "c",
+          "text": "I am during it — I finish to Thursday."
+        },
+        {
+          "id": "d",
+          "text": "It's in progress — I'll have it done by Thursday."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "in progress, and by Thursday for a deadline. until Thursday would mean the work continues up to that point.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-work-004",
+      "type": "flashcard",
+      "topic": "to follow up",
+      "question": "Vocabulary",
+      "front": "to follow up on something",
+      "back": "wrócić do sprawy / dopytać po czasie",
+      "explanation": "I'll follow up on that email tomorrow. The preposition on is not optional.",
+      "difficulty": 2,
+      "tags": [
+        "work",
+        "phrasal-verbs"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-work-005",
+      "type": "true_false",
+      "topic": "Annual leave",
+      "question": "\"I'm on annual leave next week\" means you are away on holiday.",
+      "correctAnswer": true,
+      "explanation": "annual leave is the formal British term for paid holiday; PTO is the common American equivalent.",
+      "difficulty": 2,
+      "tags": [
+        "work",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "english-work-006",
+      "type": "fill_blank",
+      "topic": "Raising a problem",
+      "question": "Complete the sentence.",
+      "sentence": "I'd like to ___ a concern about the timeline.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "put"
+        },
+        {
+          "id": "b",
+          "text": "lift"
+        },
+        {
+          "id": "c",
+          "text": "raise"
+        },
+        {
+          "id": "d",
+          "text": "make"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "raise a concern / raise an issue / raise a ticket. It is the standard verb for putting something on the table.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "collocations"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-work-007",
+      "type": "concept_question",
+      "topic": "Softening in English",
+      "question": "Why do native speakers write \"Could you possibly send it today?\" rather than \"Send it today\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Indirect forms signal politeness; a bare imperative reads as an order"
+        },
+        {
+          "id": "b",
+          "text": "The longer form is more precise about the deadline"
+        },
+        {
+          "id": "c",
+          "text": "There is no difference in tone"
+        },
+        {
+          "id": "d",
+          "text": "The imperative is grammatically incorrect in email"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "English carries politeness through indirectness and modals. Polish often carries it through the word for please instead, which is why direct translations can sound blunt.",
+      "difficulty": 4,
+      "tags": [
+        "work",
+        "register"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-work-008",
+      "type": "multiple_choice",
+      "topic": "Meeting vocabulary",
+      "question": "What are \"minutes\" in a meeting context?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "The list of attendees"
+        },
+        {
+          "id": "b",
+          "text": "The written record of what was discussed and decided"
+        },
+        {
+          "id": "c",
+          "text": "The agenda sent beforehand"
+        },
+        {
+          "id": "d",
+          "text": "The length of the meeting"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "You take minutes during a meeting and circulate them afterwards. The agenda is what you plan to cover.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-work-009",
+      "type": "flashcard",
+      "topic": "to be swamped",
+      "question": "Vocabulary",
+      "front": "I'm swamped this week",
+      "back": "mam urwanie głowy / jestem zawalony robotą",
+      "explanation": "Informal but very common. \"I'm at capacity\" is the neutral register, \"I have a lot on\" the British understatement.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "idioms"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-work-010",
+      "type": "fill_blank",
+      "topic": "Chasing politely",
+      "question": "Complete the sentence.",
+      "sentence": "Just a gentle ___ about the access request from Monday.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "remind"
+        },
+        {
+          "id": "b",
+          "text": "reminder"
+        },
+        {
+          "id": "c",
+          "text": "remembering"
+        },
+        {
+          "id": "d",
+          "text": "memory"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "\"A gentle reminder\" is the standard polite chaser. Remind is the verb: may I remind you.",
+      "difficulty": 2,
+      "tags": [
+        "work",
+        "collocations"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-work-011",
+      "type": "multiple_choice",
+      "topic": "Declining a meeting",
+      "question": "Which reply declines most professionally?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "No, I am busy then."
+        },
+        {
+          "id": "b",
+          "text": "I can't. Send notes."
+        },
+        {
+          "id": "c",
+          "text": "I won't be able to join, but could you share the notes afterwards?"
+        },
+        {
+          "id": "d",
+          "text": "Impossible for me."
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A reason plus an alternative is the expected shape. A bare negative reads as abrupt in English even when it is perfectly polite in Polish.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "register"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-work-012",
+      "type": "translation",
+      "topic": "Blocked work",
+      "question": "Translate the sentence.",
+      "sentence": "Jestem zablokowany — czekam na dostęp do środowiska.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I am blocked — I wait for the environment access."
+        },
+        {
+          "id": "b",
+          "text": "I am on block — waiting to environment access."
+        },
+        {
+          "id": "c",
+          "text": "I am blocking — I am waiting on the environment access."
+        },
+        {
+          "id": "d",
+          "text": "I'm blocked — I'm waiting for access to the environment."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "\"I'm blocked\" is the standard stand-up phrase, and waiting takes for. \"Waiting on\" is American and more common about people than things.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-work-013",
+      "type": "true_false",
+      "topic": "Please find attached",
+      "question": "\"Please find attached the report\" is acceptable but dated; \"I've attached the report\" reads more naturally today.",
+      "correctAnswer": true,
+      "explanation": "Both are understood. Modern business English prefers the direct active form.",
+      "difficulty": 2,
+      "tags": [
+        "work",
+        "register"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-work-014",
+      "type": "concept_question",
+      "topic": "Action items",
+      "question": "In meeting notes, what does \"AI: Anna to confirm scope by Friday\" mean?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Action item — a task with an owner and a deadline"
+        },
+        {
+          "id": "b",
+          "text": "Additional information"
+        },
+        {
+          "id": "c",
+          "text": "Artificial intelligence generated the note"
+        },
+        {
+          "id": "d",
+          "text": "As indicated above"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Minutes usually pair AI (action item) with an owner and a date. TBC means to be confirmed; TBD, to be decided.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-work-015",
+      "type": "flashcard",
+      "topic": "to loop someone in",
+      "question": "Vocabulary",
+      "front": "to loop someone in",
+      "back": "dołączyć kogoś do rozmowy / wątku",
+      "explanation": "I'll loop in the platform team. The opposite is to take someone off the thread.",
+      "difficulty": 3,
+      "tags": [
+        "work",
+        "idioms"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

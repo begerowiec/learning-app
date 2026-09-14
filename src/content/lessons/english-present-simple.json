@@ -1,0 +1,455 @@
+{
+  "id": "english-present-simple",
+  "subject": "english",
+  "module": "english-present-tenses",
+  "level": "beginner",
+  "title": "Present Simple",
+  "description": "Habits, facts and schedules — plus the third-person -s that everyone forgets.",
+  "estimatedMinutes": 12,
+  "order": 0,
+  "tags": [
+    "present-simple",
+    "grammar",
+    "tenses"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "When to use it",
+      "body": "Present Simple describes habits, general truths and timetabled events: I work in Wrocław. Water boils at 100 degrees. The train leaves at seven."
+    },
+    {
+      "type": "theory",
+      "title": "Form",
+      "body": "Base verb, except in the third person singular, which takes -s: I work / she works. Questions and negatives use do or does, and the main verb goes back to its base form: Does she work? She does not work."
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "Never double the marker. \"Does she works?\" is wrong — does already carries the tense, so the verb stays as work."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-ps-001",
+      "type": "fill_blank",
+      "topic": "Third person -s",
+      "question": "Complete the sentence.",
+      "sentence": "She ___ in a hospital.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "works"
+        },
+        {
+          "id": "b",
+          "text": "work"
+        },
+        {
+          "id": "c",
+          "text": "worked"
+        },
+        {
+          "id": "d",
+          "text": "is working"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Third person singular takes -s in Present Simple. A permanent job is a habit, not something happening right now.",
+      "difficulty": 1,
+      "tags": [
+        "present-simple",
+        "grammar"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-002",
+      "type": "multiple_choice",
+      "topic": "Question form",
+      "question": "Which question is correct?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Does she work on Fridays?"
+        },
+        {
+          "id": "b",
+          "text": "Is she work on Fridays?"
+        },
+        {
+          "id": "c",
+          "text": "Does she works on Fridays?"
+        },
+        {
+          "id": "d",
+          "text": "Do she work on Fridays?"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Does carries the third-person marker, so the main verb returns to its base form: work.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "questions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-003",
+      "type": "true_false",
+      "topic": "Timetables",
+      "question": "Present Simple can describe a future event that runs to a timetable, as in \"The train leaves at six\".",
+      "correctAnswer": true,
+      "explanation": "Scheduled events take Present Simple even when they are in the future — timetables, programmes, itineraries.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "tenses"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-004",
+      "type": "translation",
+      "topic": "Habits",
+      "question": "Translate the sentence.",
+      "sentence": "Codziennie jeżdżę do pracy tramwajem.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I go to work by tram every day."
+        },
+        {
+          "id": "b",
+          "text": "I went to work by tram every day."
+        },
+        {
+          "id": "c",
+          "text": "I have gone to work by tram every day."
+        },
+        {
+          "id": "d",
+          "text": "I am going to work by tram every day."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Codziennie marks a habit, so English uses Present Simple rather than the continuous form.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-ps-005",
+      "type": "fill_blank",
+      "topic": "Negatives",
+      "question": "Complete the negative sentence.",
+      "sentence": "He ___ drink coffee in the evening.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "doesn't"
+        },
+        {
+          "id": "b",
+          "text": "not"
+        },
+        {
+          "id": "c",
+          "text": "don't"
+        },
+        {
+          "id": "d",
+          "text": "isn't"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Third person singular negatives use doesn't plus the base verb.",
+      "difficulty": 1,
+      "tags": [
+        "present-simple",
+        "negation"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-006",
+      "type": "concept_question",
+      "topic": "Adverbs of frequency",
+      "question": "Where does an adverb of frequency such as \"usually\" normally go?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Before the main verb, but after the verb to be"
+        },
+        {
+          "id": "b",
+          "text": "Always at the very beginning"
+        },
+        {
+          "id": "c",
+          "text": "Directly after the main verb"
+        },
+        {
+          "id": "d",
+          "text": "Always at the end of the sentence"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "I usually start at nine. She is usually late. The rule flips around to be, which is the part most learners miss.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "adverbs"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-ps-007",
+      "type": "multiple_choice",
+      "topic": "Spelling of -s",
+      "question": "What is the third person singular of \"study\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "studys"
+        },
+        {
+          "id": "b",
+          "text": "studyes"
+        },
+        {
+          "id": "c",
+          "text": "studies"
+        },
+        {
+          "id": "d",
+          "text": "studing"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A consonant + y becomes -ies. A vowel + y just takes -s: plays, buys.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "spelling"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-008",
+      "type": "flashcard",
+      "topic": "State verbs",
+      "question": "Vocabulary",
+      "front": "State verbs: know, believe, own, need",
+      "back": "Normally used in Present Simple, not in the continuous form",
+      "explanation": "\"I am knowing the answer\" is wrong. State verbs describe a condition rather than an activity in progress.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-009",
+      "type": "fill_blank",
+      "topic": "Facts",
+      "question": "Complete the sentence.",
+      "sentence": "Water ___ at 100 degrees Celsius.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "is boiling"
+        },
+        {
+          "id": "b",
+          "text": "boils"
+        },
+        {
+          "id": "c",
+          "text": "boil"
+        },
+        {
+          "id": "d",
+          "text": "has boiled"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "General truths take Present Simple, whatever is happening at the moment of speaking.",
+      "difficulty": 1,
+      "tags": [
+        "present-simple",
+        "grammar"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-010",
+      "type": "multiple_choice",
+      "topic": "Do vs does",
+      "question": "Which question is correct?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Do your brother work here?"
+        },
+        {
+          "id": "b",
+          "text": "Does your brothers work here?"
+        },
+        {
+          "id": "c",
+          "text": "Does your brother work here?"
+        },
+        {
+          "id": "d",
+          "text": "Do your brother works here?"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A singular third-person subject takes does, and the main verb stays in its base form.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "questions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-011",
+      "type": "translation",
+      "topic": "Routines",
+      "question": "Translate the sentence.",
+      "sentence": "Ona zwykle zaczyna pracę o dziewiątej.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "She is usually starting work at nine."
+        },
+        {
+          "id": "b",
+          "text": "She usually starts work at nine."
+        },
+        {
+          "id": "c",
+          "text": "She usually start work at nine."
+        },
+        {
+          "id": "d",
+          "text": "She has usually started work at nine."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A routine takes Present Simple, the third person takes -s, and usually sits before the main verb.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-ps-012",
+      "type": "fill_blank",
+      "topic": "Have vs has",
+      "question": "Complete the sentence.",
+      "sentence": "My team ___ a stand-up every morning.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "have had"
+        },
+        {
+          "id": "b",
+          "text": "having"
+        },
+        {
+          "id": "c",
+          "text": "has"
+        },
+        {
+          "id": "d",
+          "text": "is having"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Team is treated as singular in American English and commonly in British business writing too, so has is the safe choice.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-ps-013",
+      "type": "true_false",
+      "topic": "Zero conditional",
+      "question": "Both halves of \"If you push this button, the test runs\" are in Present Simple.",
+      "correctAnswer": true,
+      "explanation": "The zero conditional describes something always true, and uses Present Simple in both clauses — the standard shape for documentation.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "conditionals"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-014",
+      "type": "concept_question",
+      "topic": "Stative verbs at work",
+      "question": "Why is \"I am thinking it is a good idea\" wrong?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Think meaning \"have an opinion\" is stative, so it takes the simple form"
+        },
+        {
+          "id": "b",
+          "text": "Think can never be used in the continuous"
+        },
+        {
+          "id": "c",
+          "text": "The sentence needs a comma"
+        },
+        {
+          "id": "d",
+          "text": "Idea cannot follow it is"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "\"I'm thinking about it\" is fine — that is the activity sense. The opinion sense is a state: I think it's a good idea.",
+      "difficulty": 4,
+      "tags": [
+        "present-simple",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-ps-015",
+      "type": "flashcard",
+      "topic": "Third person spelling",
+      "question": "Vocabulary",
+      "front": "go · do · watch · fix",
+      "back": "goes · does · watches · fixes — -es after o, ch, sh, s, x, z",
+      "explanation": "The rest just take -s. This is the single most common written slip at B2 level.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "spelling"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

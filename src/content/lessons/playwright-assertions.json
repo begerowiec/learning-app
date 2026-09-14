@@ -1,0 +1,231 @@
+{
+  "id": "playwright-assertions",
+  "subject": "playwright",
+  "module": "playwright-locators",
+  "level": "beginner",
+  "title": "Assertions",
+  "description": "Web-first assertions that retry, generic ones that do not, soft assertions, and what toBeVisible really means.",
+  "estimatedMinutes": 9,
+  "order": 2,
+  "tags": ["assertions", "expect", "flaky"],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Two kinds of expect",
+      "body": "expect(locator) is web-first: it polls until the condition holds or the timeout expires, and must be awaited. expect(value) is a plain Jest-style assertion on something you already read — it checks once and cannot recover from a timing gap."
+    },
+    {
+      "type": "example",
+      "title": "The awaited form",
+      "body": "Forgetting the await is the most common mistake in a Playwright review: the assertion becomes a floating promise and the test passes no matter what.",
+      "language": "typescript",
+      "code": "await expect(page.getByRole('alert')).toHaveText('Saved');\nawait expect(page.getByRole('row')).toHaveCount(3);\nawait expect(page).toHaveURL(/\\/orders\\/\\d+/);"
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "expect.soft() records a failure and keeps going, so one run can report every broken assertion on the page instead of only the first. The test still fails at the end."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-assert-001",
+      "type": "find_error",
+      "topic": "Missing await",
+      "question": "This test passes even when the alert never appears. Why?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('button', { name: 'Save' }).click();\n2  expect(page.getByRole('alert')).toHaveText('Saved');",
+      "answers": [
+        { "id": "a", "text": "Line 2 is not awaited, so the assertion is a dangling promise nobody checks" },
+        { "id": "b", "text": "toHaveText only warns, it never fails" },
+        { "id": "c", "text": "Line 1 should use force: true" },
+        { "id": "d", "text": "getByRole('alert') matches everything" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Every web-first assertion returns a promise. Without await the test finishes first and the rejection surfaces — if at all — as an unhandled promise warning.",
+      "difficulty": 2,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-assert-002",
+      "type": "concept_question",
+      "topic": "toBeVisible semantics",
+      "question": "What does toBeVisible() require?",
+      "answers": [
+        { "id": "a", "text": "The element is in the DOM and has a non-empty bounding box" },
+        { "id": "b", "text": "The element is scrolled into the viewport" },
+        { "id": "c", "text": "The element is not covered by any other element" },
+        { "id": "d", "text": "The element has opacity greater than zero" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Visibility is about layout, not the viewport: an element below the fold is visible. Interception is checked at action time, and opacity: 0 still counts as visible.",
+      "difficulty": 4,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-assert-003",
+      "type": "code_multiple_choice",
+      "topic": "toHaveText on a collection",
+      "question": "The locator matches three rows. What does this assert?",
+      "language": "typescript",
+      "code": "await expect(page.getByRole('listitem')).toHaveText(['One', 'Two', 'Three']);",
+      "answers": [
+        { "id": "a", "text": "That the three items have exactly those texts, in that order" },
+        { "id": "b", "text": "That at least one item matches one of the strings" },
+        { "id": "c", "text": "It throws a strict mode violation" },
+        { "id": "d", "text": "That the concatenated text equals the joined array" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Passing an array asserts the whole collection, count included. Strict mode applies to actions, not assertions — which is why this is allowed.",
+      "difficulty": 3,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-004",
+      "type": "true_false",
+      "topic": "Soft assertions",
+      "question": "A test containing only failing expect.soft() assertions still ends as failed.",
+      "correctAnswer": true,
+      "explanation": "Soft assertions defer the failure to the end of the test rather than cancelling it. They are for collecting several problems in one run, not for ignoring them.",
+      "difficulty": 3,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-assert-005",
+      "type": "code_completion",
+      "topic": "Negating a web-first assertion",
+      "question": "Complete the assertion that waits for the dialog to go away.",
+      "language": "typescript",
+      "code": "await expect(page.getByRole('dialog')).___.toBeVisible();",
+      "answers": [
+        { "id": "a", "text": "not" },
+        { "id": "b", "text": "never" },
+        { "id": "c", "text": "no" },
+        { "id": "d", "text": "without" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "not keeps the retrying behaviour: it polls until the dialog is gone. toBeHidden() says the same thing and reads better when the element stays in the DOM.",
+      "difficulty": 2,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-assert-006",
+      "type": "multiple_choice",
+      "topic": "toHaveCount(0) vs toBeHidden",
+      "question": "The row should be removed from the DOM entirely. Which assertion says that?",
+      "answers": [
+        { "id": "a", "text": "await expect(row).toHaveCount(0)" },
+        { "id": "b", "text": "await expect(row).toBeHidden()" },
+        { "id": "c", "text": "await expect(row).not.toBeVisible()" },
+        { "id": "d", "text": "expect(await row.isVisible()).toBe(false)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "toBeHidden and not.toBeVisible both pass for an element that is merely invisible. Only toHaveCount(0) distinguishes \"gone\" from \"display: none\".",
+      "difficulty": 4,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-007",
+      "type": "fill_blank",
+      "topic": "Screenshot assertions",
+      "question": "Complete the visual assertion.",
+      "sentence": "await expect(page).___('dashboard.png');",
+      "answers": [
+        { "id": "a", "text": "toHaveScreenshot" },
+        { "id": "b", "text": "toMatchImage" },
+        { "id": "c", "text": "toLookLike" },
+        { "id": "d", "text": "toBeScreenshot" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "toHaveScreenshot retries too — it re-takes the screenshot until two consecutive captures are identical, which is what stops animations producing false diffs.",
+      "difficulty": 3,
+      "tags": ["assertions", "visual"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-assert-008",
+      "type": "code_multiple_choice",
+      "topic": "Asserting on a value that will change",
+      "question": "Which version tolerates the total updating a moment after the click?",
+      "language": "typescript",
+      "code": "// A\nexpect(await page.getByTestId('total').innerText()).toBe('3 items');\n\n// B\nawait expect(page.getByTestId('total')).toHaveText('3 items');",
+      "answers": [
+        { "id": "a", "text": "B — the locator assertion polls until the text matches" },
+        { "id": "b", "text": "A — innerText waits for the element automatically" },
+        { "id": "c", "text": "Both, since innerText auto-waits" },
+        { "id": "d", "text": "Neither without an explicit timeout" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "innerText() does auto-wait for the element, but it reads once — the value it returns is a snapshot, and the assertion around it cannot retry.",
+      "difficulty": 3,
+      "tags": ["assertions", "auto-waiting"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-009",
+      "type": "flashcard",
+      "topic": "Custom failure message",
+      "question": "Playwright · assertions",
+      "front": "expect(locator, 'cart badge should clear').toHaveText('0')",
+      "back": "The second argument becomes the failure message in the report",
+      "explanation": "Cheap and high value in CI: the reporter shows your sentence instead of only the locator and the diff.",
+      "difficulty": 2,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-assert-010",
+      "type": "concept_question",
+      "topic": "Assertion timeout vs test timeout",
+      "question": "A web-first assertion fails after 5 seconds although the test timeout is 30. Why?",
+      "answers": [
+        { "id": "a", "text": "Each assertion has its own timeout, 5 s by default" },
+        { "id": "b", "text": "The test timeout only applies to hooks" },
+        { "id": "c", "text": "Assertions inherit a quarter of the test timeout" },
+        { "id": "d", "text": "The browser closed the page" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "expect.timeout is configured separately from test timeout. Override per call — toBeVisible({ timeout: 15_000 }) — or globally in the config.",
+      "difficulty": 3,
+      "tags": ["assertions", "configuration"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-011",
+      "type": "true_false",
+      "topic": "toHaveText normalisation",
+      "question": "toHaveText normalises whitespace, so extra spaces and line breaks in the markup do not fail the assertion.",
+      "correctAnswer": true,
+      "explanation": "Leading, trailing and repeated whitespace are collapsed. Use toHaveText(/regex/) when you need to be stricter, or toContainText for a substring.",
+      "difficulty": 3,
+      "tags": ["assertions", "expect"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-assert-012",
+      "type": "find_error",
+      "topic": "Asserting nothing happened",
+      "question": "What is wrong with this attempt to prove an error banner never shows?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('button', { name: 'Save' }).click();\n2  await expect(page.getByRole('alert')).not.toBeVisible();",
+      "answers": [
+        { "id": "a", "text": "Nothing — this is the correct pattern" },
+        { "id": "b", "text": "It passes immediately, before the banner would have had time to appear" },
+        { "id": "c", "text": "not cannot be combined with toBeVisible" },
+        { "id": "d", "text": "getByRole('alert') needs a name" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A negative assertion is satisfied the instant it is true, which is straight after the click. Assert the positive outcome first — the success toast, the new row — and then the absence.",
+      "difficulty": 5,
+      "tags": ["assertions", "flaky"],
+      "estimatedSeconds": 50
+    }
+  ]
+}

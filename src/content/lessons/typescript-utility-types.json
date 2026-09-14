@@ -1,0 +1,480 @@
+{
+  "id": "typescript-utility-types",
+  "subject": "typescript",
+  "module": "typescript-type-system",
+  "level": "intermediate",
+  "title": "Utility types",
+  "description": "Partial, Required, Pick, Omit, Record and ReturnType — deriving types instead of repeating them.",
+  "estimatedMinutes": 15,
+  "order": 2,
+  "tags": [
+    "utility-types",
+    "types",
+    "mapped-types"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "Utility types transform an existing type into a related one. Deriving beats duplicating: when the source type changes, everything built from it follows automatically."
+    },
+    {
+      "type": "example",
+      "title": "The four you reach for most",
+      "body": "Partial for patch payloads, Pick and Omit for trimmed views, Record for lookups.",
+      "language": "typescript",
+      "code": "interface User { id: string; name: string; email: string }\n\ntype Patch    = Partial<User>;            // every field optional\ntype Card     = Pick<User, \"id\" | \"name\">;\ntype Public   = Omit<User, \"email\">;\ntype ByLevel  = Record<\"beginner\" | \"advanced\", User[]>;"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "Partial is shallow and Omit accepts keys that do not exist without complaining. Pick is the stricter choice when you want a typo to fail."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-utility-001",
+      "type": "code_multiple_choice",
+      "topic": "Partial",
+      "question": "What does Partial<User> produce for `interface User { id: string; name: string }`?",
+      "language": "typescript",
+      "code": "type Patch = Partial<User>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "{ id: string; name: string }"
+        },
+        {
+          "id": "b",
+          "text": "{ id: string | undefined; name: string | undefined }"
+        },
+        {
+          "id": "c",
+          "text": "Partial<{ id: string; name: string }> is not a valid type"
+        },
+        {
+          "id": "d",
+          "text": "{ id?: string; name?: string }"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Partial maps every property to optional. Note that optional and `| undefined` are not the same thing under exactOptionalPropertyTypes.",
+      "difficulty": 2,
+      "tags": [
+        "utility-types",
+        "partial"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-utility-002",
+      "type": "concept_question",
+      "topic": "Pick vs Omit",
+      "question": "Which reason favours Pick over Omit?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Pick is faster to compile"
+        },
+        {
+          "id": "b",
+          "text": "Omit only removes one key at a time"
+        },
+        {
+          "id": "c",
+          "text": "Omit cannot be used with interfaces"
+        },
+        {
+          "id": "d",
+          "text": "Pick lists what stays, so a renamed source property breaks the derived type instead of silently widening it"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Omit's key parameter is not constrained to keyof T, so a stale key is accepted quietly. Pick's is, and it fails loudly.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "pick",
+        "omit"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-utility-003",
+      "type": "code_completion",
+      "topic": "Record",
+      "question": "Complete the type for a lookup from level name to a list of lessons.",
+      "language": "typescript",
+      "code": "type Catalog = ___<Level, Lesson[]>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Map"
+        },
+        {
+          "id": "b",
+          "text": "Record"
+        },
+        {
+          "id": "c",
+          "text": "Index"
+        },
+        {
+          "id": "d",
+          "text": "Dict"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Record<K, V> builds an object type with the given key union and value type. Map is a runtime class, not a type utility.",
+      "difficulty": 2,
+      "tags": [
+        "utility-types",
+        "record"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-utility-004",
+      "type": "code_multiple_choice",
+      "topic": "ReturnType",
+      "question": "What is the type of R?",
+      "language": "typescript",
+      "code": "function makeUser() {\n  return { id: \"u1\", active: true };\n}\n\ntype R = ReturnType<typeof makeUser>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "typeof makeUser"
+        },
+        {
+          "id": "b",
+          "text": "() => { id: string; active: boolean }"
+        },
+        {
+          "id": "c",
+          "text": "{ id: string; active: boolean }"
+        },
+        {
+          "id": "d",
+          "text": "unknown"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "typeof makeUser is the function type; ReturnType extracts what it resolves to. This is how you avoid writing the shape twice.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "returntype"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-005",
+      "type": "true_false",
+      "topic": "Partial depth",
+      "question": "Partial<T> makes nested object properties optional as well.",
+      "correctAnswer": false,
+      "explanation": "Partial is one level deep. A recursive DeepPartial has to be written by hand — or, better, avoided.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "partial"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-utility-006",
+      "type": "fill_blank",
+      "topic": "keyof",
+      "question": "Complete the type that is the union of a type's property names.",
+      "sentence": "type Keys = ___ User;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "valueof"
+        },
+        {
+          "id": "b",
+          "text": "typeof"
+        },
+        {
+          "id": "c",
+          "text": "keyof"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "keyof User gives \"id\" | \"name\" | \"email\". typeof works on values, not on types.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "keyof"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-utility-007",
+      "type": "find_error",
+      "topic": "Omit with a stale key",
+      "question": "Why does this compile even though it is wrong?",
+      "language": "typescript",
+      "code": "interface User { id: string; name: string }\n\ntype Public = Omit<User, \"emial\">;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Omit creates the missing property instead"
+        },
+        {
+          "id": "b",
+          "text": "Omit's key parameter is not constrained to keyof User, so the typo is accepted and nothing is removed"
+        },
+        {
+          "id": "c",
+          "text": "It does not compile"
+        },
+        {
+          "id": "d",
+          "text": "Omit ignores its second argument entirely"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "This is a well-known sharp edge. Pick<User, \"id\" | \"name\"> or a constrained helper catches the typo instead.",
+      "difficulty": 5,
+      "tags": [
+        "utility-types",
+        "omit"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-utility-008",
+      "type": "flashcard",
+      "topic": "NonNullable",
+      "question": "TypeScript · utility types",
+      "front": "NonNullable<T>",
+      "back": "Removes null and undefined from a union",
+      "explanation": "Equivalent to T & {} in modern TypeScript. Useful after a filter that the compiler cannot follow.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "nonnullable"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-utility-009",
+      "type": "multiple_choice",
+      "topic": "Readonly",
+      "question": "What does Readonly<T> do?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Freezes the object at runtime"
+        },
+        {
+          "id": "b",
+          "text": "Makes the type immutable all the way down"
+        },
+        {
+          "id": "c",
+          "text": "Removes every setter method"
+        },
+        {
+          "id": "d",
+          "text": "Marks every property readonly, one level deep"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Like Partial, it is shallow, and it is a compile-time constraint only — Object.freeze is the runtime counterpart.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "readonly"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-utility-010",
+      "type": "code_multiple_choice",
+      "topic": "Awaited",
+      "language": "typescript",
+      "question": "What is the type of R?",
+      "code": "async function load(): Promise<{ id: string }> {\n  return { id: 'u1' };\n}\n\ntype R = Awaited<ReturnType<typeof load>>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "{ id: string }"
+        },
+        {
+          "id": "b",
+          "text": "Promise<{ id: string }>"
+        },
+        {
+          "id": "c",
+          "text": "unknown"
+        },
+        {
+          "id": "d",
+          "text": "never"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Awaited unwraps a promise, recursively. Pairing it with ReturnType is the standard way to name what an async function resolves to.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "awaited"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-011",
+      "type": "concept_question",
+      "topic": "Exclude and Extract",
+      "question": "What does Exclude<'a' | 'b' | 'c', 'b'> produce?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "'a' | 'c'"
+        },
+        {
+          "id": "b",
+          "text": "'b'"
+        },
+        {
+          "id": "c",
+          "text": "never"
+        },
+        {
+          "id": "d",
+          "text": "'a' | 'b' | 'c'"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Exclude removes assignable members from a union; Extract keeps them. Both are conditional types that distribute over the union.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "unions"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-utility-012",
+      "type": "code_completion",
+      "topic": "Mapped type",
+      "language": "typescript",
+      "question": "Complete the mapped type that makes every property nullable.",
+      "code": "type Nullable<T> = { [K ___ keyof T]: T[K] | null };",
+      "answers": [
+        {
+          "id": "a",
+          "text": "in"
+        },
+        {
+          "id": "b",
+          "text": "of"
+        },
+        {
+          "id": "c",
+          "text": "extends"
+        },
+        {
+          "id": "d",
+          "text": "from"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "`in keyof T` iterates the keys. Partial, Required and Readonly are all written this way, with a +/- modifier on the optional or readonly flag.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "mapped-types"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-013",
+      "type": "true_false",
+      "topic": "Parameters",
+      "question": "Parameters<typeof fn> produces a tuple of the function's parameter types.",
+      "correctAnswer": true,
+      "explanation": "A tuple, not a union — so Parameters<typeof fn>[0] is the first parameter. Handy for wrapping a function without repeating its signature.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "parameters"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-utility-014",
+      "type": "find_error",
+      "topic": "Record with a narrow key",
+      "language": "typescript",
+      "question": "Why does line 2 fail?",
+      "code": "1  type ByLevel = Record<'beginner' | 'advanced', number>;\n2  const counts: ByLevel = { beginner: 1 };",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Record requires a string index signature"
+        },
+        {
+          "id": "b",
+          "text": "Every key of the union is required — advanced is missing"
+        },
+        {
+          "id": "c",
+          "text": "The value type should be a union"
+        },
+        {
+          "id": "d",
+          "text": "Record cannot take a literal union as its key"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Record over a finite union is exhaustive by design, which is what makes it useful for lookup tables. Partial<ByLevel> if the gaps are intentional.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "record"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-015",
+      "type": "multiple_choice",
+      "topic": "Template literal types",
+      "question": "What does `type Event = `on${Capitalize<'click' | 'focus'>}`` produce?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "'onClick' | 'onFocus'"
+        },
+        {
+          "id": "b",
+          "text": "'onclick' | 'onfocus'"
+        },
+        {
+          "id": "c",
+          "text": "string"
+        },
+        {
+          "id": "d",
+          "text": "'on' | 'click' | 'focus'"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Template literal types distribute over unions and compose with the intrinsic case helpers — the basis of typed event maps and prop name mapping.",
+      "difficulty": 5,
+      "tags": [
+        "utility-types",
+        "template-literal-types"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

@@ -1,0 +1,481 @@
+{
+  "id": "typescript-types",
+  "subject": "typescript",
+  "module": "typescript-basics",
+  "level": "beginner",
+  "title": "Types",
+  "description": "Annotations, inference, literal and union types, and why any defeats the point.",
+  "estimatedMinutes": 13,
+  "order": 0,
+  "tags": [
+    "types",
+    "inference",
+    "unions"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A type describes the set of values an expression may hold. TypeScript checks those descriptions at compile time and then erases them — nothing about types survives into the emitted JavaScript."
+    },
+    {
+      "type": "example",
+      "title": "Inference beats annotation",
+      "body": "Annotate function parameters and public boundaries; let TypeScript infer the rest. Redundant annotations go stale.",
+      "language": "typescript",
+      "code": "let count = 3;              // inferred: number\nconst name = \"Anna\";        // inferred: \"Anna\"\nlet ids: number[] = [];     // annotation needed — [] alone infers never[]\n\nfunction area(w: number, h: number) {\n  return w * h;             // inferred return: number\n}"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "any switches checking off for everything it touches. unknown is the safe counterpart: you must narrow it before use."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-types-001",
+      "type": "code_multiple_choice",
+      "topic": "const inference",
+      "question": "What type does TypeScript infer for name?",
+      "language": "typescript",
+      "code": "const name = \"Anna\";",
+      "answers": [
+        {
+          "id": "a",
+          "text": "\"Anna\" — the literal type"
+        },
+        {
+          "id": "b",
+          "text": "String"
+        },
+        {
+          "id": "c",
+          "text": "any"
+        },
+        {
+          "id": "d",
+          "text": "string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A const binding cannot be reassigned, so the narrowest useful type is the literal. let name = \"Anna\" would widen to string.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "inference"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-002",
+      "type": "concept_question",
+      "topic": "any vs unknown",
+      "question": "What is the practical difference between any and unknown?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "They are aliases for the same type"
+        },
+        {
+          "id": "b",
+          "text": "unknown must be narrowed before you can use it; any allows any operation unchecked"
+        },
+        {
+          "id": "c",
+          "text": "any is a runtime check, unknown is compile time"
+        },
+        {
+          "id": "d",
+          "text": "unknown only accepts object values"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Both accept any value on the way in. Only unknown forces you to prove what it is before reading from it, which is why it belongs on API boundaries.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "unknown"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-types-003",
+      "type": "code_completion",
+      "topic": "Union type",
+      "question": "Complete the annotation so the parameter accepts both a string and a number.",
+      "language": "typescript",
+      "code": "function format(id: string ___ number) {\n  return String(id);\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "&"
+        },
+        {
+          "id": "b",
+          "text": "|"
+        },
+        {
+          "id": "c",
+          "text": "or"
+        },
+        {
+          "id": "d",
+          "text": ","
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "| forms a union (either type). & forms an intersection, which would require a value that is both at once.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "unions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-types-004",
+      "type": "find_error",
+      "topic": "Array element types",
+      "question": "Which line does the compiler reject?",
+      "language": "typescript",
+      "code": "1  const scores: number[] = [90, 85];\n2  scores.push(70);\n3  scores.push(\"80\");\n4  console.log(scores.length);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 3 — a string is not assignable to number"
+        },
+        {
+          "id": "b",
+          "text": "Line 2 — push is not allowed on a typed array"
+        },
+        {
+          "id": "c",
+          "text": "Line 4 — length needs a type assertion"
+        },
+        {
+          "id": "d",
+          "text": "Line 1 — an array annotation must use Array<number>"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "number[] constrains every element, and push is typed accordingly. Note that const only freezes the binding, not the contents.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "arrays"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-005",
+      "type": "true_false",
+      "topic": "Type erasure",
+      "question": "TypeScript types are available at runtime and can be inspected with typeof.",
+      "correctAnswer": false,
+      "explanation": "Types are erased during compilation. typeof is JavaScript's runtime operator and knows nothing about your interfaces or unions.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "runtime"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-types-006",
+      "type": "multiple_choice",
+      "topic": "Literal union",
+      "question": "Which annotation restricts a value to exactly three named states?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "type Status = \"new\" & \"active\" & \"done\""
+        },
+        {
+          "id": "b",
+          "text": "type Status = string[3]"
+        },
+        {
+          "id": "c",
+          "text": "type Status = enum(\"new\", \"active\", \"done\")"
+        },
+        {
+          "id": "d",
+          "text": "type Status = \"new\" | \"active\" | \"done\""
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A union of string literals is the idiomatic way to model a closed set of states, and it narrows cleanly in a switch.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "unions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-007",
+      "type": "fill_blank",
+      "topic": "Empty array inference",
+      "question": "Complete the sentence.",
+      "sentence": "Without an annotation, const ids = [] is inferred as ___[].",
+      "answers": [
+        {
+          "id": "a",
+          "text": "never"
+        },
+        {
+          "id": "b",
+          "text": "object"
+        },
+        {
+          "id": "c",
+          "text": "unknown"
+        },
+        {
+          "id": "d",
+          "text": "any"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "An empty array literal starts as any[] and TypeScript widens it from later pushes — under noImplicitAny in a non-evolving position it is an error instead.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "inference",
+        "arrays"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-008",
+      "type": "flashcard",
+      "topic": "Type assertion",
+      "question": "Syntax",
+      "front": "value as string",
+      "back": "Tells the compiler to trust you — no runtime check happens",
+      "explanation": "An assertion silences the checker without validating anything. If you are wrong, the failure surfaces later and further away.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "assertions"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-types-009",
+      "type": "code_multiple_choice",
+      "topic": "Union member access",
+      "question": "Why does the compiler reject line 2?",
+      "language": "typescript",
+      "code": "function shout(x: string | number) {\n  return x.toUpperCase();\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "toUpperCase needs an argument"
+        },
+        {
+          "id": "b",
+          "text": "The return type is missing"
+        },
+        {
+          "id": "c",
+          "text": "toUpperCase does not exist on number, so it is unavailable until x is narrowed"
+        },
+        {
+          "id": "d",
+          "text": "A union type cannot be a parameter"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "On a union you may only use members shared by every constituent. A typeof guard makes the string branch safe.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "unions",
+        "narrowing"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-010",
+      "type": "code_multiple_choice",
+      "topic": "Widening on let",
+      "language": "typescript",
+      "question": "What are the inferred types of a and b?",
+      "code": "let a = 'draft';\nconst b = 'draft';",
+      "answers": [
+        {
+          "id": "a",
+          "text": "a: string, b: \"draft\""
+        },
+        {
+          "id": "b",
+          "text": "both string"
+        },
+        {
+          "id": "c",
+          "text": "both \"draft\""
+        },
+        {
+          "id": "d",
+          "text": "a: \"draft\", b: string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A let binding can be reassigned, so TypeScript widens the literal to its base type. const cannot, so the literal survives — which is what makes const the better default for union discriminants.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "inference"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-011",
+      "type": "concept_question",
+      "topic": "strictNullChecks",
+      "question": "What changes when strictNullChecks is turned on?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "null and undefined stop being assignable to every type and must be in the union explicitly"
+        },
+        {
+          "id": "b",
+          "text": "Every variable must be initialised at declaration"
+        },
+        {
+          "id": "c",
+          "text": "Optional properties are no longer allowed"
+        },
+        {
+          "id": "d",
+          "text": "null checks are inserted at runtime"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Without it, string silently includes null. With it, string | null is a different type, and the compiler forces the check before you dereference.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "strict-mode"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-types-012",
+      "type": "code_completion",
+      "topic": "const assertion",
+      "language": "typescript",
+      "question": "Complete the assertion so LEVELS becomes a readonly tuple of literals rather than string[].",
+      "code": "const LEVELS = ['beginner', 'intermediate'] ___ const;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "satisfies"
+        },
+        {
+          "id": "b",
+          "text": "as"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": ":"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "as const freezes the literals, which is how you derive a union from an array: type Level = (typeof LEVELS)[number].",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "const-assertion"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-types-013",
+      "type": "true_false",
+      "topic": "satisfies",
+      "question": "The satisfies operator checks a value against a type without widening the value's own inferred type.",
+      "correctAnswer": true,
+      "explanation": "That is the whole point: a config object can be validated against Record<string, string> while keeping its exact keys for autocomplete.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "satisfies"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-types-014",
+      "type": "find_error",
+      "topic": "Assertion hiding a bug",
+      "language": "typescript",
+      "question": "This compiles and crashes at runtime. Which line is responsible?",
+      "code": "1  const raw = await response.json();\n2  const user = raw as { id: string; name: string };\n3  console.log(user.name.toUpperCase());",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 3 — toUpperCase does not exist on string"
+        },
+        {
+          "id": "b",
+          "text": "Line 1 — json() should be typed"
+        },
+        {
+          "id": "c",
+          "text": "Line 2 — the assertion tells the compiler to trust unvalidated data"
+        },
+        {
+          "id": "d",
+          "text": "Nothing — this is safe"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "json() returns any (or unknown). An assertion is a promise you make to the compiler; validating the payload is the only thing that makes it true.",
+      "difficulty": 4,
+      "tags": [
+        "types",
+        "assertions"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-types-015",
+      "type": "multiple_choice",
+      "topic": "Intersection vs union",
+      "question": "What does `A & B` describe for two object types?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A value that has the members of both"
+        },
+        {
+          "id": "b",
+          "text": "A value that is either A or B"
+        },
+        {
+          "id": "c",
+          "text": "Only the members A and B have in common"
+        },
+        {
+          "id": "d",
+          "text": "An error, since objects cannot be intersected"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Unions restrict what you may read; intersections combine what is present. Intersecting conflicting primitive members produces never.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "unions"
+      ],
+      "estimatedSeconds": 35
+    }
+  ]
+}

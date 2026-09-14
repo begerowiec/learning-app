@@ -1,0 +1,266 @@
+{
+  "id": "python-conditions",
+  "subject": "python",
+  "module": "python-basics",
+  "level": "beginner",
+  "title": "Warunki",
+  "description": "if / elif / else, operatory porównania i logiczne oraz pułapki wokół prawdziwościowości.",
+  "estimatedMinutes": 8,
+  "order": 1,
+  "tags": [
+    "conditions",
+    "control-flow"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Warunek wybiera, który blok się wykona. Python sprawdza gałęzie po kolei i wykonuje pierwszą, której wyrażenie jest prawdziwe; gałęzie elif są sprawdzane tylko wtedy, gdy wszystkie powyżej były fałszywe."
+    },
+    {
+      "type": "example",
+      "title": "Kształt",
+      "body": "Dwukropek i wcięcie są częścią składni, a nie kwestią stylu.",
+      "language": "python",
+      "code": "if score >= 90:\n    grade = \"A\"\nelif score >= 75:\n    grade = \"B\"\nelse:\n    grade = \"C\""
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "Porównuj przez ==, przypisuj przez =. Łańcuchowe porównania w stylu 0 <= x <= 10 czytają się lepiej niż dwa testy połączone przez and."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-conditions-001",
+      "type": "code_multiple_choice",
+      "topic": "Kolejność gałęzi",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "x = 95\nif x >= 75:\n    print(\"B\")\nelif x >= 90:\n    print(\"A\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A"
+        },
+        {
+          "id": "b",
+          "text": "B"
+        },
+        {
+          "id": "c",
+          "text": "A then B"
+        },
+        {
+          "id": "d",
+          "text": "nothing"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Wygrywa pierwsza prawdziwa gałąź, reszta jest pomijana. Najszerszy warunek dawaj na końcu, inaczej gałąź A nigdy nie zostanie osiągnięta.",
+      "difficulty": 3,
+      "tags": [
+        "conditions",
+        "control-flow"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-conditions-002",
+      "type": "find_error",
+      "topic": "Przypisanie kontra porównanie",
+      "question": "Która linia psuje ten fragment?",
+      "language": "python",
+      "code": "1  status = \"new\"\n2  if status = \"new\":\n3      print(\"fresh\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — warunek potrzebuje ==, nie ="
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — stringi wymagają pojedynczych cudzysłowów"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — print musi mieć wcięcie dwóch spacji"
+        },
+        {
+          "id": "d",
+          "text": "Żadna linia go nie psuje"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "= przypisuje, == porównuje. Python odrzuca przypisanie w nagłówku if błędem składni.",
+      "difficulty": 1,
+      "tags": [
+        "conditions",
+        "operators"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-conditions-003",
+      "type": "true_false",
+      "topic": "elif kontra osobne if",
+      "question": "Zamiana elif na drugie if może zmienić to, które gałęzie się wykonają.",
+      "correctAnswer": true,
+      "explanation": "Osobne if są sprawdzane niezależnie, więc dwa mogą się wykonać. Gałęzie elif wykluczają się wzajemnie.",
+      "difficulty": 3,
+      "tags": [
+        "conditions",
+        "control-flow"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-conditions-004",
+      "type": "fill_blank",
+      "topic": "Operatory logiczne",
+      "question": "Uzupełnij warunek tak, żeby pasował do wieku wewnątrz przedziału.",
+      "sentence": "if age >= 18 ___ age <= 65:",
+      "answers": [
+        {
+          "id": "a",
+          "text": "and"
+        },
+        {
+          "id": "b",
+          "text": "or"
+        },
+        {
+          "id": "c",
+          "text": "&&"
+        },
+        {
+          "id": "d",
+          "text": "not"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Obie części muszą zachodzić, więc operatorem jest and. Python zapisuje operatory logiczne słowami: and, or, not.",
+      "difficulty": 2,
+      "tags": [
+        "conditions",
+        "operators"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-conditions-005",
+      "type": "concept_question",
+      "topic": "Sprawdzanie None",
+      "question": "Dlaczego `if value is None` jest lepsze niż `if value == None`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "is porównuje tożsamość, a None jest singletonem — własne __eq__ tego nie oszuka"
+        },
+        {
+          "id": "b",
+          "text": "== w ogóle nie działa z None"
+        },
+        {
+          "id": "c",
+          "text": "is jest szybsze, ale poza tym identyczne"
+        },
+        {
+          "id": "d",
+          "text": "Nie ma różnicy; oba są równie idiomatyczne"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Istnieje dokładnie jeden obiekt None, więc tożsamość jest dokładnym testem. Klasa nadpisująca __eq__ mogłaby przypadkiem sprawić, że == None zwróci True.",
+      "difficulty": 4,
+      "tags": [
+        "conditions",
+        "truthiness"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "python-conditions-006",
+      "type": "code_completion",
+      "topic": "Negacja",
+      "question": "Uzupełnij warunek tak, żeby ciało wykonywało się tylko dla pustych list.",
+      "language": "python",
+      "code": "if ___ items:\n    return None",
+      "answers": [
+        {
+          "id": "a",
+          "text": "not"
+        },
+        {
+          "id": "b",
+          "text": "no"
+        },
+        {
+          "id": "c",
+          "text": "!"
+        },
+        {
+          "id": "d",
+          "text": "is"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Pusta lista jest falsy, więc `if not items` to idiomatyczny wczesny return. Python nie ma operatora !.",
+      "difficulty": 2,
+      "tags": [
+        "conditions",
+        "truthiness"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-conditions-007",
+      "type": "code_multiple_choice",
+      "topic": "Porównanie łańcuchowe",
+      "question": "Jaka jest wartość tego wyrażenia?",
+      "language": "python",
+      "code": "x = 5\nprint(1 < x < 4)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "False"
+        },
+        {
+          "id": "b",
+          "text": "True"
+        },
+        {
+          "id": "c",
+          "text": "SyntaxError"
+        },
+        {
+          "id": "d",
+          "text": "TypeError"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Porównanie łańcuchowe znaczy 1 < x and x < 4. Druga część jest fałszywa dla x = 5, więc całość to False.",
+      "difficulty": 3,
+      "tags": [
+        "conditions",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-conditions-008",
+      "type": "flashcard",
+      "topic": "Wyrażenie warunkowe",
+      "question": "Składnia",
+      "front": "value = a if cond else b",
+      "back": "Forma trójargumentowa — jedno wyrażenie, oblicza tylko potrzebną gałąź",
+      "explanation": "Przydatne do krótkich przypisań albo/albo. Trzymaj w jednej linii; zagnieżdżone szybko przestaje być czytelne.",
+      "difficulty": 2,
+      "tags": [
+        "conditions",
+        "syntax"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

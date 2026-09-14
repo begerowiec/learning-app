@@ -1,0 +1,437 @@
+{
+  "id": "english-phrasal-verbs",
+  "subject": "english",
+  "module": "english-everyday-vocabulary",
+  "level": "intermediate",
+  "title": "Phrasal verbs",
+  "description": "Te najczęstsze — sort out, carry on, come up with — i to, gdzie stoi dopełnienie.",
+  "estimatedMinutes": 12,
+  "order": 2,
+  "tags": [
+    "phrasal-verbs",
+    "vocabulary",
+    "grammar"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Dlaczego są trudne",
+      "body": "Znaczenie phrasal verb rzadko wynika z jego części: give up nie ma nic wspólnego z dawaniem. Trzeba się ich uczyć jako pojedynczych jednostek słownikowych, w zdaniu."
+    },
+    {
+      "type": "theory",
+      "title": "Rozdzielne czy nie",
+      "body": "Wiele z nich przyjmuje dopełnienie albo po partykule, albo między częściami: turn off the light / turn the light off. Dopełnienie zaimkowe musi stać w środku: turn it off, nigdy turn off it."
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "W formalnym piśmie jednowyrazowy odpowiednik często czyta się lepiej: resolve zamiast sort out, postpone zamiast put off. W mowie phrasal verb jest naturalnym wyborem."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-phrasal-001",
+      "type": "flashcard",
+      "topic": "to come up with",
+      "question": "Słownictwo",
+      "front": "to come up with something",
+      "back": "wymyślić / wpaść na coś",
+      "explanation": "She came up with a workaround. Trzy części i żadnej nie da się pominąć.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-phrasal-002",
+      "type": "fill_blank",
+      "topic": "to sort out",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Can you ___ out the failing test before the demo?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "bring"
+        },
+        {
+          "id": "b",
+          "text": "take"
+        },
+        {
+          "id": "c",
+          "text": "make"
+        },
+        {
+          "id": "d",
+          "text": "sort"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "sort something out znaczy naprawić albo rozwiązać. Jest rozdzielne: sort it out, sort out the test.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-003",
+      "type": "multiple_choice",
+      "topic": "Pozycja zaimka",
+      "question": "Które zdanie jest poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I'll turn off it."
+        },
+        {
+          "id": "b",
+          "text": "I'll off turn it."
+        },
+        {
+          "id": "c",
+          "text": "I'll turn it of."
+        },
+        {
+          "id": "d",
+          "text": "I'll turn it off."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Przy rozdzielnym phrasal verb dopełnienie zaimkowe zawsze stoi między czasownikiem a partykułą.",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-phrasal-004",
+      "type": "translation",
+      "topic": "to put off",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Musimy przełożyć wdrożenie na następny tydzień.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "We have to put the release off until next week."
+        },
+        {
+          "id": "b",
+          "text": "We have to put away the release to next week."
+        },
+        {
+          "id": "c",
+          "text": "We have to put the release down until next week."
+        },
+        {
+          "id": "d",
+          "text": "We have to put off the release since next week."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "put something off znaczy przełożyć, a until wyznacza nowy moment w czasie.",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-phrasal-005",
+      "type": "true_false",
+      "topic": "Czasowniki nierozdzielne",
+      "question": "\"I ran my old manager into at the conference\" jest poprawne.",
+      "correctAnswer": false,
+      "explanation": "run into jest nierozdzielne, więc dopełnienie stoi po całej frazie: I ran into my old manager.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-006",
+      "type": "concept_question",
+      "topic": "Rejestr",
+      "question": "Dlaczego phrasal verbs bywają zastępowane w formalnych raportach?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Jednowyrazowe odpowiedniki pochodzenia łacińskiego czytają się bardziej formalnie"
+        },
+        {
+          "id": "b",
+          "text": "Phrasal verbs są gramatycznie niepoprawne w piśmie"
+        },
+        {
+          "id": "c",
+          "text": "Są z definicji wieloznaczne"
+        },
+        {
+          "id": "d",
+          "text": "Nie da się ich użyć w czasie przeszłym"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "find out → determine, put up with → tolerate, go up → increase. Obie formy są poprawne; różnica to rejestr.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "register"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-phrasal-007",
+      "type": "fill_blank",
+      "topic": "to carry on",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Ignore the warning and carry ___ with the deployment.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "on"
+        },
+        {
+          "id": "b",
+          "text": "out"
+        },
+        {
+          "id": "c",
+          "text": "over"
+        },
+        {
+          "id": "d",
+          "text": "up"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "carry on znaczy kontynuować. carry out znaczy wykonać — carry out a test.",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-008",
+      "type": "multiple_choice",
+      "topic": "to look into",
+      "question": "Co znaczy \"I'll look into it\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I will investigate it"
+        },
+        {
+          "id": "b",
+          "text": "I will look at it briefly and move on"
+        },
+        {
+          "id": "c",
+          "text": "I will reject it"
+        },
+        {
+          "id": "d",
+          "text": "I will copy it"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "look into znaczy zbadać. look after znaczy zaopiekować się, look up — sprawdzić w źródle.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-009",
+      "type": "flashcard",
+      "topic": "to roll back",
+      "question": "Słownictwo",
+      "front": "to roll back a release",
+      "back": "wycofać wdrożenie do poprzedniej wersji",
+      "explanation": "Praktycznie uniwersalne w angielskim softwarowym. Rzeczownik to rollback, pisany łącznie.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "work"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-phrasal-010",
+      "type": "fill_blank",
+      "topic": "to figure out",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "It took us two days to figure ___ why the test only failed on CI.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "out"
+        },
+        {
+          "id": "b",
+          "text": "off"
+        },
+        {
+          "id": "c",
+          "text": "over"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "figure something out znaczy rozgryźć albo zrozumieć po wysiłku. Jest rozdzielne: figure it out.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-011",
+      "type": "multiple_choice",
+      "topic": "to end up",
+      "question": "Co znaczy \"We ended up rewriting the whole suite\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "We finished rewriting it on time"
+        },
+        {
+          "id": "b",
+          "text": "That is what eventually happened, though it was not the plan"
+        },
+        {
+          "id": "c",
+          "text": "We decided against rewriting it"
+        },
+        {
+          "id": "d",
+          "text": "We stopped halfway through"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "end up + -ing opisuje niezamierzony efekt końcowy. Polski odpowiednik to \"skończyło się na tym, że...\".",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-phrasal-012",
+      "type": "translation",
+      "topic": "to back up",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Poprzyj to danymi, zanim wyślesz do klienta.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Back it up with data before you send it to the client."
+        },
+        {
+          "id": "b",
+          "text": "Back up it with data before you send to the client."
+        },
+        {
+          "id": "c",
+          "text": "Backup it with data before sending to client."
+        },
+        {
+          "id": "d",
+          "text": "Back it with data up before you send it."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "back something up znaczy poprzeć dowodami, a dopełnienie zaimkowe idzie w środek. \"Backup\" pisane łącznie to rzeczownik.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "translation"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-phrasal-013",
+      "type": "true_false",
+      "topic": "Czasowniki trzyczęściowe",
+      "question": "Trzyczęściowe phrasal verbs, takie jak \"put up with\", są nierozdzielne.",
+      "correctAnswer": true,
+      "explanation": "Dopełnienie zawsze stoi po całej frazie: I can't put up with it — nigdy \"put it up with\".",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-014",
+      "type": "concept_question",
+      "topic": "to get around to",
+      "question": "Co wyraża \"I haven't got around to it yet\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Nie znalazłem na to czasu, choć zamierzam"
+        },
+        {
+          "id": "b",
+          "text": "Odmówiłem zrobienia tego"
+        },
+        {
+          "id": "c",
+          "text": "Już to skończyłem"
+        },
+        {
+          "id": "d",
+          "text": "Nie rozumiem tego"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Łagodny, częsty sposób powiedzenia \"jeszcze nie zrobione\". To jest tu przyimkiem, więc bierze rzeczownik albo -ing: got around to writing it.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "register"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-phrasal-015",
+      "type": "flashcard",
+      "topic": "to narrow down",
+      "question": "Słownictwo",
+      "front": "to narrow something down",
+      "back": "zawęzić — zbiór możliwości do kilku",
+      "explanation": "We narrowed it down to two suspects. Bardzo częste przy opisywaniu debugowania po angielsku.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "work"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

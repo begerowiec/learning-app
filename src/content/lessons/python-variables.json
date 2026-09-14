@@ -1,0 +1,301 @@
+{
+  "id": "python-variables",
+  "subject": "python",
+  "module": "python-basics",
+  "level": "beginner",
+  "title": "Variables & Data Types",
+  "description": "How Python names values, and what the four everyday built-in types do.",
+  "estimatedMinutes": 8,
+  "order": 0,
+  "tags": [
+    "variables",
+    "types",
+    "syntax"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A variable is a name bound to a value. Python has no declaration keyword and no type annotation requirement — assigning to a name creates it, and the name can later be rebound to a value of a different type."
+    },
+    {
+      "type": "example",
+      "title": "The four you use daily",
+      "body": "int, float, str and bool cover almost all beginner code. type() tells you what you are holding.",
+      "language": "python",
+      "code": "count = 3          # int\nratio = 0.75       # float\nname = \"Anna\"      # str\nactive = True      # bool\n\nprint(type(ratio))  # <class 'float'>"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "Reading a name before anything was assigned to it raises NameError, not a silent None. And \"3\" is a str, not an int — input() always hands you text.",
+      "code": "age = input(\"Age: \")\nprint(age + 1)     # TypeError\nprint(int(age) + 1)  # works",
+      "language": "python"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-variables-001",
+      "type": "concept_question",
+      "topic": "Dynamic typing",
+      "question": "What happens when you assign a string to a name that already holds an int?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Python raises a TypeError"
+        },
+        {
+          "id": "b",
+          "text": "Nothing — the first assignment fixes the type for good"
+        },
+        {
+          "id": "c",
+          "text": "The name is rebound to the string; the int is simply forgotten"
+        },
+        {
+          "id": "d",
+          "text": "The string is converted to an int"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Names in Python are labels, not typed boxes. Rebinding a name is always allowed, and the old value is collected once nothing refers to it.",
+      "difficulty": 2,
+      "tags": [
+        "variables",
+        "types"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-variables-002",
+      "type": "code_multiple_choice",
+      "topic": "Integer division",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "print(7 / 2, 7 // 2)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "3 3"
+        },
+        {
+          "id": "b",
+          "text": "3.5 4"
+        },
+        {
+          "id": "c",
+          "text": "3.5 3.5"
+        },
+        {
+          "id": "d",
+          "text": "3.5 3"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "/ is true division and always returns a float. // is floor division and returns an int when both operands are ints.",
+      "difficulty": 2,
+      "tags": [
+        "numbers",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-variables-003",
+      "type": "true_false",
+      "topic": "Naming rules",
+      "question": "A Python variable name may start with a digit, for example 2nd_place.",
+      "correctAnswer": false,
+      "explanation": "Identifiers must start with a letter or underscore. 2nd_place is a SyntaxError; second_place is fine.",
+      "difficulty": 1,
+      "tags": [
+        "variables",
+        "syntax"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "python-variables-004",
+      "type": "code_completion",
+      "topic": "String conversion",
+      "question": "input() returns text. Complete the line so the comparison works on numbers.",
+      "language": "python",
+      "code": "age = input(\"Age: \")\nif ___(age) >= 18:\n    print(\"adult\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "int"
+        },
+        {
+          "id": "b",
+          "text": "bool"
+        },
+        {
+          "id": "c",
+          "text": "len"
+        },
+        {
+          "id": "d",
+          "text": "str"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "int() parses the text into an integer. Comparing a str with an int raises TypeError in Python 3.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "conversion"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-variables-005",
+      "type": "find_error",
+      "topic": "NameError",
+      "question": "Which line raises the error?",
+      "language": "python",
+      "code": "1  total = 0\n2  total += price\n3  price = 10\n4  print(total)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 1 — total must be declared with a type"
+        },
+        {
+          "id": "b",
+          "text": "Line 3 — price cannot be assigned after use"
+        },
+        {
+          "id": "c",
+          "text": "Line 4 — print needs a string"
+        },
+        {
+          "id": "d",
+          "text": "Line 2 — price is used before it is assigned"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Python executes top to bottom, so at line 2 the name price does not exist yet and NameError is raised.",
+      "difficulty": 2,
+      "tags": [
+        "variables",
+        "errors"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-variables-006",
+      "type": "multiple_choice",
+      "topic": "f-strings",
+      "question": "Which expression builds the text \"Anna is 30\" from name = \"Anna\" and age = 30?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "name + \" is \" + age"
+        },
+        {
+          "id": "b",
+          "text": "f\"name is age\""
+        },
+        {
+          "id": "c",
+          "text": "\"{name} is {age}\""
+        },
+        {
+          "id": "d",
+          "text": "f\"{name} is {age}\""
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "An f-string interpolates the expressions in braces. Without the f prefix the braces stay literal, and concatenating a str with an int raises TypeError.",
+      "difficulty": 2,
+      "tags": [
+        "strings",
+        "f-strings"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-variables-007",
+      "type": "fill_blank",
+      "topic": "Truthiness",
+      "question": "Complete the sentence.",
+      "sentence": "An empty string is ___ in a boolean context.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "an error"
+        },
+        {
+          "id": "b",
+          "text": "None"
+        },
+        {
+          "id": "c",
+          "text": "falsy"
+        },
+        {
+          "id": "d",
+          "text": "truthy"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Empty containers and zero values are falsy: \"\", 0, 0.0, [], {} and None all fail an if test.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "truthiness"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-variables-008",
+      "type": "flashcard",
+      "topic": "Multiple assignment",
+      "question": "Syntax",
+      "front": "a, b = b, a",
+      "back": "Swaps two names in one statement — the right side is built as a tuple first",
+      "explanation": "Python evaluates the whole right-hand side before binding, so no temporary variable is needed.",
+      "difficulty": 2,
+      "tags": [
+        "variables",
+        "syntax"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-variables-009",
+      "type": "code_multiple_choice",
+      "topic": "Type of a division result",
+      "question": "What is printed?",
+      "language": "python",
+      "code": "x = 4\ny = 2\nprint(type(x / y).__name__)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "int"
+        },
+        {
+          "id": "b",
+          "text": "float"
+        },
+        {
+          "id": "c",
+          "text": "number"
+        },
+        {
+          "id": "d",
+          "text": "str"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "True division always produces a float, even when the result has no fractional part: 4 / 2 is 2.0.",
+      "difficulty": 3,
+      "tags": [
+        "numbers",
+        "types"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "id": "python-lists-tuples",
+  "subject": "python",
+  "module": "python-core",
+  "level": "intermediate",
+  "title": "Listy i krotki",
+  "description": "Wycinki, mutowalność, różnica lista/krotka i pułapka aliasowania.",
+  "estimatedMinutes": 9,
+  "order": 1,
+  "tags": [
+    "lists",
+    "tuples",
+    "collections"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Lista to uporządkowana, mutowalna sekwencja. Krotka ma ten sam kształt, ale jest niemutowalna, dzięki czemu może być kluczem słownika i można ją bezpiecznie przekazywać bez kopiowania."
+    },
+    {
+      "type": "example",
+      "title": "Wycinki",
+      "body": "Wycinek zawsze tworzy nową listę. Indeks końcowy jest wykluczony, a indeks ujemny liczy od końca.",
+      "language": "python",
+      "code": "nums = [10, 20, 30, 40, 50]\nprint(nums[1:3])   # [20, 30]\nprint(nums[-1])    # 50\nprint(nums[::-1])  # [50, 40, 30, 20, 10]"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "b = a nie kopiuje listy — obie nazwy wskazują ten sam obiekt, więc dopisanie przez jedną widać przez drugą. Użyj a.copy() albo list(a)."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-lists-001",
+      "type": "code_multiple_choice",
+      "topic": "Granice wycinka",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "nums = [10, 20, 30, 40]\nprint(nums[1:3])",
+      "answers": [
+        {
+          "id": "a",
+          "text": "[20, 30, 40]"
+        },
+        {
+          "id": "b",
+          "text": "[10, 20, 30]"
+        },
+        {
+          "id": "c",
+          "text": "[20, 30]"
+        },
+        {
+          "id": "d",
+          "text": "[30, 40]"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Wycinek zaczyna się na pierwszym indeksie i kończy przed drugim, więc [1:3] daje pozycje 1 i 2.",
+      "difficulty": 2,
+      "tags": [
+        "lists",
+        "slicing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-002",
+      "type": "concept_question",
+      "topic": "Lista kontra krotka",
+      "question": "Które zdanie o krotkach jest prawdziwe?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Krotki nie da się zmodyfikować po utworzeniu, więc może być kluczem słownika"
+        },
+        {
+          "id": "b",
+          "text": "Krotka to po prostu lista z inną składnią"
+        },
+        {
+          "id": "c",
+          "text": "Krotka może trzymać tylko jeden typ wartości"
+        },
+        {
+          "id": "d",
+          "text": "Iterowanie po krotce jest zawsze szybsze niż po liście"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Niemutowalność to cała różnica i to ona czyni krotkę hashowalną — o ile wszystko w środku też jest hashowalne.",
+      "difficulty": 3,
+      "tags": [
+        "tuples",
+        "collections"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-lists-003",
+      "type": "code_multiple_choice",
+      "topic": "Aliasowanie",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "a = [1, 2]\nb = a\nb.append(3)\nprint(a)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "[3]"
+        },
+        {
+          "id": "b",
+          "text": "[1, 2]"
+        },
+        {
+          "id": "c",
+          "text": "[1, 2, 3]"
+        },
+        {
+          "id": "d",
+          "text": "TypeError"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "b = a wiąże drugą nazwę z tym samym obiektem listy. Modyfikacja przez którąkolwiek jest widoczna przez obie.",
+      "difficulty": 4,
+      "tags": [
+        "lists",
+        "mutation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-lists-004",
+      "type": "find_error",
+      "topic": "Niemutowalność krotki",
+      "question": "Która linia rzuca TypeError?",
+      "language": "python",
+      "code": "1  point = (1, 2)\n2  print(point[0])\n3  point[0] = 9\n4  print(point)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 3 — krotka nie wspiera przypisania do elementu"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — krotka wymaga nawiasów kwadratowych"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — krotek nie da się indeksować"
+        },
+        {
+          "id": "d",
+          "text": "Linia 4 — krotki nie da się wypisać"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Krotki są tylko do odczytu. Zbuduj nową: point = (9, point[1]).",
+      "difficulty": 2,
+      "tags": [
+        "tuples",
+        "errors"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-005",
+      "type": "code_completion",
+      "topic": "Filtrowanie w wyrażeniu listowym",
+      "question": "Uzupełnij wyrażenie tak, żeby zostawiało tylko liczby parzyste.",
+      "language": "python",
+      "code": "evens = [n for n in nums ___ n % 2 == 0]",
+      "answers": [
+        {
+          "id": "a",
+          "text": "if"
+        },
+        {
+          "id": "b",
+          "text": "where"
+        },
+        {
+          "id": "c",
+          "text": "when"
+        },
+        {
+          "id": "d",
+          "text": "and"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Opcjonalny filtr w wyrażeniu listowym to klauzula if umieszczona po klauzuli for.",
+      "difficulty": 2,
+      "tags": [
+        "lists",
+        "comprehensions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-006",
+      "type": "true_false",
+      "topic": "append kontra extend",
+      "question": "a.append([1, 2]) dodaje do a dwa elementy.",
+      "correctAnswer": false,
+      "explanation": "append dodaje swój argument jako jeden element, więc lista rośnie o jedną pozycję, która akurat jest listą. extend dodaje każdy element osobno.",
+      "difficulty": 3,
+      "tags": [
+        "lists",
+        "mutation"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-lists-007",
+      "type": "fill_blank",
+      "topic": "Sortowanie w miejscu",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "nums.sort() sortuje w miejscu i zwraca ___.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "None"
+        },
+        {
+          "id": "b",
+          "text": "posortowaną listę"
+        },
+        {
+          "id": "c",
+          "text": "kopię"
+        },
+        {
+          "id": "d",
+          "text": "pierwszy element"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "sort() modyfikuje i zwraca None; sorted(nums) zostawia oryginał i zwraca nową listę. Łańcuchowanie po sort() to klasyczny błąd.",
+      "difficulty": 4,
+      "tags": [
+        "lists",
+        "sorting"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-008",
+      "type": "flashcard",
+      "topic": "Rozpakowanie",
+      "question": "Składnia",
+      "front": "first, *rest = items",
+      "back": "Wiąże pierwszy element i zbiera resztę do listy",
+      "explanation": "Gwiazdka działa w dowolnym miejscu wzorca: *head, last = items bierze zamiast tego ostatni element.",
+      "difficulty": 3,
+      "tags": [
+        "lists",
+        "unpacking"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-lists-009",
+      "type": "code_multiple_choice",
+      "topic": "Mnożenie listy",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "row = [0] * 3\nprint(row, len(row))",
+      "answers": [
+        {
+          "id": "a",
+          "text": "TypeError"
+        },
+        {
+          "id": "b",
+          "text": "[[0], [0], [0]] 3"
+        },
+        {
+          "id": "c",
+          "text": "[0] 3"
+        },
+        {
+          "id": "d",
+          "text": "[0, 0, 0] 3"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Mnożenie listy powiela jej elementy. Uwaga przy listach zagnieżdżonych: [[0] * 3] * 2 współdzieli tę samą listę wewnętrzną dwa razy.",
+      "difficulty": 3,
+      "tags": [
+        "lists",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

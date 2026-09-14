@@ -1,0 +1,379 @@
+{
+  "id": "playwright-assertions",
+  "subject": "playwright",
+  "module": "playwright-locators",
+  "level": "beginner",
+  "title": "Asercje",
+  "description": "Asercje web-first, które ponawiają, ogólne, które nie, asercje miękkie i co naprawdę znaczy toBeVisible.",
+  "estimatedMinutes": 9,
+  "order": 2,
+  "tags": [
+    "assertions",
+    "expect",
+    "flaky"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Dwa rodzaje expect",
+      "body": "expect(locator) jest web-first: odpytuje, aż warunek zajdzie albo minie limit czasu, i musi być awaitowane. expect(value) to zwykła asercja w stylu Jest na czymś, co już odczytałeś — sprawdza raz i nie wybroni się z luki czasowej."
+    },
+    {
+      "type": "example",
+      "title": "Forma z await",
+      "body": "Zapomniany await to najczęstszy błąd na review kodu Playwrighta: asercja staje się wiszącą obietnicą i test przechodzi bez względu na wszystko.",
+      "language": "typescript",
+      "code": "await expect(page.getByRole('alert')).toHaveText('Saved');\nawait expect(page.getByRole('row')).toHaveCount(3);\nawait expect(page).toHaveURL(/\\/orders\\/\\d+/);"
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "expect.soft() zapisuje porażkę i idzie dalej, dzięki czemu jeden przebieg raportuje każdą zepsutą asercję na stronie zamiast tylko pierwszej. Test i tak kończy się porażką."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-assert-001",
+      "type": "find_error",
+      "topic": "Brakujący await",
+      "question": "Ten test przechodzi, nawet gdy alert nigdy się nie pojawi. Dlaczego?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('button', { name: 'Save' }).click();\n2  expect(page.getByRole('alert')).toHaveText('Saved');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 nie jest awaitowana, więc asercja to wisząca obietnica, której nikt nie sprawdza"
+        },
+        {
+          "id": "b",
+          "text": "toHaveText tylko ostrzega, nigdy nie zawodzi"
+        },
+        {
+          "id": "c",
+          "text": "Linia 1 powinna używać force: true"
+        },
+        {
+          "id": "d",
+          "text": "getByRole(\"alert\") pasuje do wszystkiego"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Każda asercja web-first zwraca obietnicę. Bez await test kończy się pierwszy, a odrzucenie wypływa — o ile w ogóle — jako ostrzeżenie o nieobsłużonej obietnicy.",
+      "difficulty": 2,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-assert-002",
+      "type": "concept_question",
+      "topic": "Semantyka toBeVisible",
+      "question": "Czego wymaga toBeVisible()?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Element jest w DOM-ie i ma niepusty prostokąt"
+        },
+        {
+          "id": "b",
+          "text": "Element jest przewinięty do widocznego obszaru"
+        },
+        {
+          "id": "c",
+          "text": "Elementu nie zasłania żaden inny element"
+        },
+        {
+          "id": "d",
+          "text": "Element ma przezroczystość większą od zera"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Widoczność dotyczy układu, nie viewportu: element poniżej zagięcia jest widoczny. Przesłonięcie sprawdza się w momencie akcji, a opacity: 0 nadal liczy się jako widoczne.",
+      "difficulty": 4,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-assert-003",
+      "type": "code_multiple_choice",
+      "topic": "toHaveText na kolekcji",
+      "question": "Lokator pasuje do trzech wierszy. Co asertuje ten kod?",
+      "language": "typescript",
+      "code": "await expect(page.getByRole('listitem')).toHaveText(['One', 'Two', 'Three']);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Że trzy elementy mają dokładnie te teksty, w tej kolejności"
+        },
+        {
+          "id": "b",
+          "text": "Że przynajmniej jeden element pasuje do jednego ze stringów"
+        },
+        {
+          "id": "c",
+          "text": "Rzuca naruszenie trybu strict"
+        },
+        {
+          "id": "d",
+          "text": "Że sklejony tekst równa się połączonej tablicy"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Przekazanie tablicy asertuje całą kolekcję, łącznie z liczbą elementów. Tryb strict dotyczy akcji, nie asercji — dlatego jest to dozwolone.",
+      "difficulty": 3,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-004",
+      "type": "true_false",
+      "topic": "Asercje miękkie",
+      "question": "Test zawierający wyłącznie niespełnione expect.soft() i tak kończy się porażką.",
+      "correctAnswer": true,
+      "explanation": "Asercje miękkie odsuwają porażkę na koniec testu, zamiast go przerywać. Służą do zebrania kilku problemów w jednym przebiegu, a nie do ich ignorowania.",
+      "difficulty": 3,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-assert-005",
+      "type": "code_completion",
+      "topic": "Negowanie asercji web-first",
+      "question": "Uzupełnij asercję, która czeka, aż dialog zniknie.",
+      "language": "typescript",
+      "code": "await expect(page.getByRole('dialog')).___.toBeVisible();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "not"
+        },
+        {
+          "id": "b",
+          "text": "never"
+        },
+        {
+          "id": "c",
+          "text": "no"
+        },
+        {
+          "id": "d",
+          "text": "without"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "not zachowuje ponawianie: odpytuje, aż dialogu nie będzie. toBeHidden() mówi to samo i czyta się lepiej, gdy element zostaje w DOM-ie.",
+      "difficulty": 2,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-assert-006",
+      "type": "multiple_choice",
+      "topic": "toHaveCount(0) kontra toBeHidden",
+      "question": "Wiersz ma zniknąć z DOM-u całkowicie. Która asercja to wyraża?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "await expect(row).toHaveCount(0)"
+        },
+        {
+          "id": "b",
+          "text": "await expect(row).toBeHidden()"
+        },
+        {
+          "id": "c",
+          "text": "await expect(row).not.toBeVisible()"
+        },
+        {
+          "id": "d",
+          "text": "expect(await row.isVisible()).toBe(false)"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "toBeHidden i not.toBeVisible przechodzą także dla elementu tylko niewidocznego. Jedynie toHaveCount(0) odróżnia \"nie ma go\" od \"display: none\".",
+      "difficulty": 4,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-007",
+      "type": "fill_blank",
+      "topic": "Asercje zrzutów ekranu",
+      "question": "Uzupełnij asercję wizualną.",
+      "sentence": "await expect(page).___('dashboard.png');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "toHaveScreenshot"
+        },
+        {
+          "id": "b",
+          "text": "toMatchImage"
+        },
+        {
+          "id": "c",
+          "text": "toLookLike"
+        },
+        {
+          "id": "d",
+          "text": "toBeScreenshot"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "toHaveScreenshot też ponawia — robi zrzut ponownie, aż dwa kolejne będą identyczne, co powstrzymuje animacje przed generowaniem fałszywych różnic.",
+      "difficulty": 3,
+      "tags": [
+        "assertions",
+        "visual"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-assert-008",
+      "type": "code_multiple_choice",
+      "topic": "Asercja na zmieniającej się wartości",
+      "question": "Która wersja toleruje to, że suma zaktualizuje się chwilę po kliknięciu?",
+      "language": "typescript",
+      "code": "// A\nexpect(await page.getByTestId('total').innerText()).toBe('3 items');\n\n// B\nawait expect(page.getByTestId('total')).toHaveText('3 items');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "B — asercja na lokatorze odpytuje, aż tekst się zgodzi"
+        },
+        {
+          "id": "b",
+          "text": "A — innerText czeka na element automatycznie"
+        },
+        {
+          "id": "c",
+          "text": "Obie, bo innerText czeka automatycznie"
+        },
+        {
+          "id": "d",
+          "text": "Żadna bez jawnego limitu czasu"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "innerText() faktycznie czeka na element, ale czyta raz — zwrócona wartość to migawka, a otaczająca ją asercja nie może ponowić.",
+      "difficulty": 3,
+      "tags": [
+        "assertions",
+        "auto-waiting"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-009",
+      "type": "flashcard",
+      "topic": "Własny komunikat błędu",
+      "question": "Playwright · asercje",
+      "front": "expect(locator, 'cart badge should clear').toHaveText('0')",
+      "back": "Drugi argument staje się komunikatem porażki w raporcie",
+      "explanation": "Tanie i bardzo wartościowe na CI: reporter pokazuje twoje zdanie zamiast samego lokatora i różnicy.",
+      "difficulty": 2,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-assert-010",
+      "type": "concept_question",
+      "topic": "Limit asercji kontra limit testu",
+      "question": "Asercja web-first zawodzi po 5 sekundach, choć limit testu to 30. Dlaczego?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Każda asercja ma własny limit czasu, domyślnie 5 s"
+        },
+        {
+          "id": "b",
+          "text": "Limit testu dotyczy tylko hooków"
+        },
+        {
+          "id": "c",
+          "text": "Asercje dziedziczą jedną czwartą limitu testu"
+        },
+        {
+          "id": "d",
+          "text": "Przeglądarka zamknęła stronę"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "expect.timeout konfiguruje się osobno od limitu testu. Nadpisz przy wywołaniu — toBeVisible({ timeout: 15_000 }) — albo globalnie w konfiguracji.",
+      "difficulty": 3,
+      "tags": [
+        "assertions",
+        "configuration"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-assert-011",
+      "type": "true_false",
+      "topic": "Normalizacja w toHaveText",
+      "question": "toHaveText normalizuje białe znaki, więc nadmiarowe spacje i łamania linii w znacznikach nie psują asercji.",
+      "correctAnswer": true,
+      "explanation": "Początkowe, końcowe i powtórzone białe znaki są zwijane. Użyj toHaveText(/regex/), gdy potrzebujesz większej ścisłości, albo toContainText dla fragmentu.",
+      "difficulty": 3,
+      "tags": [
+        "assertions",
+        "expect"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-assert-012",
+      "type": "find_error",
+      "topic": "Asertowanie, że nic się nie stało",
+      "question": "Co jest nie tak z tą próbą udowodnienia, że baner błędu nigdy się nie pokazuje?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('button', { name: 'Save' }).click();\n2  await expect(page.getByRole('alert')).not.toBeVisible();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Nic — to poprawny wzorzec"
+        },
+        {
+          "id": "b",
+          "text": "Przechodzi natychmiast, zanim baner zdążyłby się pojawić"
+        },
+        {
+          "id": "c",
+          "text": "not nie łączy się z toBeVisible"
+        },
+        {
+          "id": "d",
+          "text": "getByRole(\"alert\") potrzebuje nazwy"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Asercja negatywna jest spełniona w chwili, w której jest prawdziwa, czyli tuż po kliknięciu. Asertuj najpierw pozytywny skutek — toast sukcesu, nowy wiersz — a dopiero potem brak.",
+      "difficulty": 5,
+      "tags": [
+        "assertions",
+        "flaky"
+      ],
+      "estimatedSeconds": 50
+    }
+  ]
+}

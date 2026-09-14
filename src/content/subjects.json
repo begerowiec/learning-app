@@ -1,0 +1,71 @@
+[
+  {
+    "id": "python",
+    "name": "Python",
+    "icon": "python",
+    "glyph": "PY",
+    "description": "Syntax, code reading and practice — from variables to dictionaries.",
+    "blurb": "Syntax, code reading, practice",
+    "order": 0,
+    "levelLabels": {
+      "beginner": "Basics",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "features": [
+      "code"
+    ]
+  },
+  {
+    "id": "typescript",
+    "name": "TypeScript",
+    "icon": "typescript",
+    "glyph": "TS",
+    "description": "Types, interfaces, generics and narrowing, read straight from real code.",
+    "blurb": "Types, generics, narrowing",
+    "order": 1,
+    "levelLabels": {
+      "beginner": "Basics",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "features": [
+      "code"
+    ]
+  },
+  {
+    "id": "playwright",
+    "name": "Playwright",
+    "icon": "playwright",
+    "glyph": "PW",
+    "description": "Locators, auto-waiting, test isolation and debugging flaky runs — from a QA engineer's angle.",
+    "blurb": "Locators, flaky tests, debugging",
+    "order": 2,
+    "levelLabels": {
+      "beginner": "Basics",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "features": [
+      "code"
+    ]
+  },
+  {
+    "id": "english",
+    "name": "English",
+    "icon": "english",
+    "glyph": "EN",
+    "description": "Grammar, tenses and everyday vocabulary with Polish translations.",
+    "blurb": "Grammar, tenses, vocabulary",
+    "order": 3,
+    "levelLabels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "features": [
+      "audio",
+      "speaking"
+    ]
+  }
+]

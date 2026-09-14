@@ -1,0 +1,481 @@
+{
+  "id": "typescript-functions",
+  "subject": "typescript",
+  "module": "typescript-basics",
+  "level": "beginner",
+  "title": "Funkcje",
+  "description": "Adnotacje parametrów i typu zwracanego, parametry opcjonalne i domyślne, void kontra never.",
+  "estimatedMinutes": 13,
+  "order": 2,
+  "tags": [
+    "functions",
+    "types",
+    "signatures"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Typ funkcji opisuje, co wchodzi i co wychodzi. Parametry są sprawdzane po pozycji, a typ zwracany zwykle lepiej zostawić wnioskowaniu — poza eksportowanym API, gdzie jawna adnotacja powstrzymuje refaktor przed cichym rozszerzeniem kontraktu."
+    },
+    {
+      "type": "example",
+      "title": "Opcjonalny kontra domyślny",
+      "body": "Parametr opcjonalny można pominąć i jest wtedy undefined. Parametr z wartością domyślną też można pominąć, ale w ciele nigdy nie jest undefined.",
+      "language": "typescript",
+      "code": "function greet(name: string, title?: string) {\n  return title ? `${title} ${name}` : name;\n}\n\nfunction scale(x: number, factor = 2) {\n  return x * factor;   // factor: number, never undefined\n}"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "void znaczy \"zignoruj to, co zwrócone\", a nie \"nic nie zwraca\". never znaczy, że funkcja w ogóle nie może wrócić — rzuca wyjątek albo kręci się w nieskończoność."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-functions-001",
+      "type": "code_multiple_choice",
+      "topic": "Wnioskowanie typu zwracanego",
+      "question": "Jaki typ zwracany zostanie wywnioskowany?",
+      "language": "typescript",
+      "code": "function area(w: number, h: number) {\n  return w * h;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "any"
+        },
+        {
+          "id": "b",
+          "text": "void"
+        },
+        {
+          "id": "c",
+          "text": "unknown"
+        },
+        {
+          "id": "d",
+          "text": "number"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Mnożenie dwóch liczb daje number, więc TypeScript wnioskuje go bez adnotacji.",
+      "difficulty": 1,
+      "tags": [
+        "functions",
+        "inference"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-002",
+      "type": "concept_question",
+      "topic": "void kontra never",
+      "question": "Kiedy never jest właściwym typem zwracanym?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Gdy funkcja nie może wrócić normalnie — zawsze rzuca albo nigdy się nie kończy"
+        },
+        {
+          "id": "b",
+          "text": "Gdy funkcja zwraca undefined"
+        },
+        {
+          "id": "c",
+          "text": "Gdy funkcja nie zwraca nic użytecznego"
+        },
+        {
+          "id": "d",
+          "text": "Gdy wartość zwracana ma być ignorowana"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "void pokrywa \"nie zwraca nic użytecznego\". never to typ pusty: nie zamieszkuje go żadna wartość, więc funkcja nie ma normalnego wyjścia.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "never"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-functions-003",
+      "type": "find_error",
+      "topic": "Kolejność parametrów",
+      "question": "Którą linię kompilator odrzuci?",
+      "language": "typescript",
+      "code": "1  function tag(label?: string, value: number) {\n2    return `${label}:${value}`;\n3  }\n4  console.log(tag(\"a\", 1));",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 1 — parametr wymagany nie może występować po opcjonalnym"
+        },
+        {
+          "id": "b",
+          "text": "Linia 2 — szablony wymagają String()"
+        },
+        {
+          "id": "c",
+          "text": "Linia 4 — wywołanie przekazuje za dużo argumentów"
+        },
+        {
+          "id": "d",
+          "text": "Żadna linia nie jest odrzucana"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Parametry opcjonalne muszą być na końcu, inaczej wywołujący nie mógłby ich pominąć. Zamień kolejność albo daj value wartość domyślną.",
+      "difficulty": 3,
+      "tags": [
+        "functions",
+        "optional"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-functions-004",
+      "type": "code_completion",
+      "topic": "Alias typu funkcyjnego",
+      "question": "Uzupełnij alias opisujący funkcję biorącą number i zwracającą string.",
+      "language": "typescript",
+      "code": "type Formatter = (value: number) ___ string;",
+      "answers": [
+        {
+          "id": "a",
+          "text": ":"
+        },
+        {
+          "id": "b",
+          "text": "=>"
+        },
+        {
+          "id": "c",
+          "text": "->"
+        },
+        {
+          "id": "d",
+          "text": "returns"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Typ funkcyjny używa => dla typu zwracanego. Dwukropek stosuje się wewnątrz interfejsów i literałów typów obiektowych w skróconym zapisie metody.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "signatures"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-005",
+      "type": "true_false",
+      "topic": "Parametry domyślne",
+      "question": "Parametr z wartością domyślną wciąż ma undefined w swoim typie wewnątrz ciała funkcji.",
+      "correctAnswer": false,
+      "explanation": "Wartość domyślna jest stosowana przed wykonaniem ciała, więc typ parametru w środku nie zawiera undefined — inaczej niż przy parametrze opcjonalnym.",
+      "difficulty": 3,
+      "tags": [
+        "functions",
+        "optional"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-006",
+      "type": "code_multiple_choice",
+      "topic": "Parametry reszty",
+      "question": "Jaki jest typ values?",
+      "language": "typescript",
+      "code": "function sum(...values: number[]) {\n  return values.reduce((a, b) => a + b, 0);\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "number[]"
+        },
+        {
+          "id": "b",
+          "text": "IArguments"
+        },
+        {
+          "id": "c",
+          "text": "number"
+        },
+        {
+          "id": "d",
+          "text": "[number]"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Parametr reszty zbiera pozostałe argumenty do prawdziwej tablicy, więc adnotuje się go typem tablicowym.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "rest-parameters"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-functions-007",
+      "type": "fill_blank",
+      "topic": "Typ zwracany funkcji async",
+      "question": "Uzupełnij adnotację funkcji async rozwiązującej się do User.",
+      "sentence": "async function load(): ___<User> { ... }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Promise"
+        },
+        {
+          "id": "b",
+          "text": "Awaited"
+        },
+        {
+          "id": "c",
+          "text": "Async"
+        },
+        {
+          "id": "d",
+          "text": "Future"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Funkcja async zawsze zwraca obietnicę, więc jej adnotowany typ zwracany musi być Promise<T>.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "async"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-008",
+      "type": "flashcard",
+      "topic": "Sygnatury przeciążeń",
+      "question": "TypeScript · funkcje",
+      "front": "Two signatures above one implementation",
+      "back": "Przeciążenia funkcji — wywołujący widzą tylko sygnatury, nigdy tej implementacyjnej",
+      "explanation": "Sygnatura implementacji musi być zgodna z każdym przeciążeniem, ale sama nie jest wywoływalna z zewnątrz.",
+      "difficulty": 5,
+      "tags": [
+        "functions",
+        "overloads"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-009",
+      "type": "multiple_choice",
+      "topic": "Liczba parametrów callbacku",
+      "question": "Dlaczego callback typu (a: number) => void można przekazać tam, gdzie oczekiwany jest (a: number, b: number) => void?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Funkcję ignorującą końcowe parametry zawsze bezpiecznie jest wywołać z większą liczbą argumentów"
+        },
+        {
+          "id": "b",
+          "text": "TypeScript uzupełnia brakujący parametr wartością undefined"
+        },
+        {
+          "id": "c",
+          "text": "Nie można — liczby parametrów muszą się zgadzać"
+        },
+        {
+          "id": "d",
+          "text": "Bo typ zwracany void wyłącza kontrolę parametrów"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Mniej parametrów jest zawsze zgodne: nadmiarowe argumenty po prostu nie są używane. Dlatego arr.map(n => n * 2) przechodzi kontrolę mimo że map przekazuje trzy argumenty.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "signatures",
+        "variance"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-010",
+      "type": "code_multiple_choice",
+      "topic": "this w funkcjach strzałkowych",
+      "language": "typescript",
+      "question": "Dlaczego wersja strzałkowa działa, a druga nie?",
+      "code": "class Counter {\n  n = 0;\n  incArrow = () => { this.n += 1; };\n  incMethod() { this.n += 1; }\n}\nconst { incArrow, incMethod } = new Counter();",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Funkcja strzałkowa przejmuje this z instancji klasy; oderwana metoda je traci"
+        },
+        {
+          "id": "b",
+          "text": "Metod nie da się destrukturyzować w TypeScripcie"
+        },
+        {
+          "id": "c",
+          "text": "Właściwości strzałkowe są statyczne"
+        },
+        {
+          "id": "d",
+          "text": "Nie ma różnicy"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Przekazywanie metody jako callbacku to typowa droga do tego błędu. Właściwości strzałkowe kosztują jedno domknięcie na instancję — to jest kompromis.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "this"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-011",
+      "type": "concept_question",
+      "topic": "Jawne typy zwracane w eksportach",
+      "question": "Po co adnotować typ zwracany eksportowanej funkcji, skoro wnioskowanie działa?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Powstrzymuje refaktor przed cichym rozszerzeniem publicznego kontraktu i trzyma błąd przy definicji"
+        },
+        {
+          "id": "b",
+          "text": "Wnioskowanie nie działa między modułami"
+        },
+        {
+          "id": "c",
+          "text": "Wymaga tego tryb ścisły"
+        },
+        {
+          "id": "d",
+          "text": "Przyspiesza build w czasie wykonania"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Bez tego zwrócenie null w nowej gałęzi zmienia typ u każdego konsumenta zamiast wysypać się tam, gdzie nastąpiła zmiana.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "signatures"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-012",
+      "type": "code_completion",
+      "topic": "Predykat typu",
+      "language": "typescript",
+      "question": "Uzupełnij sygnaturę tak, żeby wywołujący zawężali typ po sprawdzeniu.",
+      "code": "function isCat(pet: Cat | Dog): pet ___ Cat {\n  return 'meow' in pet;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "as"
+        },
+        {
+          "id": "b",
+          "text": "extends"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": "satisfies"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Predykat typu to obietnica, którą kompilator bierze na wiarę, więc ciało musi naprawdę sprawdzać to, co deklaruje.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "narrowing"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-functions-013",
+      "type": "true_false",
+      "topic": "Opcjonalne wywołanie",
+      "question": "`callback?.()` wywołuje funkcję tylko wtedy, gdy callback nie jest null ani undefined.",
+      "correctAnswer": true,
+      "explanation": "W przeciwnym razie wyrażenie zwraca undefined. Nie chroni to przed sytuacją, w której callback jest niewywoływalną wartością innego typu.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "optional"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-functions-014",
+      "type": "find_error",
+      "topic": "async bez await",
+      "language": "typescript",
+      "question": "Która linia sprawia, że błąd znika po cichu?",
+      "code": "1  async function save(): Promise<void> {\n2    await db.write();\n3  }\n4\n5  function handler() {\n6    save();\n7  }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — await jest tam niedozwolony"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — Promise<void> to niepoprawny typ zwracany"
+        },
+        {
+          "id": "c",
+          "text": "Linia 6 — obietnica nie jest awaitowana, więc odrzucenie staje się nieobsłużone"
+        },
+        {
+          "id": "d",
+          "text": "Linia 5 — handler musi być async"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Kompilator na to pozwala; wyłapuje to reguła lintu no-floating-promises. Albo zrób await, albo zaznacz intencję przez void save().",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "async"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-functions-015",
+      "type": "multiple_choice",
+      "topic": "never w wyczerpujących switchach",
+      "question": "Co daje pomocnik o sygnaturze `(value: never) => never` w gałęzi default switcha?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Błąd kompilacji w chwili, gdy nowy wariant unii nie zostanie obsłużony"
+        },
+        {
+          "id": "b",
+          "text": "Wyjątek w czasie wykonania dla nieznanych wartości"
+        },
+        {
+          "id": "c",
+          "text": "Szybsze wykonanie switcha"
+        },
+        {
+          "id": "d",
+          "text": "Automatyczną obsługę nowego przypadku"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Gdy wszystkie przypadki są obsłużone, wartość zawęża się do never i wywołanie przechodzi kontrolę. Dodaj wariant, a kod przestaje się kompilować — o to chodzi.",
+      "difficulty": 5,
+      "tags": [
+        "functions",
+        "never",
+        "narrowing"
+      ],
+      "estimatedSeconds": 50
+    }
+  ]
+}

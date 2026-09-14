@@ -1,0 +1,377 @@
+{
+  "id": "playwright-test-isolation",
+  "subject": "playwright",
+  "module": "playwright-reliability",
+  "level": "intermediate",
+  "title": "Izolacja testów",
+  "description": "Konteksty przeglądarki, fixtures, storageState, zasięg workera — i stan współdzielony, który uzależnia suite od kolejności.",
+  "estimatedMinutes": 11,
+  "order": 0,
+  "tags": [
+    "isolation",
+    "fixtures",
+    "parallelism"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Jeden kontekst na test",
+      "body": "Każdy test dostaje świeży BrowserContext: własne ciasteczka, localStorage, sessionStorage i uprawnienia, w procesie przeglądarki dzielonym z innymi testami. To właśnie czyni testy domyślnie niezależnymi i to właśnie tracisz w chwili, gdy sięgasz po stan na poziomie modułu."
+    },
+    {
+      "type": "example",
+      "title": "Logowanie raz",
+      "body": "Logowanie przez UI w każdym teście to największa strata czasu w większości suitów. Zrób to raz w global setup, zapisz storage state i używaj go ponownie.",
+      "language": "typescript",
+      "code": "// auth.setup.ts\nawait page.getByLabel('Email').fill(process.env.USER!);\nawait page.getByRole('button', { name: 'Sign in' }).click();\nawait expect(page.getByText('Dashboard')).toBeVisible();\nawait page.context().storageState({ path: '.auth/user.json' });\n\n// playwright.config.ts\nuse: { storageState: '.auth/user.json' }"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Izolacja kończy się na przeglądarce. Testy piszące do tego samego wiersza bazy, tego samego konta albo tej samej flagi funkcyjnej nadal są sprzężone — a przy równoległych workerach dodatkowo się ścigają."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-isolation-001",
+      "type": "concept_question",
+      "topic": "Co izoluje kontekst",
+      "question": "Dwa testy działają w tym samym pliku. Co domyślnie współdzielą?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Nic — każdy dostaje własny kontekst, ciasteczka i storage"
+        },
+        {
+          "id": "b",
+          "text": "Ciasteczka, bo przeglądarka to ten sam proces"
+        },
+        {
+          "id": "c",
+          "text": "localStorage, ale nie ciasteczka"
+        },
+        {
+          "id": "d",
+          "text": "Wszystko, o ile nie użyje się test.describe.configure"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Proces przeglądarki jest współdzielony dla szybkości; kontekst nie. Cokolwiek te testy dzielą, wzięło się z twojego kodu albo z backendu.",
+      "difficulty": 2,
+      "tags": [
+        "isolation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-isolation-002",
+      "type": "find_error",
+      "topic": "Stan współdzielony w module",
+      "question": "Drugi test zawodzi uruchomiony samodzielnie, a przechodzi w całym pliku. Co jest nie tak?",
+      "language": "typescript",
+      "code": "1  let orderId: string;\n2\n3  test('creates an order', async ({ page }) => {\n4    orderId = await createOrder(page);\n5  });\n6\n7  test('cancels the order', async ({ page }) => {\n8    await page.goto(`/orders/${orderId}`);\n9  });",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 8 — szablony są niedozwolone w goto"
+        },
+        {
+          "id": "b",
+          "text": "Nic — testy zawsze idą po kolei"
+        },
+        {
+          "id": "c",
+          "text": "Linia 1 — zmienna modułowa sprzęga oba testy, więc drugi nie może działać sam ani na innym workerze"
+        },
+        {
+          "id": "d",
+          "text": "Linia 4 — createOrder trzeba awaitować dwa razy"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Playwright może uruchomić je na różnych workerach, w innej kolejności albo jeden samotnie przy retry. Twórz to, czego test potrzebuje, w teście albo w fixture.",
+      "difficulty": 3,
+      "tags": [
+        "isolation",
+        "fixtures"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-isolation-003",
+      "type": "code_multiple_choice",
+      "topic": "Zasięg fixture",
+      "question": "Co zmienia `{ scope: \"worker\" }` w tym fixture?",
+      "language": "typescript",
+      "code": "export const test = base.extend<{}, { apiToken: string }>({\n  apiToken: [async ({}, use) => {\n    const token = await issueToken();\n    await use(token);\n  }, { scope: 'worker' }],\n});",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Powstaje raz na proces workera i jest dzielony przez każdy test, który ten worker uruchomi"
+        },
+        {
+          "id": "b",
+          "text": "Powstaje raz na cały przebieg, ponad wszystkimi workerami"
+        },
+        {
+          "id": "c",
+          "text": "Powstaje na każdy test, ale jest sprzątany później"
+        },
+        {
+          "id": "d",
+          "text": "Wyłącza równoległość dla tego fixture"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Zasięg workera jest dla drogiego setupu tylko do odczytu — tokenu, zaseedowanego tenanta. Wszystko, co test modyfikuje, należy do zasięgu testu, inaczej izolacja znów znika.",
+      "difficulty": 4,
+      "tags": [
+        "fixtures",
+        "parallelism"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-isolation-004",
+      "type": "true_false",
+      "topic": "Retry a stan",
+      "question": "Przy ponowieniu testu dostaje on zupełnie nowy kontekst przeglądarki.",
+      "correctAnswer": true,
+      "explanation": "Retry uruchamia test od nowa, razem z fixture'ami. Dlatego test przechodzący dopiero przy ponowieniu zwykle zależy od stanu zostawionego przez inny test.",
+      "difficulty": 3,
+      "tags": [
+        "isolation",
+        "retries"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-isolation-005",
+      "type": "code_completion",
+      "topic": "Wykonanie szeregowe",
+      "question": "Ten blok describe naprawdę wymaga kolejności na jednym workerze. Uzupełnij konfigurację.",
+      "language": "typescript",
+      "code": "test.describe.configure({ mode: '___' });",
+      "answers": [
+        {
+          "id": "a",
+          "text": "serial"
+        },
+        {
+          "id": "b",
+          "text": "ordered"
+        },
+        {
+          "id": "c",
+          "text": "sequential"
+        },
+        {
+          "id": "d",
+          "text": "single"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "W trybie serial porażka pomija resztę bloku. To uzasadnione narzędzie przy prawdziwym wieloetapowym kreatorze — i częsty sposób na zamiatanie przypadkowego sprzężenia pod dywan.",
+      "difficulty": 3,
+      "tags": [
+        "parallelism",
+        "isolation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-isolation-006",
+      "type": "multiple_choice",
+      "topic": "storageState",
+      "question": "Co zapisuje storageState?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Ciasteczka i localStorage dla odwiedzonych originów"
+        },
+        {
+          "id": "b",
+          "text": "Tylko ciasteczka"
+        },
+        {
+          "id": "c",
+          "text": "Ciasteczka, localStorage i sessionStorage"
+        },
+        {
+          "id": "d",
+          "text": "Cały profil przeglądarki razem z cache"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "sessionStorage celowo nie jest uwzględniony — z definicji dotyczy jednej karty. Aplikacje trzymające tam token muszą go wstrzykiwać skryptem inicjalizującym.",
+      "difficulty": 4,
+      "tags": [
+        "isolation",
+        "authentication"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-isolation-007",
+      "type": "fill_blank",
+      "topic": "Własne fixture",
+      "question": "Uzupełnij linię, która przekazuje wartość do testu i wznawia się potem, żeby posprzątać.",
+      "sentence": "await ___(cart);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "use"
+        },
+        {
+          "id": "b",
+          "text": "provide"
+        },
+        {
+          "id": "c",
+          "text": "yield"
+        },
+        {
+          "id": "d",
+          "text": "inject"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Wszystko przed use() to setup, wszystko po nim to teardown, który wykonuje się nawet gdy test zawiedzie. To najczystsze miejsce na usunięcie danych utworzonych przez test.",
+      "difficulty": 3,
+      "tags": [
+        "fixtures"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-isolation-008",
+      "type": "concept_question",
+      "topic": "Fixtures kontra beforeEach",
+      "question": "Co daje fixture, czego nie daje hook beforeEach?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Jest otypowany, komponowalny i wykonuje się tylko dla testów, które o niego poproszą"
+        },
+        {
+          "id": "b",
+          "text": "Działa szybciej"
+        },
+        {
+          "id": "c",
+          "text": "Może być asynchroniczny"
+        },
+        {
+          "id": "d",
+          "text": "Wykonuje się po teście zamiast przed"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "beforeEach wykonuje się dla każdego testu w zasięgu, czy tego potrzebuje, czy nie, i komunikuje się przez zmienne współdzielone. Fixtures są leniwe, a ich wartości przychodzą jako otypowane argumenty.",
+      "difficulty": 4,
+      "tags": [
+        "fixtures"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-isolation-009",
+      "type": "flashcard",
+      "topic": "fullyParallel",
+      "question": "Playwright · konfiguracja",
+      "front": "fullyParallel: true",
+      "back": "Testy w jednym pliku też idą równolegle, nie tylko między plikami",
+      "explanation": "Zamienia przypadkowe sprzężenie w pliku w natychmiastową porażkę zamiast w niespodziankę za pół roku. Warto włączyć wcześnie, póki suite jest mały.",
+      "difficulty": 3,
+      "tags": [
+        "parallelism",
+        "configuration"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-isolation-010",
+      "type": "code_multiple_choice",
+      "topic": "Seedowanie przez API",
+      "question": "Dlaczego druga wersja jest pewniejsza w teście o liście zamówień?",
+      "language": "typescript",
+      "code": "// A — set up through the UI\nawait page.getByRole('button', { name: 'New order' }).click();\nawait page.getByLabel('Customer').fill('ACME');\nawait page.getByRole('button', { name: 'Create' }).click();\n\n// B — set up through the API, then look\nawait request.post('/api/orders', { data: { customer: 'ACME' } });\nawait page.goto('/orders');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "B — setup przestaje zależeć od formularza tworzenia, o którym ten test nie jest"
+        },
+        {
+          "id": "b",
+          "text": "B — wywołania API są zawsze szybsze niż przez UI"
+        },
+        {
+          "id": "c",
+          "text": "A — testowanie przez UI jest zawsze bardziej realistyczne"
+        },
+        {
+          "id": "d",
+          "text": "Są równoważne"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Szybkość to bonus; chodzi o promień rażenia. Przy A zmiana formularza tworzenia wywala każdy test, któremu wystarczyło, żeby zamówienie istniało.",
+      "difficulty": 4,
+      "tags": [
+        "isolation",
+        "api"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-isolation-011",
+      "type": "true_false",
+      "topic": "Równoległe workery a dane",
+      "question": "Uruchomienie z czterema workerami jest bezpieczne, o ile każdy test tworzy własne dane.",
+      "correctAnswer": false,
+      "explanation": "Nie, jeśli te dane kolidują — stały e-mail, jedno konto testowe, globalna flaga funkcyjna. Unikalne identyfikatory na test albo tenant na workera to jest to, co czyni to bezpiecznym.",
+      "difficulty": 4,
+      "tags": [
+        "parallelism",
+        "isolation"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-isolation-012",
+      "type": "find_error",
+      "topic": "Wyciek autoryzacji między projektami",
+      "question": "Nagle każdy test w suite jest zalogowany jako admin. Która linia to wyjaśnia?",
+      "language": "typescript",
+      "code": "1  export default defineConfig({\n2    use: { storageState: '.auth/admin.json' },\n3    projects: [\n4      { name: 'user', use: { storageState: '.auth/user.json' } },\n5      { name: 'anonymous' },\n6    ],\n7  });",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 4 — projekt nie może nadpisać storageState"
+        },
+        {
+          "id": "b",
+          "text": "Linia 5 — projekt anonymous dziedziczy stan admina z poziomu głównego"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — use na poziomie głównym jest ignorowane"
+        },
+        {
+          "id": "d",
+          "text": "Linia 3 — wszystkie projekty muszą definiować storageState"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "use projektu scala się na wierzchu tego z poziomu głównego, więc projekt, który nic nie mówi, dziedziczy. Daj projektowi anonymous storageState: { cookies: [], origins: [] }.",
+      "difficulty": 5,
+      "tags": [
+        "configuration",
+        "authentication",
+        "isolation"
+      ],
+      "estimatedSeconds": 50
+    }
+  ]
+}

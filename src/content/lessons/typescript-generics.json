@@ -1,0 +1,479 @@
+{
+  "id": "typescript-generics",
+  "subject": "typescript",
+  "module": "typescript-type-system",
+  "level": "intermediate",
+  "title": "Generics",
+  "description": "Type parameters, inference from arguments, constraints with extends, and default type arguments.",
+  "estimatedMinutes": 15,
+  "order": 0,
+  "tags": [
+    "generics",
+    "types",
+    "inference"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A generic is a type parameter: a placeholder the caller fills in. It lets one function or type keep an exact relationship between its input and its output instead of falling back to any."
+    },
+    {
+      "type": "example",
+      "title": "Inference from the call site",
+      "body": "You rarely pass type arguments by hand — TypeScript reads them off the arguments.",
+      "language": "typescript",
+      "code": "function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\n\nconst a = first([1, 2, 3]);      // number | undefined\nconst b = first([\"x\", \"y\"]);     // string | undefined"
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "Constrain a type parameter when you need to read from it: <T extends { id: string }> lets you touch .id while keeping the caller's exact type in the return."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-generics-001",
+      "type": "code_multiple_choice",
+      "topic": "Generic type inference",
+      "question": "What is the inferred type of x?",
+      "language": "typescript",
+      "code": "function first<T>(items: T[]) {\n  return items[0];\n}\n\nconst x = first([1, 2, 3]);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "T"
+        },
+        {
+          "id": "b",
+          "text": "number[]"
+        },
+        {
+          "id": "c",
+          "text": "number"
+        },
+        {
+          "id": "d",
+          "text": "unknown"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "T is inferred as number from the argument, so items[0] is number.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "inference"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-generics-002",
+      "type": "code_completion",
+      "topic": "Constraints",
+      "question": "Complete the constraint so the body may read entity.id.",
+      "language": "typescript",
+      "code": "function idOf<T ___ { id: string }>(entity: T) {\n  return entity.id;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "of"
+        },
+        {
+          "id": "b",
+          "text": "extends"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": "implements"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "extends constrains the type parameter. Without it, T could be anything and .id would not be known to exist.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "constraints"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-003",
+      "type": "concept_question",
+      "topic": "Generics vs any",
+      "question": "What does a generic give you that any does not?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It preserves the relationship between argument and return type, so the caller keeps full type information"
+        },
+        {
+          "id": "b",
+          "text": "It allows more value types to be passed in"
+        },
+        {
+          "id": "c",
+          "text": "It makes the function faster at runtime"
+        },
+        {
+          "id": "d",
+          "text": "It validates values at runtime"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "any accepts everything and returns everything, losing the link. A type parameter carries the caller's type all the way through.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "types"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-generics-004",
+      "type": "find_error",
+      "topic": "Unconstrained parameter",
+      "question": "Which line does the compiler reject?",
+      "language": "typescript",
+      "code": "1  function longest<T>(items: T[]) {\n2    return items.sort((a, b) => b.length - a.length)[0];\n3  }\n4  longest([\"aa\", \"b\"]);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 4 — the type argument must be passed explicitly"
+        },
+        {
+          "id": "b",
+          "text": "Line 1 — a generic needs a default type argument"
+        },
+        {
+          "id": "c",
+          "text": "Line 2 — length does not exist on an unconstrained T"
+        },
+        {
+          "id": "d",
+          "text": "No line is rejected"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "T is unknown inside the body until it is constrained. <T extends { length: number }> makes line 2 legal.",
+      "difficulty": 4,
+      "tags": [
+        "generics",
+        "constraints"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-generics-005",
+      "type": "true_false",
+      "topic": "Runtime cost",
+      "question": "Generics are erased at compile time and add no runtime code.",
+      "correctAnswer": true,
+      "explanation": "Like every other type in TypeScript, a type parameter disappears in the emitted JavaScript.",
+      "difficulty": 2,
+      "tags": [
+        "generics",
+        "runtime"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-generics-006",
+      "type": "code_multiple_choice",
+      "topic": "Generic interfaces",
+      "question": "What is the type of result?",
+      "language": "typescript",
+      "code": "interface Box<T> { value: T }\n\nconst b: Box<string[]> = { value: [\"a\"] };\nconst result = b.value.length;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "number"
+        },
+        {
+          "id": "b",
+          "text": "unknown"
+        },
+        {
+          "id": "c",
+          "text": "string[]"
+        },
+        {
+          "id": "d",
+          "text": "string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "T is string[], so b.value is an array and .length is a number.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "interfaces"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-generics-007",
+      "type": "fill_blank",
+      "topic": "Default type argument",
+      "question": "Complete the declaration so Box defaults to holding a string.",
+      "sentence": "interface Box<T ___ string> { value: T }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "extends"
+        },
+        {
+          "id": "b",
+          "text": "as"
+        },
+        {
+          "id": "c",
+          "text": ":"
+        },
+        {
+          "id": "d",
+          "text": "="
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A default type argument uses =. It can be combined with a constraint: <T extends object = {}>.",
+      "difficulty": 4,
+      "tags": [
+        "generics",
+        "defaults"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-008",
+      "type": "flashcard",
+      "topic": "keyof with generics",
+      "question": "TypeScript · generics",
+      "front": "function get<T, K extends keyof T>(o: T, k: K): T[K]",
+      "back": "A typed property getter — the return type follows the key that was passed",
+      "explanation": "This is the canonical generic pair: K is constrained to the object's own keys, and T[K] is an indexed access type.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "keyof"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-009",
+      "type": "multiple_choice",
+      "topic": "When not to use a generic",
+      "question": "A type parameter appears exactly once, in one parameter position, and nowhere in the return type. What does that suggest?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It should be given a default type argument"
+        },
+        {
+          "id": "b",
+          "text": "It should be constrained more tightly"
+        },
+        {
+          "id": "c",
+          "text": "The generic is not earning anything — the constraint itself would do"
+        },
+        {
+          "id": "d",
+          "text": "Nothing — this is the normal shape of a generic"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A type parameter relates two positions. Used once, it adds noise: take the constraint as the parameter type directly.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "design"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-generics-010",
+      "type": "code_multiple_choice",
+      "topic": "Inference from a callback",
+      "language": "typescript",
+      "question": "What is the type of result?",
+      "code": "function mapAll<T, U>(items: T[], fn: (item: T) => U): U[] {\n  return items.map(fn);\n}\n\nconst result = mapAll(['1', '2'], Number);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "number[]"
+        },
+        {
+          "id": "b",
+          "text": "string[]"
+        },
+        {
+          "id": "c",
+          "text": "unknown[]"
+        },
+        {
+          "id": "d",
+          "text": "(string | number)[]"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "T comes from the array, U from the callback's return type. Two parameters inferred from two positions is exactly what generics are for.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "inference"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-generics-011",
+      "type": "concept_question",
+      "topic": "Conditional types",
+      "question": "What does `T extends string ? A : B` mean in a type position?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A conditional type: resolves to A when T is assignable to string, otherwise B"
+        },
+        {
+          "id": "b",
+          "text": "A constraint requiring T to be a string"
+        },
+        {
+          "id": "c",
+          "text": "A runtime check compiled into the output"
+        },
+        {
+          "id": "d",
+          "text": "A declaration that T inherits from string"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "It is a type-level if. Over a union it distributes member by member, which is how Exclude and NonNullable are built.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "conditional-types"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-generics-012",
+      "type": "code_completion",
+      "topic": "infer",
+      "language": "typescript",
+      "question": "Complete the conditional type that pulls the element type out of an array.",
+      "code": "type ElementOf<T> = T extends (___ U)[] ? U : never;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "infer"
+        },
+        {
+          "id": "b",
+          "text": "extract"
+        },
+        {
+          "id": "c",
+          "text": "keyof"
+        },
+        {
+          "id": "d",
+          "text": "typeof"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "infer introduces a type variable inside the condition and binds it to whatever matched. ReturnType and Awaited are written the same way.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "infer"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-generics-013",
+      "type": "true_false",
+      "topic": "Explicit type arguments",
+      "question": "Passing a type argument explicitly, as in first<string>(items), disables inference for that call.",
+      "correctAnswer": true,
+      "explanation": "It also disables the error you would otherwise get from a mismatch, so it is worth a second look in review when the argument could have been inferred.",
+      "difficulty": 3,
+      "tags": [
+        "generics",
+        "inference"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-generics-014",
+      "type": "find_error",
+      "topic": "Constraint too loose",
+      "language": "typescript",
+      "question": "Why does line 2 fail to compile?",
+      "code": "1  function merge<T extends object>(a: T, b: T): T {\n2    return { ...a, ...b, mergedAt: Date.now() };\n3  }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Spreading generics is not allowed"
+        },
+        {
+          "id": "b",
+          "text": "T is the caller's exact type, and the extra property makes the result not assignable to it"
+        },
+        {
+          "id": "c",
+          "text": "Date.now() returns a string"
+        },
+        {
+          "id": "d",
+          "text": "The constraint should be unknown"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Returning T is a promise to give back exactly the caller's type. Declare the return as T & { mergedAt: number } instead.",
+      "difficulty": 5,
+      "tags": [
+        "generics",
+        "constraints"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-generics-015",
+      "type": "multiple_choice",
+      "topic": "Generic defaults with constraints",
+      "question": "What does `<T extends object = Record<string, unknown>>` declare?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A parameter constrained to object types, defaulting to a string-keyed record when omitted"
+        },
+        {
+          "id": "b",
+          "text": "A parameter that must be exactly Record<string, unknown>"
+        },
+        {
+          "id": "c",
+          "text": "A syntax error — a constraint and a default cannot be combined"
+        },
+        {
+          "id": "d",
+          "text": "A parameter whose default is checked at runtime"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Constraint and default are independent, and the default must itself satisfy the constraint.",
+      "difficulty": 4,
+      "tags": [
+        "generics",
+        "defaults"
+      ],
+      "estimatedSeconds": 40
+    }
+  ]
+}

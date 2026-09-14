@@ -1,0 +1,455 @@
+{
+  "id": "english-present-simple",
+  "subject": "english",
+  "module": "english-present-tenses",
+  "level": "beginner",
+  "title": "Present Simple",
+  "description": "Nawyki, fakty i rozkłady jazdy — plus końcówka -s w trzeciej osobie, o której wszyscy zapominają.",
+  "estimatedMinutes": 12,
+  "order": 0,
+  "tags": [
+    "present-simple",
+    "grammar",
+    "tenses"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Kiedy go używać",
+      "body": "Present Simple opisuje nawyki, prawdy ogólne i zdarzenia z rozkładu: I work in Wrocław. Water boils at 100 degrees. The train leaves at seven."
+    },
+    {
+      "type": "theory",
+      "title": "Forma",
+      "body": "Czasownik w formie podstawowej, poza trzecią osobą liczby pojedynczej, która bierze -s: I work / she works. Pytania i przeczenia tworzy się przez do albo does, a czasownik główny wraca do formy podstawowej: Does she work? She does not work."
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Nigdy nie podwajaj wykładnika. \"Does she works?\" jest błędne — does już niesie osobę, więc czasownik zostaje jako work."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-ps-001",
+      "type": "fill_blank",
+      "topic": "Końcówka -s w trzeciej osobie",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "She ___ in a hospital.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "works"
+        },
+        {
+          "id": "b",
+          "text": "work"
+        },
+        {
+          "id": "c",
+          "text": "worked"
+        },
+        {
+          "id": "d",
+          "text": "is working"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Trzecia osoba liczby pojedynczej bierze -s w Present Simple. Stała praca to nawyk, a nie coś, co dzieje się właśnie teraz.",
+      "difficulty": 1,
+      "tags": [
+        "present-simple",
+        "grammar"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-002",
+      "type": "multiple_choice",
+      "topic": "Forma pytająca",
+      "question": "Które pytanie jest poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Does she work on Fridays?"
+        },
+        {
+          "id": "b",
+          "text": "Is she work on Fridays?"
+        },
+        {
+          "id": "c",
+          "text": "Does she works on Fridays?"
+        },
+        {
+          "id": "d",
+          "text": "Do she work on Fridays?"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Does niesie wykładnik trzeciej osoby, więc czasownik główny wraca do formy podstawowej: work.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "questions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-003",
+      "type": "true_false",
+      "topic": "Rozkłady jazdy",
+      "question": "Present Simple może opisywać przyszłe zdarzenie z rozkładu, jak w \"The train leaves at six\".",
+      "correctAnswer": true,
+      "explanation": "Zdarzenia z rozkładu biorą Present Simple nawet wtedy, gdy są w przyszłości — rozkłady jazdy, programy, plany podróży.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "tenses"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-004",
+      "type": "translation",
+      "topic": "Nawyki",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Codziennie jeżdżę do pracy tramwajem.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I go to work by tram every day."
+        },
+        {
+          "id": "b",
+          "text": "I went to work by tram every day."
+        },
+        {
+          "id": "c",
+          "text": "I have gone to work by tram every day."
+        },
+        {
+          "id": "d",
+          "text": "I am going to work by tram every day."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Codziennie sygnalizuje nawyk, więc angielski używa Present Simple, a nie formy ciągłej.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-ps-005",
+      "type": "fill_blank",
+      "topic": "Przeczenia",
+      "question": "Uzupełnij zdanie przeczące.",
+      "sentence": "He ___ drink coffee in the evening.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "doesn't"
+        },
+        {
+          "id": "b",
+          "text": "not"
+        },
+        {
+          "id": "c",
+          "text": "don't"
+        },
+        {
+          "id": "d",
+          "text": "isn't"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Przeczenia w trzeciej osobie liczby pojedynczej tworzy się przez doesn't plus czasownik w formie podstawowej.",
+      "difficulty": 1,
+      "tags": [
+        "present-simple",
+        "negation"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-006",
+      "type": "concept_question",
+      "topic": "Przysłówki częstotliwości",
+      "question": "Gdzie zwykle stoi przysłówek częstotliwości taki jak \"usually\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Przed czasownikiem głównym, ale po czasowniku to be"
+        },
+        {
+          "id": "b",
+          "text": "Zawsze na końcu zdania"
+        },
+        {
+          "id": "c",
+          "text": "Zawsze na samym początku"
+        },
+        {
+          "id": "d",
+          "text": "Bezpośrednio po czasowniku głównym"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "I usually start at nine. She is usually late. Przy to be reguła się odwraca i to jest ta część, którą większość uczących się pomija.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "adverbs"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-ps-007",
+      "type": "multiple_choice",
+      "topic": "Pisownia końcówki -s",
+      "question": "Jaka jest forma trzeciej osoby liczby pojedynczej od \"study\"?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "studys"
+        },
+        {
+          "id": "b",
+          "text": "studyes"
+        },
+        {
+          "id": "c",
+          "text": "studies"
+        },
+        {
+          "id": "d",
+          "text": "studing"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Spółgłoska + y daje -ies. Samogłoska + y bierze samo -s: plays, buys.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "spelling"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-008",
+      "type": "flashcard",
+      "topic": "Czasowniki statyczne",
+      "question": "Słownictwo",
+      "front": "State verbs: know, believe, own, need",
+      "back": "Normally used in Present Simple, not in the continuous form",
+      "explanation": "\"I am knowing the answer\" jest błędne. Czasowniki statyczne opisują stan, a nie czynność w toku.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-009",
+      "type": "fill_blank",
+      "topic": "Fakty",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Water ___ at 100 degrees Celsius.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "is boiling"
+        },
+        {
+          "id": "b",
+          "text": "boils"
+        },
+        {
+          "id": "c",
+          "text": "boil"
+        },
+        {
+          "id": "d",
+          "text": "has boiled"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Prawdy ogólne biorą Present Simple, niezależnie od tego, co dzieje się w chwili mówienia.",
+      "difficulty": 1,
+      "tags": [
+        "present-simple",
+        "grammar"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-ps-010",
+      "type": "multiple_choice",
+      "topic": "Do kontra does",
+      "question": "Które pytanie jest poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Do your brother work here?"
+        },
+        {
+          "id": "b",
+          "text": "Does your brothers work here?"
+        },
+        {
+          "id": "c",
+          "text": "Does your brother work here?"
+        },
+        {
+          "id": "d",
+          "text": "Do your brother works here?"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Podmiot w trzeciej osobie liczby pojedynczej bierze does, a czasownik główny zostaje w formie podstawowej.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "questions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-011",
+      "type": "translation",
+      "topic": "Rutyna",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Ona zwykle zaczyna pracę o dziewiątej.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "She is usually starting work at nine."
+        },
+        {
+          "id": "b",
+          "text": "She usually starts work at nine."
+        },
+        {
+          "id": "c",
+          "text": "She usually start work at nine."
+        },
+        {
+          "id": "d",
+          "text": "She has usually started work at nine."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rutyna bierze Present Simple, trzecia osoba bierze -s, a usually stoi przed czasownikiem głównym.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-ps-012",
+      "type": "fill_blank",
+      "topic": "Have kontra has",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "My team ___ a stand-up every morning.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "have had"
+        },
+        {
+          "id": "b",
+          "text": "having"
+        },
+        {
+          "id": "c",
+          "text": "has"
+        },
+        {
+          "id": "d",
+          "text": "is having"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Team traktuje się jako liczbę pojedynczą w angielszczyźnie amerykańskiej i zwykle także w brytyjskim języku biznesu, więc has jest bezpiecznym wyborem.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-ps-013",
+      "type": "true_false",
+      "topic": "Okres zerowy",
+      "question": "Obie połowy zdania \"If you push this button, the test runs\" są w Present Simple.",
+      "correctAnswer": true,
+      "explanation": "Zero conditional opisuje coś zawsze prawdziwego i używa Present Simple w obu zdaniach składowych — to standardowy kształt w dokumentacji.",
+      "difficulty": 3,
+      "tags": [
+        "present-simple",
+        "conditionals"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-ps-014",
+      "type": "concept_question",
+      "topic": "Czasowniki statyczne w pracy",
+      "question": "Dlaczego \"I am thinking it is a good idea\" jest błędne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Think w znaczeniu \"mieć opinię\" jest statyczne, więc bierze formę prostą"
+        },
+        {
+          "id": "b",
+          "text": "Think nigdy nie może być użyte w formie ciągłej"
+        },
+        {
+          "id": "c",
+          "text": "Zdanie potrzebuje przecinka"
+        },
+        {
+          "id": "d",
+          "text": "Idea nie może stać po it is"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "\"I'm thinking about it\" jest w porządku — to znaczenie czynnościowe. Znaczenie opinii to stan: I think it's a good idea.",
+      "difficulty": 4,
+      "tags": [
+        "present-simple",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-ps-015",
+      "type": "flashcard",
+      "topic": "Pisownia trzeciej osoby",
+      "question": "Słownictwo",
+      "front": "go · do · watch · fix",
+      "back": "goes · does · watches · fixes — -es po o, ch, sh, s, x, z",
+      "explanation": "Reszta bierze samo -s. To najczęstsza wpadka pisemna na poziomie B2.",
+      "difficulty": 2,
+      "tags": [
+        "present-simple",
+        "spelling"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

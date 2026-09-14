@@ -1,0 +1,300 @@
+{
+  "id": "python-dictionaries",
+  "subject": "python",
+  "module": "python-core",
+  "level": "intermediate",
+  "title": "Słowniki",
+  "description": "Wyszukiwanie po kluczu, bezpieczny dostęp przez get(), iterowanie i wyrażenia słownikowe.",
+  "estimatedMinutes": 9,
+  "order": 2,
+  "tags": [
+    "dictionaries",
+    "collections",
+    "lookup"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Słownik mapuje hashowalne klucze na wartości i znajduje klucz w mniej więcej stałym czasie niezależnie od rozmiaru. Od Pythona 3.7 zachowuje też kolejność wstawiania."
+    },
+    {
+      "type": "example",
+      "title": "Bezpieczny dostęp",
+      "body": "Indeksowanie brakującego klucza rzuca KeyError. get() zwraca zamiast tego wartość domyślną, czego zwykle chcesz przy czytaniu danych z zewnątrz.",
+      "language": "python",
+      "code": "user = {\"name\": \"Anna\"}\n\nprint(user[\"email\"])          # KeyError\nprint(user.get(\"email\"))       # None\nprint(user.get(\"email\", \"-\"))  # -"
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "Iteruj przez .items(), gdy potrzebujesz obu połówek. Zwykłe `for k in d` daje same klucze i to jest najczęstsze źródło nieporozumień."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-dicts-001",
+      "type": "code_multiple_choice",
+      "topic": "Brakujący klucz",
+      "question": "Co się stanie w ostatniej linii?",
+      "language": "python",
+      "code": "user = {\"name\": \"Anna\"}\nprint(user[\"age\"])",
+      "answers": [
+        {
+          "id": "a",
+          "text": "KeyError"
+        },
+        {
+          "id": "b",
+          "text": "None"
+        },
+        {
+          "id": "c",
+          "text": "Pusty string"
+        },
+        {
+          "id": "d",
+          "text": "IndexError"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Dostęp przez nawiasy kwadratowe do brakującego klucza rzuca KeyError. Użyj .get(\"age\"), żeby dostać None.",
+      "difficulty": 2,
+      "tags": [
+        "dictionaries",
+        "errors"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-dicts-002",
+      "type": "code_completion",
+      "topic": "Iterowanie po parach",
+      "question": "Uzupełnij pętlę tak, żeby szła po kluczach i wartościach jednocześnie.",
+      "language": "python",
+      "code": "for key, value in scores.___():\n    print(key, value)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "items"
+        },
+        {
+          "id": "b",
+          "text": "keys"
+        },
+        {
+          "id": "c",
+          "text": "values"
+        },
+        {
+          "id": "d",
+          "text": "pairs"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": ".items() zwraca krotki (klucz, wartość). .keys() i .values() dają po jednej połówce.",
+      "difficulty": 2,
+      "tags": [
+        "dictionaries",
+        "iteration"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-dicts-003",
+      "type": "concept_question",
+      "topic": "Poprawne klucze",
+      "question": "Której wartości nie można użyć jako klucza słownika?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Listy"
+        },
+        {
+          "id": "b",
+          "text": "Krotki stringów"
+        },
+        {
+          "id": "c",
+          "text": "Liczby całkowitej"
+        },
+        {
+          "id": "d",
+          "text": "Stringa"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Klucze muszą być hashowalne, a hashowalność wymaga niemutowalności. Lista jest mutowalna, więc leci TypeError: unhashable type.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "lookup"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-dicts-004",
+      "type": "code_multiple_choice",
+      "topic": "Nadpisywanie kluczy",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "d = {\"a\": 1, \"b\": 2, \"a\": 3}\nprint(len(d), d[\"a\"])",
+      "answers": [
+        {
+          "id": "a",
+          "text": "2 3"
+        },
+        {
+          "id": "b",
+          "text": "3 1"
+        },
+        {
+          "id": "c",
+          "text": "2 1"
+        },
+        {
+          "id": "d",
+          "text": "SyntaxError"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Powtórzony klucz to nie błąd — po prostu wygrywa późniejsza wartość, a słownik ma dwa wpisy.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "lookup"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-dicts-005",
+      "type": "true_false",
+      "topic": "Kolejność wstawiania",
+      "question": "We współczesnym Pythonie słownik pamięta kolejność wstawiania kluczy.",
+      "correctAnswer": true,
+      "explanation": "Kolejność stała się szczegółem implementacji w 3.6, a gwarancją języka w 3.7.",
+      "difficulty": 2,
+      "tags": [
+        "dictionaries",
+        "iteration"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-dicts-006",
+      "type": "find_error",
+      "topic": "Modyfikacja w trakcie iteracji",
+      "question": "Która linia rzuca RuntimeError?",
+      "language": "python",
+      "code": "1  d = {\"a\": 1, \"b\": 0}\n2  for key in d:\n3      if d[key] == 0:\n4          del d[key]",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 4 — słownik zmienił rozmiar w trakcie iteracji"
+        },
+        {
+          "id": "b",
+          "text": "Linia 2 — po słowniku nie da się iterować wprost"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — porównanie z 0 jest niedozwolone"
+        },
+        {
+          "id": "d",
+          "text": "Żadna linia nic nie rzuca"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Usuwanie w trakcie iteracji unieważnia iterator. Iteruj po list(d) albo zbuduj nowy słownik.",
+      "difficulty": 4,
+      "tags": [
+        "dictionaries",
+        "mutation",
+        "errors"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "python-dicts-007",
+      "type": "fill_blank",
+      "topic": "Wyrażenie słownikowe",
+      "question": "Uzupełnij wyrażenie, które odwraca słownik.",
+      "sentence": "inverted = {v: k for k, v ___ d.items()}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "in"
+        },
+        {
+          "id": "b",
+          "text": "of"
+        },
+        {
+          "id": "c",
+          "text": "from"
+        },
+        {
+          "id": "d",
+          "text": "at"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Wyrażenie słownikowe używa tej samej klauzuli for ... in ... co listowe, z wyrażeniem klucz: wartość z przodu.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "comprehensions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-dicts-008",
+      "type": "flashcard",
+      "topic": "setdefault",
+      "question": "Metoda",
+      "front": "d.setdefault(key, [])",
+      "back": "Zwraca istniejącą wartość albo wstawia domyślną i zwraca ją",
+      "explanation": "Przydatne do grupowania: d.setdefault(k, []).append(v). collections.defaultdict(list) robi to samo bardziej wprost.",
+      "difficulty": 4,
+      "tags": [
+        "dictionaries",
+        "lookup"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-dicts-009",
+      "type": "multiple_choice",
+      "topic": "Łączenie słowników",
+      "question": "Które wyrażenie łączy dwa słowniki tak, żeby przy konflikcie wygrywał prawy?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "a + b"
+        },
+        {
+          "id": "b",
+          "text": "{**a, **b}"
+        },
+        {
+          "id": "c",
+          "text": "a.append(b)"
+        },
+        {
+          "id": "d",
+          "text": "a & b"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rozpakowanie podwójną gwiazdką tworzy nowy słownik; od Pythona 3.9 a | b robi to samo. Słowniki nie wspierają +.",
+      "difficulty": 3,
+      "tags": [
+        "dictionaries",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

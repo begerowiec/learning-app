@@ -1,0 +1,455 @@
+{
+  "id": "english-present-perfect",
+  "subject": "english",
+  "module": "english-present-tenses",
+  "level": "beginner",
+  "title": "Present Perfect",
+  "description": "Czynności przeszłe z obecnym skutkiem, doświadczenie i określenia czasu, które decydują o wyborze czasu.",
+  "estimatedMinutes": 12,
+  "order": 2,
+  "tags": [
+    "present-perfect",
+    "grammar",
+    "tenses"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Kiedy go używać",
+      "body": "Używaj Present Perfect, gdy czynność wydarzyła się w przeszłości, ale jest związana z teraźniejszością — przez skutek, doświadczenie albo to, że wciąż trwa."
+    },
+    {
+      "type": "theory",
+      "title": "Forma",
+      "body": "have / has + imiesłów bierny. \"I have lived here since 2020.\" \"She has just finished work.\""
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Present Perfect nigdy nie łączy się z zamkniętym określeniem czasu w rodzaju yesterday czy in 2019. Te należą do Past Simple."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-pp-001",
+      "type": "fill_blank",
+      "topic": "Present Perfect z since",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "I ___ here since 2020.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "live"
+        },
+        {
+          "id": "b",
+          "text": "am living"
+        },
+        {
+          "id": "c",
+          "text": "have lived"
+        },
+        {
+          "id": "d",
+          "text": "lived"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "since 2020 wyznacza czynność, która zaczęła się w przeszłości i trwa nadal, więc Present Perfect jest konieczny.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "since-for"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pp-002",
+      "type": "multiple_choice",
+      "topic": "Present Perfect kontra Past Simple",
+      "question": "Które zdanie jest poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "She finished work since an hour."
+        },
+        {
+          "id": "b",
+          "text": "She has just finished work."
+        },
+        {
+          "id": "c",
+          "text": "She is finished work just now."
+        },
+        {
+          "id": "d",
+          "text": "She has finished work yesterday."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "just łączy się z Present Perfect. yesterday to czas zamknięty, więc bierze Past Simple.",
+      "difficulty": 3,
+      "tags": [
+        "present-perfect",
+        "tenses"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-pp-003",
+      "type": "translation",
+      "topic": "ever + Present Perfect",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Have you ever been to Japan?",
+      "sourceLanguage": "en",
+      "targetLanguage": "pl",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Byłeś w Japonii wczoraj?"
+        },
+        {
+          "id": "b",
+          "text": "Czy będziesz w Japonii?"
+        },
+        {
+          "id": "c",
+          "text": "Czy byłeś kiedyś w Japonii?"
+        },
+        {
+          "id": "d",
+          "text": "Czy jedziesz do Japonii?"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "ever + Present Perfect pyta o doświadczenie w dowolnym momencie życia.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "translation"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-pp-004",
+      "type": "true_false",
+      "topic": "Zamknięte określenia czasu",
+      "question": "Present Perfect może być użyty z \"yesterday\".",
+      "correctAnswer": false,
+      "explanation": "yesterday to zamknięty czas przeszły, który wymaga Past Simple: I saw her yesterday.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "time-markers"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pp-005",
+      "type": "fill_blank",
+      "topic": "Pytania w Present Perfect",
+      "question": "Uzupełnij pytanie.",
+      "sentence": "___ you finished the report yet?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Did"
+        },
+        {
+          "id": "b",
+          "text": "Are"
+        },
+        {
+          "id": "c",
+          "text": "Have"
+        },
+        {
+          "id": "d",
+          "text": "Do"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "yet łączy się z pytaniami w Present Perfect, tworzonymi przez have / has + imiesłów bierny.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "questions"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pp-006",
+      "type": "concept_question",
+      "topic": "since kontra for",
+      "question": "Jaka jest różnica między since a for?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "since wprowadza punkt początkowy, for wprowadza długość trwania"
+        },
+        {
+          "id": "b",
+          "text": "Są wymienne"
+        },
+        {
+          "id": "c",
+          "text": "since dotyczy przyszłości, for przeszłości"
+        },
+        {
+          "id": "d",
+          "text": "for używa się tylko w pytaniach"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "since 2020, since Monday, since I moved — punkt w czasie. for two years, for ten minutes — odcinek czasu.",
+      "difficulty": 3,
+      "tags": [
+        "present-perfect",
+        "since-for"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pp-007",
+      "type": "multiple_choice",
+      "topic": "been kontra gone",
+      "question": "Które zdanie znaczy, że wciąż jest poza domem?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "She is being in Berlin."
+        },
+        {
+          "id": "b",
+          "text": "She has been to Berlin."
+        },
+        {
+          "id": "c",
+          "text": "She went to Berlin."
+        },
+        {
+          "id": "d",
+          "text": "She has gone to Berlin."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "has gone znaczy, że wyjechała i nie wróciła. has been znaczy, że kiedyś była i już wróciła.",
+      "difficulty": 4,
+      "tags": [
+        "present-perfect",
+        "participles"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pp-008",
+      "type": "flashcard",
+      "topic": "Nieregularne imiesłowy",
+      "question": "Słownictwo",
+      "front": "write · wrote · written",
+      "back": "Present Perfect bierze trzecią formę: I have written",
+      "explanation": "Imiesłów bierny, nie past simple. \"I have wrote\" to najczęstszy błąd w tym czasie.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "participles"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pp-009",
+      "type": "fill_blank",
+      "topic": "Obecny skutek",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "I can't get in — I ___ my keys.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "have lost"
+        },
+        {
+          "id": "b",
+          "text": "lost"
+        },
+        {
+          "id": "c",
+          "text": "am losing"
+        },
+        {
+          "id": "d",
+          "text": "lose"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Czynność przeszła jest istotna przez swój obecny skutek — kluczy nadal nie ma — więc pasuje Present Perfect.",
+      "difficulty": 3,
+      "tags": [
+        "present-perfect",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pp-010",
+      "type": "multiple_choice",
+      "topic": "Present Perfect Continuous",
+      "question": "Które zdanie podkreśla, jak długo trwa czynność?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I have been debugging this since morning."
+        },
+        {
+          "id": "b",
+          "text": "I have debugged this since morning."
+        },
+        {
+          "id": "c",
+          "text": "I debug this since morning."
+        },
+        {
+          "id": "d",
+          "text": "I am debugging this since morning."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Forma ciągła podkreśla trwanie i samą czynność; forma prosta podkreśla ukończony rezultat.",
+      "difficulty": 4,
+      "tags": [
+        "present-perfect",
+        "tenses"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-pp-011",
+      "type": "fill_blank",
+      "topic": "already kontra yet",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "We have ___ deployed the fix, so you can test it.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "yet"
+        },
+        {
+          "id": "b",
+          "text": "still"
+        },
+        {
+          "id": "c",
+          "text": "already"
+        },
+        {
+          "id": "d",
+          "text": "ever"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "already łączy się ze zdaniami twierdzącymi, yet z pytaniami i przeczeniami: we haven't deployed it yet.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "time-markers"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pp-012",
+      "type": "translation",
+      "topic": "Doświadczenie",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Nigdy nie pracowałem z Cyprestem.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I never work with Cypress."
+        },
+        {
+          "id": "b",
+          "text": "I have never worked with Cypress."
+        },
+        {
+          "id": "c",
+          "text": "I am never working with Cypress."
+        },
+        {
+          "id": "d",
+          "text": "I did never work with Cypress."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Doświadczenie życiowe do teraz bierze Present Perfect, a never samo niesie przeczenie.",
+      "difficulty": 2,
+      "tags": [
+        "present-perfect",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pp-013",
+      "type": "true_false",
+      "topic": "Użycie amerykańskie",
+      "question": "W amerykańskiej angielszczyźnie Past Simple bywa używany tam, gdzie brytyjska woli Present Perfect, jak w \"Did you eat yet?\".",
+      "correctAnswer": true,
+      "explanation": "W praktyce obie formy są akceptowane. W pisanym angielskim biznesowym forma Present Perfect jest bezpieczniejsza przy just, already i yet.",
+      "difficulty": 4,
+      "tags": [
+        "present-perfect",
+        "register"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-pp-014",
+      "type": "concept_question",
+      "topic": "Okres nieukończony",
+      "question": "Dlaczego \"I have had three meetings today\" używa Present Perfect?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Dzisiaj jeszcze się nie skończyło, więc okres wciąż obejmuje teraźniejszość"
+        },
+        {
+          "id": "b",
+          "text": "Spotkania zawsze biorą Present Perfect"
+        },
+        {
+          "id": "c",
+          "text": "Bo w zdaniu jest liczba"
+        },
+        {
+          "id": "d",
+          "text": "Powinien być Past Simple"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Okresy nieukończone — today, this week, this year — biorą Present Perfect. Gdy dzień się skończy, staje się to \"I had three meetings yesterday\".",
+      "difficulty": 4,
+      "tags": [
+        "present-perfect",
+        "time-markers"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "english-pp-015",
+      "type": "flashcard",
+      "topic": "Trzy formy nieregularne",
+      "question": "Słownictwo",
+      "front": "go · went · gone",
+      "back": "Present Perfect zawsze bierze trzecią formę: I have gone",
+      "explanation": "Porównaj been: I have been to Berlin (i wróciłem) kontra I have gone to Berlin (wciąż tam jestem).",
+      "difficulty": 3,
+      "tags": [
+        "present-perfect",
+        "participles"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

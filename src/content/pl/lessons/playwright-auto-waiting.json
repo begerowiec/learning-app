@@ -1,0 +1,381 @@
+{
+  "id": "playwright-auto-waiting",
+  "subject": "playwright",
+  "module": "playwright-locators",
+  "level": "beginner",
+  "title": "Automatyczne czekanie",
+  "description": "Co naprawdę sprawdza actionability, dlaczego waitForTimeout to złe narzędzie i które dwa czekania nadal są potrzebne.",
+  "estimatedMinutes": 10,
+  "order": 1,
+  "tags": [
+    "auto-waiting",
+    "flaky",
+    "actionability"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Actionability",
+      "body": "Przed każdą akcją Playwright czeka, aż element będzie dołączony do DOM-u, widoczny, stabilny (bez animacji), zdolny odbierać zdarzenia (nic go nie zasłania) i — dla pól — włączony. Dopiero gdy wszystko zachodzi, następuje kliknięcie, a jeśli nigdy nie zajdzie, błąd nazywa warunek, który zawiódł."
+    },
+    {
+      "type": "example",
+      "title": "Co zastępuje sleep",
+      "body": "Stały timeout to zgadywanie: za krótki na CI, zmarnowane sekundy lokalnie. Asercja web-first czeka na warunek, na którym naprawdę ci zależy.",
+      "language": "typescript",
+      "code": "// guesswork\nawait page.waitForTimeout(2000);\nawait expect(page.getByText('Saved')).toBeVisible();\n\n// the condition itself\nawait expect(page.getByText('Saved')).toBeVisible({ timeout: 10_000 });"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Automatyczne czekanie obejmuje element, a nie stan twojej aplikacji. Zniknięcie spinnera nie znaczy, że lista skończyła się renderować — asertuj dane, których oczekujesz, a nie brak loadera."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-waiting-001",
+      "type": "concept_question",
+      "topic": "Warunki actionability",
+      "question": "Na co Playwright NIE czeka przed kliknięciem?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Na widoczność elementu"
+        },
+        {
+          "id": "b",
+          "text": "Na stabilność elementu — brak trwającej animacji"
+        },
+        {
+          "id": "c",
+          "text": "Na zakończenie wszystkich trwających żądań sieciowych"
+        },
+        {
+          "id": "d",
+          "text": "Na to, że element odbiera zdarzenia wskaźnika"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Bezczynność sieci nie jest częścią actionability, a czekanie na nią zwykle jest błędem — aplikacja z pollingiem albo analityką nigdy nie przechodzi w stan idle.",
+      "difficulty": 3,
+      "tags": [
+        "auto-waiting",
+        "actionability"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-002",
+      "type": "find_error",
+      "topic": "Sleep jako naprawa",
+      "question": "Ten test jest flaky na CI, a lokalnie przechodzi. Na czym polega prawdziwy problem?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('button', { name: 'Save' }).click();\n2  await page.waitForTimeout(1000);\n3  const rows = await page.getByRole('row').count();\n4  expect(rows).toBe(4);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 1 — click trzeba awaitować dwa razy"
+        },
+        {
+          "id": "b",
+          "text": "Linie 2–4 — stały sleep plus nieponawiana asercja na migawce licznika"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — count() nie jest wspierane"
+        },
+        {
+          "id": "d",
+          "text": "Linia 4 — toBe powinno być toEqual"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "count() czyta raz, więc expect(number) nie może ponawiać. await expect(page.getByRole(\"row\")).toHaveCount(4) odpytuje aż wiersz się pojawi i żadnego sleepa nie potrzebuje.",
+      "difficulty": 3,
+      "tags": [
+        "auto-waiting",
+        "flaky",
+        "assertions"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-waiting-003",
+      "type": "code_multiple_choice",
+      "topic": "Uchwyty kontra wartości",
+      "question": "Dlaczego druga linia nigdy nie może ponowić próby?",
+      "language": "typescript",
+      "code": "const text = await page.getByTestId('total').textContent();\nexpect(text).toBe('120.00 PLN');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "textContent() rozwiązuje się raz, więc asercja porównuje zwykły string"
+        },
+        {
+          "id": "b",
+          "text": "toBe z założenia nie ponawia, ale toEqual by ponawiało"
+        },
+        {
+          "id": "c",
+          "text": "getByTestId nie wspiera textContent"
+        },
+        {
+          "id": "d",
+          "text": "Ponawia — expect zawsze jest web-first"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Ponawianie to cecha asercji na *lokatorze*: await expect(page.getByTestId(\"total\")).toHaveText(\"120.00 PLN\") czyta ponownie, aż się zgodzi albo minie limit czasu.",
+      "difficulty": 3,
+      "tags": [
+        "auto-waiting",
+        "assertions"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-004",
+      "type": "true_false",
+      "topic": "networkidle",
+      "question": "waitForLoadState(\"networkidle\") to zalecany sposób czekania, aż aplikacja SPA się ustabilizuje.",
+      "correctAnswer": false,
+      "explanation": "Dokumentacja Playwrighta tego odradza. Polling, websockety albo analityka trzymają sieć zajętą w nieskończoność; asertuj coś, co widzi użytkownik.",
+      "difficulty": 4,
+      "tags": [
+        "auto-waiting",
+        "flaky"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-waiting-005",
+      "type": "code_completion",
+      "topic": "Czekanie na odpowiedź",
+      "question": "Kliknięcie i wywołane nim żądanie muszą być awaitowane razem, bez wyścigu. Uzupełnij wywołanie.",
+      "language": "typescript",
+      "code": "const responsePromise = page.waitForResponse('**/api/orders');\nawait page.getByRole('button', { name: 'Submit' }).click();\nconst response = ___ responsePromise;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "await"
+        },
+        {
+          "id": "b",
+          "text": "return"
+        },
+        {
+          "id": "c",
+          "text": "yield"
+        },
+        {
+          "id": "d",
+          "text": "expect"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Zacznij czekanie przed akcją, a awaituj po niej — ta kolejność chroni przed przegapieniem szybkiej odpowiedzi. Awaitowanie waitForResponse przed kliknięciem zakleszczyłoby test.",
+      "difficulty": 4,
+      "tags": [
+        "auto-waiting",
+        "network"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-006",
+      "type": "multiple_choice",
+      "topic": "Element zasłonięty nakładką",
+      "question": "Kliknięcie kończy się limitem czasu z komunikatem \"element intercepts pointer events\". Co to znaczy?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Element jest czymś zasłonięty — toastem, tłem modala, przyklejonym nagłówkiem"
+        },
+        {
+          "id": "b",
+          "text": "Element jest wyłączony"
+        },
+        {
+          "id": "c",
+          "text": "Selektor dopasował dwa elementy"
+        },
+        {
+          "id": "d",
+          "text": "Strona nawigowała w trakcie kliknięcia"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Playwright testuje trafienie w punkt, w który zaraz kliknie. force: true pomija sprawdzenie i zwykle tylko przenosi awarię w mniej oczywiste miejsce — poczekaj raczej, aż nakładka zniknie.",
+      "difficulty": 3,
+      "tags": [
+        "actionability",
+        "auto-waiting"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-007",
+      "type": "fill_blank",
+      "topic": "Kliknięcia force",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Przekazanie force: true do click() pomija sprawdzenia ___.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "actionability"
+        },
+        {
+          "id": "b",
+          "text": "nawigacji"
+        },
+        {
+          "id": "c",
+          "text": "trybu strict"
+        },
+        {
+          "id": "d",
+          "text": "asercji"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Klika we współrzędne niezależnie od widoczności czy przesłonięcia. Przydatne przy testowaniu celowo zablokowanej kontrolki; wszędzie indziej to obciążenie.",
+      "difficulty": 3,
+      "tags": [
+        "actionability"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-waiting-008",
+      "type": "code_multiple_choice",
+      "topic": "Znikający loader",
+      "question": "Która asercja faktycznie dowodzi, że lista się załadowała?",
+      "language": "typescript",
+      "code": "// A\nawait expect(page.getByTestId('spinner')).toBeHidden();\n\n// B\nawait expect(page.getByRole('row')).toHaveCount(20);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "B — asertuje dane, a nie brak loadera"
+        },
+        {
+          "id": "b",
+          "text": "A — spinner znika dokładnie w chwili zakończenia ładowania"
+        },
+        {
+          "id": "c",
+          "text": "Obie są równoważne"
+        },
+        {
+          "id": "d",
+          "text": "Żadna — potrzebny jest waitForTimeout"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A przechodzi, zanim spinner się pojawi, i ponownie w luce między rozwiązaniem fetcha a wyrenderowaniem wierszy. Asertuj stan końcowy, na którym ci zależy.",
+      "difficulty": 4,
+      "tags": [
+        "auto-waiting",
+        "flaky",
+        "assertions"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-waiting-009",
+      "type": "flashcard",
+      "topic": "Domyślne limity czasu",
+      "question": "Playwright · konfiguracja",
+      "front": "expect timeout vs test timeout",
+      "back": "Limit expect kontra limit testu — 5 s na asercję web-first, 30 s na cały test, strojone osobno",
+      "explanation": "Podnieś expect.timeout w konfiguracji przy naprawdę wolnym warunku; podnoszenie limitu testu tylko zaciera to, gdzie poszedł czas.",
+      "difficulty": 3,
+      "tags": [
+        "auto-waiting",
+        "configuration"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-waiting-010",
+      "type": "concept_question",
+      "topic": "Kiedy jawne czekanie jest słuszne",
+      "question": "Który przypadek naprawdę wymaga jawnego czekania zamiast asercji?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Czekanie, aż przycisk stanie się aktywny"
+        },
+        {
+          "id": "b",
+          "text": "Przechwycenie odpowiedzi sieciowej albo pobrania wywołanego akcją"
+        },
+        {
+          "id": "c",
+          "text": "Czekanie, aż pojawi się tekst"
+        },
+        {
+          "id": "d",
+          "text": "Czekanie, aż liczba wierszy się ustabilizuje"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Wszystko widoczne pokrywa ponawiana asercja. Zdarzenia spoza DOM-u — odpowiedzi, pobrania, popupy, komunikaty konsoli — wymagają waitFor* uruchomionego przed akcją.",
+      "difficulty": 4,
+      "tags": [
+        "auto-waiting",
+        "network"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-waiting-011",
+      "type": "true_false",
+      "topic": "Stabilność animacji",
+      "question": "Playwright kliknie element, który wciąż wjeżdża na swoje miejsce.",
+      "correctAnswer": false,
+      "explanation": "Stabilność to jeden z warunków actionability: czeka, aż prostokąt elementu przestanie się przesuwać przez dwie kolejne klatki animacji — to właśnie chroni przed kliknięciem obok toastu.",
+      "difficulty": 3,
+      "tags": [
+        "actionability",
+        "auto-waiting"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-waiting-012",
+      "type": "find_error",
+      "topic": "Wyścig przy nawigacji",
+      "question": "To sporadycznie kończy się błędem \"execution context was destroyed\". Dlaczego?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('link', { name: 'Reports' }).click();\n2  const title = await page.title();\n3  expect(title).toContain('Reports');",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 1 — linków nie da się klikać"
+        },
+        {
+          "id": "b",
+          "text": "Linia 3 — toContain nie działa na stringach"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — czyta tytuł w trakcie nawigacji, zanim istnieje nowy dokument"
+        },
+        {
+          "id": "d",
+          "text": "Nic — to błąd Playwrighta"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "await expect(page).toHaveTitle(/Reports/) ponawia przez całą nawigację. Jednorazowe odczyty tuż po kliknięciu to klasyczne źródło flaków widocznych tylko na CI.",
+      "difficulty": 4,
+      "tags": [
+        "flaky",
+        "auto-waiting",
+        "navigation"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

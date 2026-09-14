@@ -1,0 +1,479 @@
+{
+  "id": "typescript-narrowing",
+  "subject": "typescript",
+  "module": "typescript-type-system",
+  "level": "intermediate",
+  "title": "Type narrowing",
+  "description": "typeof and in guards, discriminated unions, truthiness narrowing and exhaustive switches.",
+  "estimatedMinutes": 15,
+  "order": 1,
+  "tags": [
+    "narrowing",
+    "unions",
+    "guards"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "Narrowing is how TypeScript follows your control flow. Inside a branch where a check has passed, the union shrinks to the constituents that could still be there, and the members of those become available."
+    },
+    {
+      "type": "example",
+      "title": "Discriminated union",
+      "body": "Give every member a literal tag and a switch does the narrowing for you — this is the pattern behind the app's own Exercise type.",
+      "language": "typescript",
+      "code": "type Shape =\n  | { kind: \"circle\"; r: number }\n  | { kind: \"rect\"; w: number; h: number };\n\nfunction area(s: Shape) {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.r ** 2;\n    case \"rect\":   return s.w * s.h;\n  }\n}"
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "Add a default branch that assigns the value to never. When a new union member appears, that line fails to compile and points you at every place that has to handle it."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-narrowing-001",
+      "type": "flashcard",
+      "topic": "typeof guard",
+      "question": "TypeScript · narrowing",
+      "front": "typeof x === \"string\"",
+      "back": "Narrows x to string inside the branch",
+      "explanation": "A typeof guard narrows a union so string-only members become available.",
+      "difficulty": 2,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-narrowing-002",
+      "type": "code_multiple_choice",
+      "topic": "typeof narrowing",
+      "question": "What is the type of x on the marked line?",
+      "language": "typescript",
+      "code": "function f(x: string | number) {\n  if (typeof x === \"number\") {\n    return x.toFixed(2);   // <- here\n  }\n  return x;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string | number"
+        },
+        {
+          "id": "b",
+          "text": "unknown"
+        },
+        {
+          "id": "c",
+          "text": "string"
+        },
+        {
+          "id": "d",
+          "text": "number"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Inside the guard only the number constituent remains, which is why toFixed is available. After the if, x is string.",
+      "difficulty": 2,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-003",
+      "type": "concept_question",
+      "topic": "Exhaustiveness",
+      "question": "What does assigning the switch value to a never-typed variable in the default branch achieve?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It makes the switch faster"
+        },
+        {
+          "id": "b",
+          "text": "It throws a helpful runtime error"
+        },
+        {
+          "id": "c",
+          "text": "It silences the missing-return-type warning"
+        },
+        {
+          "id": "d",
+          "text": "It turns a newly added union member into a compile error at every unhandled switch"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "If every member is handled, the value is narrowed to never and the assignment is fine. Add a member and the assignment stops compiling.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "exhaustiveness"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-narrowing-004",
+      "type": "code_completion",
+      "topic": "in operator",
+      "question": "Complete the guard that distinguishes the two shapes by property presence.",
+      "language": "typescript",
+      "code": "if (\"radius\" ___ shape) {\n  return shape.radius;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "of"
+        },
+        {
+          "id": "b",
+          "text": "typeof"
+        },
+        {
+          "id": "c",
+          "text": "in"
+        },
+        {
+          "id": "d",
+          "text": "hasOwnProperty"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The in operator narrows a union to the members that declare that property. hasOwnProperty does not narrow.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-005",
+      "type": "find_error",
+      "topic": "Truthiness and zero",
+      "question": "Which line hides a bug when count is 0?",
+      "language": "typescript",
+      "code": "1  function label(count?: number) {\n2    if (count) {\n3      return `${count} items`;\n4    }\n5    return \"unknown\";\n6  }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 2 — 0 is falsy, so a real count of zero reports \"unknown\""
+        },
+        {
+          "id": "b",
+          "text": "Line 3 — template literals need String()"
+        },
+        {
+          "id": "c",
+          "text": "Line 1 — an optional number parameter is not allowed"
+        },
+        {
+          "id": "d",
+          "text": "Line 5 — the return types must match"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Truthiness narrowing removes 0 along with undefined. Test count !== undefined when zero is a legitimate value.",
+      "difficulty": 4,
+      "tags": [
+        "narrowing",
+        "truthiness"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-narrowing-006",
+      "type": "true_false",
+      "topic": "Type predicates",
+      "question": "A function returning `x is Cat` lets the compiler narrow at the call site.",
+      "correctAnswer": true,
+      "explanation": "That is a user-defined type guard. The compiler trusts the predicate, so the body has to actually check what it claims.",
+      "difficulty": 4,
+      "tags": [
+        "narrowing",
+        "type-predicates"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-narrowing-007",
+      "type": "fill_blank",
+      "topic": "Discriminant",
+      "question": "Complete the sentence.",
+      "sentence": "A discriminated union needs every member to share a ___ property with a literal type.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "common"
+        },
+        {
+          "id": "b",
+          "text": "unique"
+        },
+        {
+          "id": "c",
+          "text": "optional"
+        },
+        {
+          "id": "d",
+          "text": "readonly"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The discriminant is one property present in every member, whose literal type differs between them — kind, type, status.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "unions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-008",
+      "type": "code_multiple_choice",
+      "topic": "Narrowing does not survive callbacks",
+      "question": "Why does the compiler complain on the marked line?",
+      "language": "typescript",
+      "code": "function f(x: string | undefined) {\n  if (!x) return;\n  setTimeout(() => {\n    console.log(x.length);   // <- here, if x were a mutable outer let\n  });\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Narrowing never applies inside arrow functions"
+        },
+        {
+          "id": "b",
+          "text": "x must be annotated again inside the callback"
+        },
+        {
+          "id": "c",
+          "text": "setTimeout callbacks cannot read outer variables"
+        },
+        {
+          "id": "d",
+          "text": "It does not for a parameter — but narrowing is discarded for a mutable variable captured in a closure"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Control-flow analysis cannot know when a deferred callback runs, so narrowing on anything reassignable is dropped. Copy it into a const first.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "closures"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-narrowing-009",
+      "type": "multiple_choice",
+      "topic": "Array.isArray",
+      "question": "Which check narrows `string | string[]` to the array branch?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "value.length > 0"
+        },
+        {
+          "id": "b",
+          "text": "Array.isArray(value)"
+        },
+        {
+          "id": "c",
+          "text": "value instanceof String"
+        },
+        {
+          "id": "d",
+          "text": "typeof value === \"array\""
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Array.isArray is typed as a type guard. typeof never returns \"array\", and length exists on both constituents so it narrows nothing.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "guards",
+        "arrays"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-010",
+      "type": "code_multiple_choice",
+      "topic": "typeof null",
+      "language": "typescript",
+      "question": "Why does this guard fail to exclude null?",
+      "code": "function f(x: { id: string } | null) {\n  if (typeof x === 'object') {\n    return x.id;\n  }\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "typeof null is 'object', so null is still in the narrowed type"
+        },
+        {
+          "id": "b",
+          "text": "typeof does not work on object types"
+        },
+        {
+          "id": "c",
+          "text": "The union needs a discriminant"
+        },
+        {
+          "id": "d",
+          "text": "It does exclude null"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A JavaScript wart the type system faithfully models. Test `if (x)` or `x !== null` instead.",
+      "difficulty": 4,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-narrowing-011",
+      "type": "concept_question",
+      "topic": "Assertion functions",
+      "question": "What does a function declared `asserts value is string` do?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Narrows the argument for the rest of the scope, on the promise that it throws otherwise"
+        },
+        {
+          "id": "b",
+          "text": "Returns a boolean the caller must check"
+        },
+        {
+          "id": "c",
+          "text": "Adds a runtime type check automatically"
+        },
+        {
+          "id": "d",
+          "text": "Casts the value without any effect"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Unlike a predicate it returns nothing: control flow after the call implies the assertion held. It must be called on a variable with an explicit type annotation to work.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "type-predicates"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-narrowing-012",
+      "type": "code_completion",
+      "topic": "instanceof",
+      "language": "typescript",
+      "question": "Complete the guard that narrows an unknown error to Error.",
+      "code": "if (error ___ Error) {\n  console.error(error.message);\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "instanceof"
+        },
+        {
+          "id": "b",
+          "text": "typeof"
+        },
+        {
+          "id": "c",
+          "text": "is"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "catch binds unknown under useUnknownInCatchVariables, so this guard is what makes .message available. Errors crossing a realm boundary can defeat instanceof.",
+      "difficulty": 3,
+      "tags": [
+        "narrowing",
+        "guards"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-narrowing-013",
+      "type": "true_false",
+      "topic": "Narrowing a property",
+      "question": "Narrowing obj.value with a typeof check survives an intervening function call.",
+      "correctAnswer": false,
+      "explanation": "Any call could reassign the property, so control-flow analysis discards the narrowing. Copy it into a const first.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-narrowing-014",
+      "type": "find_error",
+      "topic": "Array.filter and null",
+      "language": "typescript",
+      "question": "Why is items still (string | null)[] on line 2?",
+      "code": "1  const raw: (string | null)[] = ['a', null];\n2  const items = raw.filter((x) => x !== null);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "filter is typed to return the same element type unless the callback is a type predicate"
+        },
+        {
+          "id": "b",
+          "text": "filter does not accept arrow functions"
+        },
+        {
+          "id": "c",
+          "text": "The comparison should be != null"
+        },
+        {
+          "id": "d",
+          "text": "It is narrowed correctly"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Write `(x): x is string => x !== null` — or, from TypeScript 5.5, the inference does it for you when the callback is a simple predicate.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "arrays"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-narrowing-015",
+      "type": "multiple_choice",
+      "topic": "Equality narrowing",
+      "question": "Given `a: string | number` and `b: string | boolean`, what is a's type inside `if (a === b)`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string — the only type both unions share"
+        },
+        {
+          "id": "b",
+          "text": "string | number"
+        },
+        {
+          "id": "c",
+          "text": "never"
+        },
+        {
+          "id": "d",
+          "text": "string | boolean"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Equality narrows both operands to their common members, because only those can compare equal under strict equality.",
+      "difficulty": 5,
+      "tags": [
+        "narrowing",
+        "unions"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

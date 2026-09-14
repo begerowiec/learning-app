@@ -1,0 +1,300 @@
+{
+  "id": "python-functions",
+  "subject": "python",
+  "module": "python-core",
+  "level": "intermediate",
+  "title": "Functions & Scope",
+  "description": "Defining functions, return values, default arguments, *args/**kwargs and local scope.",
+  "estimatedMinutes": 8,
+  "order": 0,
+  "tags": [
+    "functions",
+    "scope",
+    "syntax"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A function groups a piece of behaviour under a name. It runs only when you call it, and it hands a value back with return."
+    },
+    {
+      "type": "example",
+      "title": "Scope",
+      "body": "Names created inside a function are local: they exist while the call runs and are invisible outside it.",
+      "language": "python",
+      "code": "def total(items):\n    n = 0            # local\n    for i in items:\n        n += i\n    return n\n\nprint(n)             # NameError"
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "Return values instead of printing them, and keep one function to one job. It makes the code testable and easy to read later."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-functions-001",
+      "type": "concept_question",
+      "topic": "Implicit return",
+      "question": "What does a Python function return when it has no return statement?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "An empty string"
+        },
+        {
+          "id": "c",
+          "text": "It raises an error"
+        },
+        {
+          "id": "d",
+          "text": "None"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Every Python function returns a value. With no explicit return, that value is None.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "return"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-functions-002",
+      "type": "code_multiple_choice",
+      "topic": "Default arguments",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "def scale(x, factor=2):\n    return x * factor\n\nprint(scale(3), scale(3, 3))",
+      "answers": [
+        {
+          "id": "a",
+          "text": "6 9"
+        },
+        {
+          "id": "b",
+          "text": "6 6"
+        },
+        {
+          "id": "c",
+          "text": "TypeError"
+        },
+        {
+          "id": "d",
+          "text": "3 3"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The default factor=2 is used for the first call, and the passed 3 overrides it in the second.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "arguments"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-functions-003",
+      "type": "find_error",
+      "topic": "Function syntax",
+      "question": "Which line breaks this function?",
+      "language": "python",
+      "code": "1  def greet(name)\n2      message = \"Hi \" + name\n3      return message\n4\n5  print(greet(\"Anna\"))",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 5 — greet must be called with a keyword"
+        },
+        {
+          "id": "b",
+          "text": "Line 1 — missing colon after the parameter list"
+        },
+        {
+          "id": "c",
+          "text": "Line 2 — strings cannot be concatenated"
+        },
+        {
+          "id": "d",
+          "text": "Line 3 — return needs parentheses"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A def header always ends with a colon: def greet(name):",
+      "difficulty": 1,
+      "tags": [
+        "functions",
+        "syntax"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-functions-004",
+      "type": "code_completion",
+      "topic": "return vs print",
+      "question": "Complete the function so it hands the sum back to the caller.",
+      "language": "python",
+      "code": "def add(a, b):\n    ___ a + b",
+      "answers": [
+        {
+          "id": "a",
+          "text": "return"
+        },
+        {
+          "id": "b",
+          "text": "yield"
+        },
+        {
+          "id": "c",
+          "text": "pass"
+        },
+        {
+          "id": "d",
+          "text": "print"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "return sends the value back to the caller. print only writes to the console and returns None.",
+      "difficulty": 1,
+      "tags": [
+        "functions",
+        "return"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-functions-005",
+      "type": "fill_blank",
+      "topic": "Local scope",
+      "question": "Complete the sentence.",
+      "sentence": "Variables assigned inside a function have ___ scope.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "global"
+        },
+        {
+          "id": "b",
+          "text": "local"
+        },
+        {
+          "id": "c",
+          "text": "static"
+        },
+        {
+          "id": "d",
+          "text": "module"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Assignment inside a function creates a local name, unless you declare it global or nonlocal.",
+      "difficulty": 2,
+      "tags": [
+        "functions",
+        "scope"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-functions-006",
+      "type": "code_multiple_choice",
+      "topic": "Closures",
+      "question": "What is the value of counter() on the second call?",
+      "language": "python",
+      "code": "def make_counter():\n    n = 0\n    def counter():\n        nonlocal n\n        n += 1\n        return n\n    return counter\n\ntick = make_counter()\ntick()\ntick()",
+      "answers": [
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "1"
+        },
+        {
+          "id": "c",
+          "text": "2"
+        },
+        {
+          "id": "d",
+          "text": "None"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The inner function closes over n, so the value survives between calls. Two calls give 2.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "closures",
+        "scope"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "python-functions-007",
+      "type": "true_false",
+      "topic": "args and kwargs",
+      "question": "*args collects extra positional arguments into a tuple.",
+      "correctAnswer": true,
+      "explanation": "*args gathers leftover positional arguments as a tuple; **kwargs gathers keyword arguments as a dict.",
+      "difficulty": 3,
+      "tags": [
+        "functions",
+        "arguments"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-functions-008",
+      "type": "concept_question",
+      "topic": "global vs nonlocal",
+      "question": "Which keyword lets a function reassign a name defined at module level?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "nonlocal"
+        },
+        {
+          "id": "b",
+          "text": "global"
+        },
+        {
+          "id": "c",
+          "text": "static"
+        },
+        {
+          "id": "d",
+          "text": "extern"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "global targets module-level names; nonlocal targets a name in the nearest enclosing function.",
+      "difficulty": 4,
+      "tags": [
+        "functions",
+        "scope"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-functions-009",
+      "type": "flashcard",
+      "topic": "Mutable default argument",
+      "question": "Gotcha",
+      "front": "def add(item, bucket=[])",
+      "back": "The list is created once at definition time and shared by every call",
+      "explanation": "Use bucket=None and build a fresh list inside the body. This is one of the most common Python bugs in review.",
+      "difficulty": 5,
+      "tags": [
+        "functions",
+        "arguments"
+      ],
+      "estimatedSeconds": 25
+    }
+  ]
+}

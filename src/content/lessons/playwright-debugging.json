@@ -1,0 +1,231 @@
+{
+  "id": "playwright-debugging",
+  "subject": "playwright",
+  "module": "playwright-reliability",
+  "level": "intermediate",
+  "title": "Debugging flaky tests",
+  "description": "Reading a trace, what retries really tell you, and the difference between a flaky test and a flaky application.",
+  "estimatedMinutes": 11,
+  "order": 2,
+  "tags": ["debugging", "trace", "flaky"],
+  "content": [
+    {
+      "type": "theory",
+      "title": "The trace is the evidence",
+      "body": "A trace records every action with a DOM snapshot before and after, the network log, the console and a screencast. On a CI-only failure it is the difference between reproducing for an afternoon and seeing, in thirty seconds, that the click landed on a cookie banner."
+    },
+    {
+      "type": "example",
+      "title": "Capture it where it matters",
+      "body": "on-first-retry is the default worth keeping: no cost on green runs, a full trace the moment something fails.",
+      "language": "typescript",
+      "code": "export default defineConfig({\n  retries: process.env.CI ? 2 : 0,\n  use: {\n    trace: 'on-first-retry',\n    screenshot: 'only-on-failure',\n    video: 'retain-on-failure',\n  },\n});"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "A test that only passes on retry is not fixed. Retries buy a green pipeline and hide either a real race in the product or a real assumption in the test — the flaky count in the report is the number that matters."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-debug-001",
+      "type": "concept_question",
+      "topic": "What a trace contains",
+      "question": "Which of these is NOT in a Playwright trace?",
+      "answers": [
+        { "id": "a", "text": "A DOM snapshot before and after each action" },
+        { "id": "b", "text": "The network requests the page made" },
+        { "id": "c", "text": "A live, interactive copy of the application you can click through" },
+        { "id": "d", "text": "Console messages and the test's source location" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Snapshots are inspectable with dev tools but frozen — nothing re-executes. That is exactly why they are trustworthy evidence of what the page looked like at that moment.",
+      "difficulty": 3,
+      "tags": ["trace", "debugging"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-debug-002",
+      "type": "code_completion",
+      "topic": "Opening a trace",
+      "question": "Complete the command that opens a downloaded trace from a CI artifact.",
+      "language": "text",
+      "code": "npx playwright ___ trace.zip",
+      "answers": [
+        { "id": "a", "text": "show-trace" },
+        { "id": "b", "text": "open-trace" },
+        { "id": "c", "text": "trace" },
+        { "id": "d", "text": "view" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "It runs entirely locally — no server, no re-run of the test. trace.playwright.dev does the same in a browser tab if you would rather not download the CLI.",
+      "difficulty": 2,
+      "tags": ["trace", "debugging"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-debug-003",
+      "type": "true_false",
+      "topic": "Flaky classification",
+      "question": "A test reported as \"flaky\" failed at least once and then passed on a retry.",
+      "correctAnswer": true,
+      "explanation": "The reporter separates flaky from failed for exactly this reason. Treat the flaky column as a backlog, not as noise.",
+      "difficulty": 2,
+      "tags": ["flaky", "retries"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-debug-004",
+      "type": "find_error",
+      "topic": "Debug output left behind",
+      "question": "Which line will make this test hang forever in CI?",
+      "language": "typescript",
+      "code": "1  await page.goto('/orders');\n2  await page.pause();\n3  await expect(page.getByRole('row')).toHaveCount(3);",
+      "answers": [
+        { "id": "a", "text": "Line 1 — goto needs waitUntil" },
+        { "id": "b", "text": "Line 3 — toHaveCount does not exist" },
+        { "id": "c", "text": "Line 2 — page.pause() waits for a human in the Inspector" },
+        { "id": "d", "text": "Nothing — pause is a no-op in headless mode" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "It is a debugging aid, not a wait. Lint for it, or it eventually costs someone a whole pipeline timeout.",
+      "difficulty": 2,
+      "tags": ["debugging"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-debug-005",
+      "type": "multiple_choice",
+      "topic": "Reproducing a CI-only failure",
+      "question": "A test fails only on CI, never locally. Which difference is worth checking first?",
+      "answers": [
+        { "id": "a", "text": "Viewport size, timezone, locale and machine speed — CI defaults differ from your machine" },
+        { "id": "b", "text": "The Playwright version, which is pinned anyway" },
+        { "id": "c", "text": "The operating system, which never affects the DOM" },
+        { "id": "d", "text": "Nothing — CI-only failures are always infrastructure" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A narrower viewport collapses a menu behind a hamburger; a different timezone shifts a date label. Pin viewport, locale and timezoneId in the config so both environments agree.",
+      "difficulty": 3,
+      "tags": ["flaky", "debugging", "configuration"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-debug-006",
+      "type": "fill_blank",
+      "topic": "Stepping through a test",
+      "question": "Complete the environment variable that opens the Inspector and steps through the run.",
+      "sentence": "___=1 npx playwright test orders.spec.ts",
+      "answers": [
+        { "id": "a", "text": "PWDEBUG" },
+        { "id": "b", "text": "DEBUG" },
+        { "id": "c", "text": "PLAYWRIGHT_DEBUG" },
+        { "id": "d", "text": "PW_INSPECT" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "PWDEBUG=1 opens the Inspector, disables timeouts and runs headed. DEBUG=pw:api is the other one worth knowing — it logs every API call to the terminal.",
+      "difficulty": 3,
+      "tags": ["debugging"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-debug-007",
+      "type": "code_multiple_choice",
+      "topic": "Grouping steps in the report",
+      "question": "What does test.step add?",
+      "language": "typescript",
+      "code": "await test.step('sign in', async () => {\n  await page.getByLabel('Email').fill(user.email);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n});",
+      "answers": [
+        { "id": "a", "text": "A named, collapsible group in the report and the trace, with its own duration" },
+        { "id": "b", "text": "A retry boundary — only the step is retried" },
+        { "id": "c", "text": "A separate browser context for those actions" },
+        { "id": "d", "text": "Nothing at runtime; it is only a comment" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Steps make a long trace readable and tell you which phase got slow. They do not change execution or retry semantics.",
+      "difficulty": 3,
+      "tags": ["debugging", "trace"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-debug-008",
+      "type": "concept_question",
+      "topic": "Flaky test or flaky app",
+      "question": "A test intermittently clicks a button a moment before the handler is attached. What is the honest diagnosis?",
+      "answers": [
+        { "id": "a", "text": "A real product issue — the control looks interactive before it is" },
+        { "id": "b", "text": "A test issue; add a short waitForTimeout" },
+        { "id": "c", "text": "A Playwright issue with actionability" },
+        { "id": "d", "text": "A CI issue; increase the worker count" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Playwright reproduced a race a fast user could hit too. The fix belongs in the app — disable the button until it is wired — and the test then documents it.",
+      "difficulty": 5,
+      "tags": ["flaky", "debugging"],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-debug-009",
+      "type": "flashcard",
+      "topic": "Repeating a test",
+      "question": "Playwright · CLI",
+      "front": "npx playwright test spec.ts --repeat-each=20 --workers=4",
+      "back": "Runs the same test twenty times in parallel — the quickest way to confirm a flake",
+      "explanation": "Pair it with --grep to narrow to one test. If twenty runs are green, the flake is probably environmental rather than in the test.",
+      "difficulty": 3,
+      "tags": ["debugging", "flaky"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-debug-010",
+      "type": "true_false",
+      "topic": "Trace cost",
+      "question": "trace: 'on' is a good default for a large CI suite.",
+      "correctAnswer": false,
+      "explanation": "It records every test, which slows the run and produces artifacts measured in gigabytes. on-first-retry gives you a trace exactly for the runs you want to look at.",
+      "difficulty": 3,
+      "tags": ["trace", "configuration"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-debug-011",
+      "type": "find_error",
+      "topic": "Retries hiding a dependency",
+      "question": "This suite is green with retries: 2 and red with retries: 0. What does that tell you?",
+      "language": "typescript",
+      "code": "1  test('shows the new invoice', async ({ page }) => {\n2    await page.goto('/invoices');\n3    await expect(page.getByText('INV-1001')).toBeVisible();\n4  });",
+      "answers": [
+        { "id": "a", "text": "The retry timeout is too short" },
+        { "id": "b", "text": "Nothing — that is what retries are for" },
+        { "id": "c", "text": "The test depends on data another test creates, and only passes once that test has run" },
+        { "id": "d", "text": "toBeVisible needs a longer timeout" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A retry re-runs the test later, by which time the other test has produced the invoice. The suite is order-dependent; the retry is just hiding it.",
+      "difficulty": 5,
+      "tags": ["flaky", "isolation", "retries"],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-debug-012",
+      "type": "code_multiple_choice",
+      "topic": "Attaching evidence",
+      "question": "What does this do?",
+      "language": "typescript",
+      "code": "await testInfo.attach('api-response', {\n  body: JSON.stringify(payload, null, 2),\n  contentType: 'application/json',\n});",
+      "answers": [
+        { "id": "a", "text": "Adds the payload to the HTML report and the trace for that test" },
+        { "id": "b", "text": "Sends it to the reporter's remote endpoint" },
+        { "id": "c", "text": "Writes it to the console on failure" },
+        { "id": "d", "text": "Stores it for comparison on the next run" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Attachments are the cheapest way to make a CI failure diagnosable: the exact response, id or seed the run used, sitting next to the trace.",
+      "difficulty": 4,
+      "tags": ["debugging", "trace"],
+      "estimatedSeconds": 45
+    }
+  ]
+}

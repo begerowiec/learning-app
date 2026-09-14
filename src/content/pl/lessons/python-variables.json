@@ -1,0 +1,301 @@
+{
+  "id": "python-variables",
+  "subject": "python",
+  "module": "python-basics",
+  "level": "beginner",
+  "title": "Zmienne i typy danych",
+  "description": "Jak Python nazywa wartości i co robią cztery typy wbudowane, których używasz codziennie.",
+  "estimatedMinutes": 8,
+  "order": 0,
+  "tags": [
+    "variables",
+    "types",
+    "syntax"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Zmienna to nazwa związana z wartością. Python nie ma słowa kluczowego deklaracji ani wymogu adnotacji typu — przypisanie do nazwy tworzy ją, a później ta sama nazwa może wskazywać na wartość innego typu."
+    },
+    {
+      "type": "example",
+      "title": "Cztery, których używasz codziennie",
+      "body": "int, float, str i bool pokrywają prawie cały kod na początku. type() mówi, co właściwie trzymasz.",
+      "language": "python",
+      "code": "count = 3          # int\nratio = 0.75       # float\nname = \"Anna\"      # str\nactive = True      # bool\n\nprint(type(ratio))  # <class 'float'>"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Odczyt nazwy, do której nic nie przypisano, rzuca NameError, a nie ciche None. I \"3\" to str, nie int — input() zawsze zwraca tekst.",
+      "code": "age = input(\"Age: \")\nprint(age + 1)     # TypeError\nprint(int(age) + 1)  # works",
+      "language": "python"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-variables-001",
+      "type": "concept_question",
+      "topic": "Typowanie dynamiczne",
+      "question": "Co się dzieje, gdy przypiszesz string do nazwy, która trzyma już int?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Nazwa zostaje przepięta na string; stary int po prostu przepada"
+        },
+        {
+          "id": "b",
+          "text": "Python rzuca TypeError"
+        },
+        {
+          "id": "c",
+          "text": "String zostaje przekonwertowany na int"
+        },
+        {
+          "id": "d",
+          "text": "Nic — pierwsze przypisanie ustala typ na stałe"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Nazwy w Pythonie to etykiety, a nie typowane pudełka. Przepięcie nazwy jest zawsze dozwolone, a stara wartość zostaje zebrana, gdy nic już jej nie wskazuje.",
+      "difficulty": 2,
+      "tags": [
+        "variables",
+        "types"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-variables-002",
+      "type": "code_multiple_choice",
+      "topic": "Dzielenie całkowite",
+      "question": "Co wypisze ten kod?",
+      "language": "python",
+      "code": "print(7 / 2, 7 // 2)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "3 3"
+        },
+        {
+          "id": "b",
+          "text": "3.5 4"
+        },
+        {
+          "id": "c",
+          "text": "3.5 3.5"
+        },
+        {
+          "id": "d",
+          "text": "3.5 3"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "/ to dzielenie prawdziwe i zawsze zwraca float. // to dzielenie podłogowe i zwraca int, gdy oba argumenty są całkowite.",
+      "difficulty": 2,
+      "tags": [
+        "numbers",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-variables-003",
+      "type": "true_false",
+      "topic": "Zasady nazewnictwa",
+      "question": "Nazwa zmiennej w Pythonie może zaczynać się od cyfry, na przykład 2nd_place.",
+      "correctAnswer": false,
+      "explanation": "Identyfikator musi zaczynać się od litery lub podkreślnika. 2nd_place to SyntaxError; second_place jest w porządku.",
+      "difficulty": 1,
+      "tags": [
+        "variables",
+        "syntax"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "python-variables-004",
+      "type": "code_completion",
+      "topic": "Konwersja tekstu",
+      "question": "input() zwraca tekst. Uzupełnij linię, żeby porównanie działało na liczbach.",
+      "language": "python",
+      "code": "age = input(\"Age: \")\nif ___(age) >= 18:\n    print(\"adult\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "int"
+        },
+        {
+          "id": "b",
+          "text": "str"
+        },
+        {
+          "id": "c",
+          "text": "bool"
+        },
+        {
+          "id": "d",
+          "text": "len"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "int() parsuje tekst na liczbę całkowitą. Porównanie str z int rzuca w Pythonie 3 TypeError.",
+      "difficulty": 2,
+      "tags": [
+        "types",
+        "conversion"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-variables-005",
+      "type": "find_error",
+      "topic": "NameError",
+      "question": "Która linia rzuca błąd?",
+      "language": "python",
+      "code": "1  total = 0\n2  total += price\n3  price = 10\n4  print(total)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 2 — price jest użyte, zanim cokolwiek mu przypisano"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — total musi być zadeklarowane z typem"
+        },
+        {
+          "id": "c",
+          "text": "Linia 3 — price nie może być przypisane po użyciu"
+        },
+        {
+          "id": "d",
+          "text": "Linia 4 — print potrzebuje stringa"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Python wykonuje kod z góry na dół, więc w linii 2 nazwa price jeszcze nie istnieje i leci NameError.",
+      "difficulty": 2,
+      "tags": [
+        "variables",
+        "errors"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-variables-006",
+      "type": "multiple_choice",
+      "topic": "f-stringi",
+      "question": "Które wyrażenie buduje tekst \"Anna is 30\" z name = \"Anna\" i age = 30?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "name + \" is \" + age"
+        },
+        {
+          "id": "b",
+          "text": "f\"name is age\""
+        },
+        {
+          "id": "c",
+          "text": "\"{name} is {age}\""
+        },
+        {
+          "id": "d",
+          "text": "f\"{name} is {age}\""
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "f-string wstawia wyrażenia z klamer. Bez prefiksu f klamry zostają dosłowne, a sklejanie str z int rzuca TypeError.",
+      "difficulty": 2,
+      "tags": [
+        "strings",
+        "f-strings"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-variables-007",
+      "type": "fill_blank",
+      "topic": "Prawdziwościowość",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Pusty string jest ___ w kontekście logicznym.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "fałszywy (falsy)"
+        },
+        {
+          "id": "b",
+          "text": "prawdziwy (truthy)"
+        },
+        {
+          "id": "c",
+          "text": "błędem"
+        },
+        {
+          "id": "d",
+          "text": "None"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Puste kontenery i wartości zerowe są falsy: \"\", 0, 0.0, [], {} i None nie przechodzą testu w if.",
+      "difficulty": 3,
+      "tags": [
+        "types",
+        "truthiness"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-variables-008",
+      "type": "flashcard",
+      "topic": "Przypisanie wielokrotne",
+      "question": "Składnia",
+      "front": "a, b = b, a",
+      "back": "Zamienia dwie nazwy miejscami w jednej instrukcji — prawa strona powstaje najpierw jako krotka",
+      "explanation": "Python oblicza całą prawą stronę przed przypisaniem, więc zmienna tymczasowa nie jest potrzebna.",
+      "difficulty": 2,
+      "tags": [
+        "variables",
+        "syntax"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-variables-009",
+      "type": "code_multiple_choice",
+      "topic": "Typ wyniku dzielenia",
+      "question": "Co zostanie wypisane?",
+      "language": "python",
+      "code": "x = 4\ny = 2\nprint(type(x / y).__name__)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "int"
+        },
+        {
+          "id": "b",
+          "text": "float"
+        },
+        {
+          "id": "c",
+          "text": "number"
+        },
+        {
+          "id": "d",
+          "text": "str"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Dzielenie prawdziwe zawsze daje float, nawet gdy wynik nie ma części ułamkowej: 4 / 2 to 2.0.",
+      "difficulty": 3,
+      "tags": [
+        "numbers",
+        "types"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

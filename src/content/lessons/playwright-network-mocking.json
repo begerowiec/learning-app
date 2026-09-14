@@ -1,0 +1,231 @@
+{
+  "id": "playwright-network-mocking",
+  "subject": "playwright",
+  "module": "playwright-reliability",
+  "level": "intermediate",
+  "title": "Network mocking",
+  "description": "route() and fulfill(), glob vs regex matching, HAR replay, and when mocking stops testing anything real.",
+  "estimatedMinutes": 11,
+  "order": 1,
+  "tags": ["network", "mocking", "routing"],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Intercept, then decide",
+      "body": "page.route() gives you every matching request before it leaves the browser. From there you can fulfill it with your own response, continue it (optionally with changes), or abort it — which is how you test error states that the backend will not produce on demand."
+    },
+    {
+      "type": "example",
+      "title": "A deterministic failure",
+      "body": "Register the route before the navigation that triggers the request, or it has already gone out.",
+      "language": "typescript",
+      "code": "await page.route('**/api/orders', (route) =>\n  route.fulfill({ status: 500, json: { error: 'boom' } }),\n);\nawait page.goto('/orders');\nawait expect(page.getByRole('alert')).toHaveText(/try again/i);"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "A mocked response is a copy of the contract, and copies drift. Mock for edge cases and error paths; keep at least one test running against the real API so the drift is caught."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-network-001",
+      "type": "code_multiple_choice",
+      "topic": "Route registration order",
+      "question": "Why does this test still hit the real API?",
+      "language": "typescript",
+      "code": "await page.goto('/orders');\nawait page.route('**/api/orders', (route) => route.fulfill({ json: [] }));\nawait expect(page.getByText('No orders')).toBeVisible();",
+      "answers": [
+        { "id": "a", "text": "The request fired during goto, before the route was registered" },
+        { "id": "b", "text": "fulfill needs a status code" },
+        { "id": "c", "text": "The glob should start with a slash" },
+        { "id": "d", "text": "route() only affects XHR, not fetch" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Routes apply to requests made after they are installed. Register before navigating, or in a fixture that runs before the test body.",
+      "difficulty": 3,
+      "tags": ["network", "routing"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-network-002",
+      "type": "concept_question",
+      "topic": "fulfill vs continue vs abort",
+      "question": "You want the request to reach the server but with an extra header. Which is right?",
+      "answers": [
+        { "id": "a", "text": "route.continue({ headers: { ...route.request().headers(), 'x-test': '1' } })" },
+        { "id": "b", "text": "route.fulfill({ headers: { 'x-test': '1' } })" },
+        { "id": "c", "text": "route.abort('failed')" },
+        { "id": "d", "text": "route.fallback()" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "fulfill answers the request yourself and nothing reaches the server; abort kills it. continue forwards it, with optional overrides — spread the existing headers or you drop the rest.",
+      "difficulty": 3,
+      "tags": ["network", "routing"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-network-003",
+      "type": "true_false",
+      "topic": "Glob matching",
+      "question": "The glob '**/api/orders' also matches '/api/orders?page=2'.",
+      "correctAnswer": true,
+      "explanation": "Playwright ignores the query string when matching a glob without one. Match on the query explicitly, or use a regex, when different parameters need different responses.",
+      "difficulty": 4,
+      "tags": ["routing", "network"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-network-004",
+      "type": "code_completion",
+      "topic": "Aborting third-party noise",
+      "question": "Block analytics so it cannot slow down or destabilise the run. Complete the handler.",
+      "language": "typescript",
+      "code": "await page.route('**/analytics/**', (route) => route.___());",
+      "answers": [
+        { "id": "a", "text": "abort" },
+        { "id": "b", "text": "cancel" },
+        { "id": "c", "text": "reject" },
+        { "id": "d", "text": "drop" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Blocking third-party beacons and fonts is one of the cheapest stability wins in a suite, and it removes a whole class of network-idle problems.",
+      "difficulty": 2,
+      "tags": ["network", "routing"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-network-005",
+      "type": "multiple_choice",
+      "topic": "Route precedence",
+      "question": "Two routes match the same URL. Which handler runs?",
+      "answers": [
+        { "id": "a", "text": "The one registered last" },
+        { "id": "b", "text": "The one registered first" },
+        { "id": "c", "text": "Both, in registration order" },
+        { "id": "d", "text": "The more specific pattern" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Later routes take precedence, which is what lets a test override a broad route installed by a fixture. route.fallback() passes control down to the earlier handler.",
+      "difficulty": 4,
+      "tags": ["routing"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-network-006",
+      "type": "find_error",
+      "topic": "Mocking away the thing under test",
+      "question": "This is a test of the checkout flow. What has gone wrong?",
+      "language": "typescript",
+      "code": "1  await page.route('**/api/**', (route) =>\n2    route.fulfill({ json: fixtures[route.request().url()] }),\n3  );\n4  await page.goto('/checkout');\n5  await page.getByRole('button', { name: 'Pay' }).click();\n6  await expect(page.getByText('Thank you')).toBeVisible();",
+      "answers": [
+        { "id": "a", "text": "Line 2 — fulfill cannot take a json option" },
+        { "id": "b", "text": "Line 1 — mocking every API call means the test proves the fixtures render, not that checkout works" },
+        { "id": "c", "text": "Line 5 — the click needs force: true" },
+        { "id": "d", "text": "Line 6 — toBeVisible should be toHaveText" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The payment call is the behaviour under test. Mock the surrounding noise if you must, but leave the endpoint the test is named after alone.",
+      "difficulty": 4,
+      "tags": ["mocking", "network"],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-network-007",
+      "type": "fill_blank",
+      "topic": "HAR replay",
+      "question": "Complete the call that replays a recorded session instead of hand-written fixtures.",
+      "sentence": "await page.___('fixtures/orders.har', { update: false });",
+      "answers": [
+        { "id": "a", "text": "routeFromHAR" },
+        { "id": "b", "text": "replayHAR" },
+        { "id": "c", "text": "loadHAR" },
+        { "id": "d", "text": "routeHAR" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "With update: true it records against the live API and rewrites the file; with false it replays. That makes refreshing the mocks a one-command job rather than hand-editing JSON.",
+      "difficulty": 4,
+      "tags": ["mocking", "network"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-network-008",
+      "type": "code_multiple_choice",
+      "topic": "Asserting on the request",
+      "question": "What does this verify?",
+      "language": "typescript",
+      "code": "const request = page.waitForRequest(\n  (r) => r.url().includes('/api/search') && r.method() === 'GET',\n);\nawait page.getByLabel('Search').fill('acme');\nconst sent = await request;\nexpect(new URL(sent.url()).searchParams.get('q')).toBe('acme');",
+      "answers": [
+        { "id": "a", "text": "That typing triggered a GET to the search endpoint with the typed query" },
+        { "id": "b", "text": "That the search returned results" },
+        { "id": "c", "text": "That the request was mocked" },
+        { "id": "d", "text": "That the endpoint responded within the timeout" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "waitForRequest inspects what the app sent, which is the right level for debounce and query-building bugs — no assertion about the response is involved.",
+      "difficulty": 4,
+      "tags": ["network", "assertions"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-network-009",
+      "type": "flashcard",
+      "topic": "Context-level routing",
+      "question": "Playwright · network",
+      "front": "context.route() vs page.route()",
+      "back": "Context routes apply to every page and popup in that context",
+      "explanation": "Put shared blocking — analytics, fonts, third-party widgets — on the context in a fixture, and keep per-test overrides on the page.",
+      "difficulty": 3,
+      "tags": ["routing", "fixtures"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-network-010",
+      "type": "concept_question",
+      "topic": "Testing the loading state",
+      "question": "How do you reliably assert that a skeleton is shown while data loads?",
+      "answers": [
+        { "id": "a", "text": "Delay the route handler, assert the skeleton, then fulfill" },
+        { "id": "b", "text": "Use waitForTimeout(50) right after navigating" },
+        { "id": "c", "text": "Throttle the whole browser with CDP" },
+        { "id": "d", "text": "It cannot be tested deterministically" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Holding the response inside the handler puts the timing under the test's control: the loading state lasts exactly as long as the test needs it to.",
+      "difficulty": 5,
+      "tags": ["mocking", "network"],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-network-011",
+      "type": "true_false",
+      "topic": "Routes and redirects",
+      "question": "A route handler also intercepts requests made by a service worker.",
+      "correctAnswer": false,
+      "explanation": "Service-worker traffic bypasses page routes by default. Set serviceWorkers: 'block' in the context when a worker is intercepting the calls you meant to mock.",
+      "difficulty": 5,
+      "tags": ["routing", "network"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-network-012",
+      "type": "code_multiple_choice",
+      "topic": "Unrouting after the assertion",
+      "question": "Why does this fixture call unroute at the end?",
+      "language": "typescript",
+      "code": "await page.route('**/api/me', (route) => route.fulfill({ json: admin }));\nawait use(page);\nawait page.unroute('**/api/me');",
+      "answers": [
+        { "id": "a", "text": "So the mock cannot leak into later navigations or teardown steps in the same context" },
+        { "id": "b", "text": "Because routes are limited to ten per page" },
+        { "id": "c", "text": "To free memory in the browser" },
+        { "id": "d", "text": "It is required before closing the page" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Contexts are per test, so the leak is bounded — but teardown that talks to the app would still see the mock, and an explicit unroute documents the intent.",
+      "difficulty": 4,
+      "tags": ["routing", "fixtures"],
+      "estimatedSeconds": 45
+    }
+  ]
+}

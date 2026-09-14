@@ -1,0 +1,455 @@
+{
+  "id": "english-present-continuous",
+  "subject": "english",
+  "module": "english-present-tenses",
+  "level": "beginner",
+  "title": "Present Continuous",
+  "description": "Actions in progress, temporary situations, and the verbs that refuse the -ing form.",
+  "estimatedMinutes": 12,
+  "order": 1,
+  "tags": [
+    "present-continuous",
+    "grammar",
+    "tenses"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "When to use it",
+      "body": "Present Continuous covers what is happening now, what is temporary, and arrangements already fixed for the near future: I'm working from home this week. We're meeting the client on Thursday."
+    },
+    {
+      "type": "theory",
+      "title": "Form",
+      "body": "am / is / are + verb-ing. The auxiliary agrees with the subject and carries the negative and the question: Is she working? She isn't working."
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "State verbs (know, understand, own, prefer) normally have no continuous form. \"I'm loving it\" is deliberate marketing, not a model sentence."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-pc-001",
+      "type": "fill_blank",
+      "topic": "Actions now",
+      "question": "Complete the sentence.",
+      "sentence": "Be quiet — the baby ___.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "slept"
+        },
+        {
+          "id": "b",
+          "text": "is sleeping"
+        },
+        {
+          "id": "c",
+          "text": "sleeps"
+        },
+        {
+          "id": "d",
+          "text": "has slept"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The action is in progress at the moment of speaking, which is the core use of Present Continuous.",
+      "difficulty": 1,
+      "tags": [
+        "present-continuous",
+        "grammar"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-002",
+      "type": "multiple_choice",
+      "topic": "Simple vs continuous",
+      "question": "Which sentence is correct?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I take usually the bus, but this week I cycling."
+        },
+        {
+          "id": "b",
+          "text": "I am usually taking the bus, but this week I cycle."
+        },
+        {
+          "id": "c",
+          "text": "I usually take the bus, but this week I'm cycling."
+        },
+        {
+          "id": "d",
+          "text": "I usually am taking the bus, but this week I'm cycle."
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The habit takes Present Simple and the temporary change takes Present Continuous. That contrast is exactly what the two tenses are for.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "tenses"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-003",
+      "type": "true_false",
+      "topic": "State verbs",
+      "question": "\"I am knowing the answer\" is correct English.",
+      "correctAnswer": false,
+      "explanation": "Know is a state verb and takes the simple form: I know the answer.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "english-pc-004",
+      "type": "translation",
+      "topic": "Temporary situations",
+      "question": "Translate the sentence.",
+      "sentence": "W tym tygodniu pracuję z domu.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I work from home this week."
+        },
+        {
+          "id": "b",
+          "text": "I'm working from home this week."
+        },
+        {
+          "id": "c",
+          "text": "I have worked from home this week."
+        },
+        {
+          "id": "d",
+          "text": "I worked from home this week."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "\"W tym tygodniu\" marks a temporary arrangement, so English prefers the continuous form.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-005",
+      "type": "fill_blank",
+      "topic": "Spelling of -ing",
+      "question": "Complete the sentence.",
+      "sentence": "They are ___ a new office in Wrocław.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "opening"
+        },
+        {
+          "id": "b",
+          "text": "opens"
+        },
+        {
+          "id": "c",
+          "text": "opend"
+        },
+        {
+          "id": "d",
+          "text": "openning"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The consonant is only doubled when the final syllable is stressed: run → running, but open → opening.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "spelling"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pc-006",
+      "type": "concept_question",
+      "topic": "Future arrangements",
+      "question": "Why is \"We're meeting the client on Thursday\" acceptable for a future event?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Present Continuous expresses arrangements that are already fixed"
+        },
+        {
+          "id": "b",
+          "text": "Because Thursday is close to the present"
+        },
+        {
+          "id": "c",
+          "text": "Because meet has no future form"
+        },
+        {
+          "id": "d",
+          "text": "It is not acceptable — it needs will"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A definite arrangement, usually with another person and a time, takes the continuous form. Predictions and offers take will.",
+      "difficulty": 4,
+      "tags": [
+        "present-continuous",
+        "future"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-pc-007",
+      "type": "multiple_choice",
+      "topic": "Negation",
+      "question": "Which negative is correct?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "She not listening."
+        },
+        {
+          "id": "b",
+          "text": "She don't listening."
+        },
+        {
+          "id": "c",
+          "text": "She doesn't listening."
+        },
+        {
+          "id": "d",
+          "text": "She isn't listening."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The auxiliary be carries the negative in continuous tenses; do and does belong to the simple forms.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "negation"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pc-008",
+      "type": "flashcard",
+      "topic": "always + continuous",
+      "question": "Vocabulary",
+      "front": "He's always losing his keys",
+      "back": "always + continuous expresses irritation about a repeated habit",
+      "explanation": "The simple form would be neutral. With the continuous, the speaker is complaining.",
+      "difficulty": 4,
+      "tags": [
+        "present-continuous",
+        "adverbs"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-009",
+      "type": "fill_blank",
+      "topic": "Changing situations",
+      "question": "Complete the sentence.",
+      "sentence": "The number of remote jobs ___ every year.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "has grown once"
+        },
+        {
+          "id": "b",
+          "text": "grew"
+        },
+        {
+          "id": "c",
+          "text": "is growing"
+        },
+        {
+          "id": "d",
+          "text": "grow"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Trends and changing situations take the continuous form: prices are rising, the climate is warming.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pc-010",
+      "type": "fill_blank",
+      "topic": "Questions",
+      "question": "Complete the question.",
+      "sentence": "___ they still working on the release?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Are"
+        },
+        {
+          "id": "b",
+          "text": "Do"
+        },
+        {
+          "id": "c",
+          "text": "Have"
+        },
+        {
+          "id": "d",
+          "text": "Does"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Continuous questions are formed with the verb to be, which moves in front of the subject.",
+      "difficulty": 1,
+      "tags": [
+        "present-continuous",
+        "questions"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-011",
+      "type": "multiple_choice",
+      "topic": "Near-future arrangements",
+      "question": "Which sentence describes a fixed plan rather than a prediction?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I think it will rain tomorrow."
+        },
+        {
+          "id": "b",
+          "text": "I am meeting the client at ten tomorrow."
+        },
+        {
+          "id": "c",
+          "text": "It is going to be a long week."
+        },
+        {
+          "id": "d",
+          "text": "I will call you tomorrow."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Present Continuous with a time expression signals something already arranged with someone else. will is for decisions made at the moment of speaking.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "future"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-012",
+      "type": "translation",
+      "topic": "Right now",
+      "question": "Translate the sentence.",
+      "sentence": "Właśnie przeglądam twojego pull requesta.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I review your pull request right now."
+        },
+        {
+          "id": "b",
+          "text": "I have reviewed your pull request."
+        },
+        {
+          "id": "c",
+          "text": "I am reviewing your pull request right now."
+        },
+        {
+          "id": "d",
+          "text": "I was reviewing your pull request."
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "An action in progress at the moment of speaking is the core use of Present Continuous.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-013",
+      "type": "true_false",
+      "topic": "Spelling with final e",
+      "question": "The -ing form of \"make\" is \"makeing\".",
+      "correctAnswer": false,
+      "explanation": "A silent final e is dropped: make → making, write → writing. It is kept in see → seeing and agree → agreeing.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "spelling"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-014",
+      "type": "concept_question",
+      "topic": "Two senses of one verb",
+      "question": "\"I'm seeing the doctor at four\" is correct, but \"I'm seeing what you mean\" is not. Why?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "The first is an arrangement (an activity); the second is perception, which is stative"
+        },
+        {
+          "id": "b",
+          "text": "See can never take a time expression"
+        },
+        {
+          "id": "c",
+          "text": "The second needs the past tense"
+        },
+        {
+          "id": "d",
+          "text": "Both are actually correct"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Several verbs have an activity sense and a state sense, and only the activity one takes the continuous. I see what you mean.",
+      "difficulty": 5,
+      "tags": [
+        "present-continuous",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "english-pc-015",
+      "type": "flashcard",
+      "topic": "Doubling the consonant",
+      "question": "Vocabulary",
+      "front": "run · sit · begin · prefer",
+      "back": "running · sitting · beginning · preferring — doubled when the last syllable is stressed",
+      "explanation": "Compare open → opening and offer → offering, where the stress is on the first syllable.",
+      "difficulty": 4,
+      "tags": [
+        "present-continuous",
+        "spelling"
+      ],
+      "estimatedSeconds": 25
+    }
+  ]
+}

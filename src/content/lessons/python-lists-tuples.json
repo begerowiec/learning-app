@@ -1,0 +1,301 @@
+{
+  "id": "python-lists-tuples",
+  "subject": "python",
+  "module": "python-core",
+  "level": "intermediate",
+  "title": "Lists & Tuples",
+  "description": "Slicing, mutation, the list/tuple difference, and the aliasing trap.",
+  "estimatedMinutes": 9,
+  "order": 1,
+  "tags": [
+    "lists",
+    "tuples",
+    "collections"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A list is an ordered, mutable sequence. A tuple is the same shape but immutable, which makes it usable as a dict key and safe to hand around without copying."
+    },
+    {
+      "type": "example",
+      "title": "Slicing",
+      "body": "A slice always produces a new list. The stop index is excluded, and a negative index counts from the end.",
+      "language": "python",
+      "code": "nums = [10, 20, 30, 40, 50]\nprint(nums[1:3])   # [20, 30]\nprint(nums[-1])    # 50\nprint(nums[::-1])  # [50, 40, 30, 20, 10]"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "b = a does not copy a list — both names point at the same object, so appending through one is visible through the other. Use a.copy() or list(a)."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-lists-001",
+      "type": "code_multiple_choice",
+      "topic": "Slicing bounds",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "nums = [10, 20, 30, 40]\nprint(nums[1:3])",
+      "answers": [
+        {
+          "id": "a",
+          "text": "[20, 30, 40]"
+        },
+        {
+          "id": "b",
+          "text": "[10, 20, 30]"
+        },
+        {
+          "id": "c",
+          "text": "[20, 30]"
+        },
+        {
+          "id": "d",
+          "text": "[30, 40]"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A slice starts at the first index and stops before the second, so [1:3] gives positions 1 and 2.",
+      "difficulty": 2,
+      "tags": [
+        "lists",
+        "slicing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-002",
+      "type": "concept_question",
+      "topic": "List vs tuple",
+      "question": "Which statement about tuples is true?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A tuple is always faster to iterate than a list"
+        },
+        {
+          "id": "b",
+          "text": "A tuple can hold only one type of value"
+        },
+        {
+          "id": "c",
+          "text": "A tuple cannot be modified after creation, so it can be used as a dict key"
+        },
+        {
+          "id": "d",
+          "text": "A tuple is just a list with a different syntax"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Immutability is the whole difference, and it is what makes a tuple hashable — as long as everything inside it is hashable too.",
+      "difficulty": 3,
+      "tags": [
+        "tuples",
+        "collections"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-lists-003",
+      "type": "code_multiple_choice",
+      "topic": "Aliasing",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "a = [1, 2]\nb = a\nb.append(3)\nprint(a)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "[3]"
+        },
+        {
+          "id": "b",
+          "text": "[1, 2]"
+        },
+        {
+          "id": "c",
+          "text": "[1, 2, 3]"
+        },
+        {
+          "id": "d",
+          "text": "TypeError"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "b = a binds a second name to the same list object. Mutating through either name is visible through both.",
+      "difficulty": 4,
+      "tags": [
+        "lists",
+        "mutation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-lists-004",
+      "type": "find_error",
+      "topic": "Tuple immutability",
+      "question": "Which line raises TypeError?",
+      "language": "python",
+      "code": "1  point = (1, 2)\n2  print(point[0])\n3  point[0] = 9\n4  print(point)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 4 — a tuple cannot be printed"
+        },
+        {
+          "id": "b",
+          "text": "Line 1 — a tuple needs square brackets"
+        },
+        {
+          "id": "c",
+          "text": "Line 2 — tuples cannot be indexed"
+        },
+        {
+          "id": "d",
+          "text": "Line 3 — a tuple does not support item assignment"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Tuples are read-only. Build a new tuple instead: point = (9, point[1]).",
+      "difficulty": 2,
+      "tags": [
+        "tuples",
+        "errors"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-005",
+      "type": "code_completion",
+      "topic": "Filtering comprehension",
+      "question": "Complete the comprehension so it keeps only the even numbers.",
+      "language": "python",
+      "code": "evens = [n for n in nums ___ n % 2 == 0]",
+      "answers": [
+        {
+          "id": "a",
+          "text": "and"
+        },
+        {
+          "id": "b",
+          "text": "if"
+        },
+        {
+          "id": "c",
+          "text": "when"
+        },
+        {
+          "id": "d",
+          "text": "where"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The optional filter in a comprehension is an if clause placed after the for clause.",
+      "difficulty": 2,
+      "tags": [
+        "lists",
+        "comprehensions"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-006",
+      "type": "true_false",
+      "topic": "append vs extend",
+      "question": "a.append([1, 2]) adds two elements to a.",
+      "correctAnswer": false,
+      "explanation": "append adds its argument as a single element, so the list gains one item that happens to be a list. extend adds each element.",
+      "difficulty": 3,
+      "tags": [
+        "lists",
+        "mutation"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-lists-007",
+      "type": "fill_blank",
+      "topic": "Sorting in place",
+      "question": "Complete the sentence.",
+      "sentence": "nums.sort() sorts in place and returns ___.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "None"
+        },
+        {
+          "id": "b",
+          "text": "the sorted list"
+        },
+        {
+          "id": "c",
+          "text": "a copy"
+        },
+        {
+          "id": "d",
+          "text": "the first element"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "sort() mutates and returns None; sorted(nums) leaves the original alone and returns a new list. Chaining off sort() is a classic bug.",
+      "difficulty": 4,
+      "tags": [
+        "lists",
+        "sorting"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-lists-008",
+      "type": "flashcard",
+      "topic": "Unpacking",
+      "question": "Syntax",
+      "front": "first, *rest = items",
+      "back": "Binds the first element and collects everything else into a list",
+      "explanation": "Star unpacking works anywhere in the pattern: *head, last = items takes the final element instead.",
+      "difficulty": 3,
+      "tags": [
+        "lists",
+        "unpacking"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-lists-009",
+      "type": "code_multiple_choice",
+      "topic": "Multiplying a list",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "row = [0] * 3\nprint(row, len(row))",
+      "answers": [
+        {
+          "id": "a",
+          "text": "TypeError"
+        },
+        {
+          "id": "b",
+          "text": "[[0], [0], [0]] 3"
+        },
+        {
+          "id": "c",
+          "text": "[0] 3"
+        },
+        {
+          "id": "d",
+          "text": "[0, 0, 0] 3"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Multiplying a list repeats its elements. Careful with nested lists: [[0] * 3] * 2 shares the same inner list twice.",
+      "difficulty": 3,
+      "tags": [
+        "lists",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    }
+  ]
+}

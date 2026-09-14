@@ -1,0 +1,481 @@
+{
+  "id": "typescript-interfaces",
+  "subject": "typescript",
+  "module": "typescript-basics",
+  "level": "beginner",
+  "title": "Interfaces",
+  "description": "Describing object shapes, optional and readonly members, extends, and interface vs type.",
+  "estimatedMinutes": 13,
+  "order": 1,
+  "tags": [
+    "interfaces",
+    "types",
+    "objects"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "An interface describes the shape of an object: which properties exist and what type each one holds. It is a compile-time contract only — no code is generated for it."
+    },
+    {
+      "type": "example",
+      "title": "Optional and readonly",
+      "body": "A ? marks a property that may be absent; readonly blocks reassignment after construction.",
+      "language": "typescript",
+      "code": "interface User {\n  readonly id: string;\n  name: string;\n  email?: string;\n}\n\nconst u: User = { id: \"u1\", name: \"Anna\" };\nu.name = \"Ann\";   // ok\nu.id = \"u2\";      // error"
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "Reach for an interface for object shapes you extend, and a type alias for unions, tuples and mapped types. Interfaces also merge across declarations, which is useful for augmenting library types and surprising everywhere else."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-interfaces-001",
+      "type": "multiple_choice",
+      "topic": "Object shapes",
+      "question": "Which TypeScript construct describes the shape of an object and can be extended?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "namespace"
+        },
+        {
+          "id": "b",
+          "text": "declare"
+        },
+        {
+          "id": "c",
+          "text": "interface"
+        },
+        {
+          "id": "d",
+          "text": "enum"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "An interface describes an object shape and supports extends; type aliases use intersections instead.",
+      "difficulty": 1,
+      "tags": [
+        "interfaces",
+        "objects"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-interfaces-002",
+      "type": "code_multiple_choice",
+      "topic": "Optional properties",
+      "question": "What is the type of u.email inside the function?",
+      "language": "typescript",
+      "code": "interface User { name: string; email?: string }\n\nfunction show(u: User) {\n  return u.email;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string | undefined"
+        },
+        {
+          "id": "b",
+          "text": "string"
+        },
+        {
+          "id": "c",
+          "text": "undefined"
+        },
+        {
+          "id": "d",
+          "text": "any"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A ? adds undefined to the property's type. Read it behind a check, or the strict compiler will complain downstream.",
+      "difficulty": 2,
+      "tags": [
+        "interfaces",
+        "optional"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-003",
+      "type": "find_error",
+      "topic": "Excess property check",
+      "question": "Which line does the compiler reject?",
+      "language": "typescript",
+      "code": "1  interface Point { x: number; y: number }\n2  const a: Point = { x: 1, y: 2 };\n3  const b: Point = { x: 1, y: 2, z: 3 };\n4  console.log(a, b);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 1 — an interface cannot hold two members of the same type"
+        },
+        {
+          "id": "b",
+          "text": "Line 4 — objects cannot be logged directly"
+        },
+        {
+          "id": "c",
+          "text": "Line 3 — z is an excess property on an object literal"
+        },
+        {
+          "id": "d",
+          "text": "Line 2 — Point needs a constructor"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Object literals assigned straight to an annotated target get an excess-property check. Assigning through a variable first would pass, since structural typing only requires the members to be present.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "objects"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-interfaces-004",
+      "type": "code_completion",
+      "topic": "Extending an interface",
+      "question": "Complete the declaration so Admin has every User member plus one of its own.",
+      "language": "typescript",
+      "code": "interface Admin ___ User {\n  permissions: string[];\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "&"
+        },
+        {
+          "id": "b",
+          "text": "from"
+        },
+        {
+          "id": "c",
+          "text": "implements"
+        },
+        {
+          "id": "d",
+          "text": "extends"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Interfaces inherit with extends. implements is for classes; & is the intersection operator used with type aliases.",
+      "difficulty": 2,
+      "tags": [
+        "interfaces",
+        "inheritance"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-interfaces-005",
+      "type": "true_false",
+      "topic": "readonly depth",
+      "question": "Marking a property readonly also prevents mutating the object stored in it.",
+      "correctAnswer": false,
+      "explanation": "readonly is shallow: you cannot reassign the property, but you can still push into a readonly array property or edit a nested object.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "readonly"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-interfaces-006",
+      "type": "concept_question",
+      "topic": "Structural typing",
+      "question": "An object with extra properties is stored in a variable and then passed to a function expecting Point. What happens?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It is rejected, because the shapes are not identical"
+        },
+        {
+          "id": "b",
+          "text": "It is accepted, but the extra properties are deleted"
+        },
+        {
+          "id": "c",
+          "text": "It only works if Point is a class"
+        },
+        {
+          "id": "d",
+          "text": "It is accepted — TypeScript only requires the expected members to be present"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "TypeScript is structurally typed: compatibility is about the members required, not about names or declaration sites.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "structural-typing"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-interfaces-007",
+      "type": "fill_blank",
+      "topic": "Index signature",
+      "question": "Complete the index signature for a string-keyed lookup of numbers.",
+      "sentence": "interface Counts { [key: ___]: number }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "any"
+        },
+        {
+          "id": "b",
+          "text": "object"
+        },
+        {
+          "id": "c",
+          "text": "string"
+        },
+        {
+          "id": "d",
+          "text": "String"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Index signature keys may be string, number or symbol. Record<string, number> expresses the same thing more compactly.",
+      "difficulty": 3,
+      "tags": [
+        "interfaces",
+        "index-signature"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-008",
+      "type": "flashcard",
+      "topic": "Declaration merging",
+      "question": "TypeScript · interfaces",
+      "front": "Two interfaces with the same name",
+      "back": "Merge into one — their members are combined rather than clashing",
+      "explanation": "Only interfaces do this. Declaring the same type alias twice is an error, which is often what you actually want.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "declaration-merging"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-interfaces-009",
+      "type": "code_multiple_choice",
+      "topic": "Method signatures",
+      "question": "Which call satisfies this interface?",
+      "language": "typescript",
+      "code": "interface Repo {\n  find(id: string): Promise<string | null>;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "repo.find(1) — numbers are coerced"
+        },
+        {
+          "id": "b",
+          "text": "repo.find() — the id is optional"
+        },
+        {
+          "id": "c",
+          "text": "repo.find(\"u1\") — returning a plain string synchronously"
+        },
+        {
+          "id": "d",
+          "text": "await repo.find(\"u1\") — returning a string or null"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The signature requires one string argument and returns a promise, so the call site awaits it and handles null.",
+      "difficulty": 3,
+      "tags": [
+        "interfaces",
+        "methods"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-interfaces-010",
+      "type": "concept_question",
+      "topic": "interface vs type alias",
+      "question": "Which statement is true of a type alias but not of an interface?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It can describe a union, a tuple or a mapped type"
+        },
+        {
+          "id": "b",
+          "text": "It can be extended"
+        },
+        {
+          "id": "c",
+          "text": "It can describe an object shape"
+        },
+        {
+          "id": "d",
+          "text": "It can be implemented by a class"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Interfaces only describe object-like shapes. Aliases cover everything, but do not merge across declarations — which is usually an advantage.",
+      "difficulty": 3,
+      "tags": [
+        "interfaces",
+        "types"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-interfaces-011",
+      "type": "code_multiple_choice",
+      "topic": "Optional vs undefined",
+      "language": "typescript",
+      "question": "Under exactOptionalPropertyTypes, which assignment is rejected?",
+      "code": "interface Options { retries?: number }\n\nconst a: Options = {};\nconst b: Options = { retries: undefined };",
+      "answers": [
+        {
+          "id": "a",
+          "text": "b — an explicitly undefined value is not the same as an absent property"
+        },
+        {
+          "id": "b",
+          "text": "a — the property is required"
+        },
+        {
+          "id": "c",
+          "text": "Both"
+        },
+        {
+          "id": "d",
+          "text": "Neither"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The flag separates \"not provided\" from \"provided as undefined\", which matters for anything that spreads or merges options objects.",
+      "difficulty": 5,
+      "tags": [
+        "interfaces",
+        "optional",
+        "strict-mode"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-interfaces-012",
+      "type": "code_completion",
+      "topic": "Implementing an interface",
+      "language": "typescript",
+      "question": "Complete the class declaration so the compiler checks it against the interface.",
+      "code": "class HttpUserRepo ___ UserRepository {\n  async find(id: string) { return null; }\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "implements"
+        },
+        {
+          "id": "b",
+          "text": "extends"
+        },
+        {
+          "id": "c",
+          "text": "satisfies"
+        },
+        {
+          "id": "d",
+          "text": "as"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "implements checks the shape without inheriting anything. extends is for inheriting from a base class.",
+      "difficulty": 2,
+      "tags": [
+        "interfaces",
+        "classes"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-013",
+      "type": "true_false",
+      "topic": "Structural compatibility of functions",
+      "question": "A function typed (a: string) => void is assignable to a property typed (a: string, b: number) => void.",
+      "correctAnswer": true,
+      "explanation": "Ignoring trailing parameters is always safe. It is why array callbacks can take just the element and skip the index.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "structural-typing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-014",
+      "type": "find_error",
+      "topic": "Readonly array mutation",
+      "language": "typescript",
+      "question": "Which line does the compiler reject?",
+      "code": "1  interface Config { readonly hosts: string[] }\n2  const c: Config = { hosts: ['a'] };\n3  c.hosts.push('b');\n4  c.hosts = ['c'];",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 3 — push mutates a readonly property"
+        },
+        {
+          "id": "b",
+          "text": "Line 4 — the property cannot be reassigned"
+        },
+        {
+          "id": "c",
+          "text": "Line 2 — the array literal is not readonly"
+        },
+        {
+          "id": "d",
+          "text": "Line 1 — readonly cannot be used on an array"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "readonly is shallow: it blocks reassignment, not mutation. readonly string[] would have rejected line 3 as well.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "readonly"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-interfaces-015",
+      "type": "multiple_choice",
+      "topic": "Discriminated shapes",
+      "question": "Why add a literal `kind` field to each member of a union of interfaces?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "It lets a switch narrow the union, and makes an unhandled member a compile error"
+        },
+        {
+          "id": "b",
+          "text": "It is required for interfaces to be unioned"
+        },
+        {
+          "id": "c",
+          "text": "It improves runtime performance"
+        },
+        {
+          "id": "d",
+          "text": "It allows declaration merging"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Without a discriminant the compiler can only offer members every branch shares, and adding a new case fails silently at every call site.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "unions",
+        "narrowing"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

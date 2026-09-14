@@ -1,0 +1,437 @@
+{
+  "id": "english-phrasal-verbs",
+  "subject": "english",
+  "module": "english-everyday-vocabulary",
+  "level": "intermediate",
+  "title": "Phrasal verbs",
+  "description": "The high-frequency ones — sort out, carry on, come up with — and where the object goes.",
+  "estimatedMinutes": 12,
+  "order": 2,
+  "tags": [
+    "phrasal-verbs",
+    "vocabulary",
+    "grammar"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "What makes them hard",
+      "body": "A phrasal verb's meaning rarely follows from its parts: give up has nothing to do with giving. They have to be learned as single vocabulary items, in a sentence."
+    },
+    {
+      "type": "theory",
+      "title": "Separable or not",
+      "body": "Many take the object either after the particle or between the two parts: turn off the light / turn the light off. A pronoun object must go in the middle: turn it off, never turn off it."
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "In formal writing a single-word equivalent often reads better: resolve rather than sort out, postpone rather than put off. In speech the phrasal verb is the natural choice."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-phrasal-001",
+      "type": "flashcard",
+      "topic": "to come up with",
+      "question": "Vocabulary",
+      "front": "to come up with something",
+      "back": "wymyślić / wpaść na coś",
+      "explanation": "She came up with a workaround. Three parts, and none of them can be dropped.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-phrasal-002",
+      "type": "fill_blank",
+      "topic": "to sort out",
+      "question": "Complete the sentence.",
+      "sentence": "Can you ___ out the failing test before the demo?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "bring"
+        },
+        {
+          "id": "b",
+          "text": "take"
+        },
+        {
+          "id": "c",
+          "text": "make"
+        },
+        {
+          "id": "d",
+          "text": "sort"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "sort something out means fix or resolve it. It is separable: sort it out, sort out the test.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-003",
+      "type": "multiple_choice",
+      "topic": "Pronoun placement",
+      "question": "Which sentence is correct?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I'll turn off it."
+        },
+        {
+          "id": "b",
+          "text": "I'll off turn it."
+        },
+        {
+          "id": "c",
+          "text": "I'll turn it of."
+        },
+        {
+          "id": "d",
+          "text": "I'll turn it off."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "With a separable phrasal verb, a pronoun object always sits between the verb and the particle.",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "grammar"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-phrasal-004",
+      "type": "translation",
+      "topic": "to put off",
+      "question": "Translate the sentence.",
+      "sentence": "Musimy przełożyć wdrożenie na następny tydzień.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "We have to put the release off until next week."
+        },
+        {
+          "id": "b",
+          "text": "We have to put away the release to next week."
+        },
+        {
+          "id": "c",
+          "text": "We have to put the release down until next week."
+        },
+        {
+          "id": "d",
+          "text": "We have to put off the release since next week."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "put something off means postpone it, and until marks the new point in time.",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-phrasal-005",
+      "type": "true_false",
+      "topic": "Inseparable verbs",
+      "question": "\"I ran my old manager into at the conference\" is correct.",
+      "correctAnswer": false,
+      "explanation": "run into is inseparable, so the object follows the whole phrase: I ran into my old manager.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-006",
+      "type": "concept_question",
+      "topic": "Register",
+      "question": "Why do phrasal verbs often get replaced in formal reports?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "They cannot be used in the past tense"
+        },
+        {
+          "id": "b",
+          "text": "Single-word Latin-based equivalents read as more formal"
+        },
+        {
+          "id": "c",
+          "text": "Phrasal verbs are grammatically incorrect in writing"
+        },
+        {
+          "id": "d",
+          "text": "They are ambiguous by definition"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "find out → determine, put up with → tolerate, go up → increase. Both are correct English; the difference is register.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "register"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-phrasal-007",
+      "type": "fill_blank",
+      "topic": "to carry on",
+      "question": "Complete the sentence.",
+      "sentence": "Ignore the warning and carry ___ with the deployment.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "on"
+        },
+        {
+          "id": "b",
+          "text": "out"
+        },
+        {
+          "id": "c",
+          "text": "over"
+        },
+        {
+          "id": "d",
+          "text": "up"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "carry on means continue. carry out means perform or execute — carry out a test.",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-008",
+      "type": "multiple_choice",
+      "topic": "to look into",
+      "question": "What does \"I'll look into it\" mean?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I will investigate it"
+        },
+        {
+          "id": "b",
+          "text": "I will look at it briefly and move on"
+        },
+        {
+          "id": "c",
+          "text": "I will reject it"
+        },
+        {
+          "id": "d",
+          "text": "I will copy it"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "look into means investigate. look after means take care of, look up means find in a reference.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-009",
+      "type": "flashcard",
+      "topic": "to roll back",
+      "question": "Vocabulary",
+      "front": "to roll back a release",
+      "back": "wycofać wdrożenie do poprzedniej wersji",
+      "explanation": "Near-universal in software English. The noun is a rollback, written as one word.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "work"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-phrasal-010",
+      "type": "fill_blank",
+      "topic": "to figure out",
+      "question": "Complete the sentence.",
+      "sentence": "It took us two days to figure ___ why the test only failed on CI.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "out"
+        },
+        {
+          "id": "b",
+          "text": "off"
+        },
+        {
+          "id": "c",
+          "text": "over"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "figure something out means work it out or understand it after effort. It is separable: figure it out.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-011",
+      "type": "multiple_choice",
+      "topic": "to end up",
+      "question": "What does \"We ended up rewriting the whole suite\" mean?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "We finished rewriting it on time"
+        },
+        {
+          "id": "b",
+          "text": "That is what eventually happened, though it was not the plan"
+        },
+        {
+          "id": "c",
+          "text": "We decided against rewriting it"
+        },
+        {
+          "id": "d",
+          "text": "We stopped halfway through"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "end up + -ing describes the unintended final outcome. The Polish equivalent is \"skończyło się na tym, że...\".",
+      "difficulty": 3,
+      "tags": [
+        "phrasal-verbs",
+        "vocabulary"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "english-phrasal-012",
+      "type": "translation",
+      "topic": "to back up",
+      "question": "Translate the sentence.",
+      "sentence": "Poprzyj to danymi, zanim wyślesz do klienta.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Back it up with data before you send it to the client."
+        },
+        {
+          "id": "b",
+          "text": "Back up it with data before you send to the client."
+        },
+        {
+          "id": "c",
+          "text": "Backup it with data before sending to client."
+        },
+        {
+          "id": "d",
+          "text": "Back it with data up before you send it."
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "back something up means support it with evidence, and a pronoun object goes in the middle. \"Backup\" as one word is the noun.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "translation"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-phrasal-013",
+      "type": "true_false",
+      "topic": "Three-part verbs",
+      "question": "Three-part phrasal verbs such as \"put up with\" are inseparable.",
+      "correctAnswer": true,
+      "explanation": "The object always follows the whole phrase: I can't put up with it — never \"put it up with\".",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-phrasal-014",
+      "type": "concept_question",
+      "topic": "to get around to",
+      "question": "What does \"I haven't got around to it yet\" convey?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I have not found the time for it, though I intend to"
+        },
+        {
+          "id": "b",
+          "text": "I have refused to do it"
+        },
+        {
+          "id": "c",
+          "text": "I have finished it already"
+        },
+        {
+          "id": "d",
+          "text": "I do not understand it"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A soft, common way of saying not yet done. The to is a preposition, so it takes a noun or -ing: got around to writing it.",
+      "difficulty": 4,
+      "tags": [
+        "phrasal-verbs",
+        "register"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-phrasal-015",
+      "type": "flashcard",
+      "topic": "to narrow down",
+      "question": "Vocabulary",
+      "front": "to narrow something down",
+      "back": "zawęzić — zbiór możliwości do kilku",
+      "explanation": "We narrowed it down to two suspects. Very common when describing debugging in English.",
+      "difficulty": 2,
+      "tags": [
+        "phrasal-verbs",
+        "work"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

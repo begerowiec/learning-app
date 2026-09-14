@@ -1,0 +1,231 @@
+{
+  "id": "playwright-auto-waiting",
+  "subject": "playwright",
+  "module": "playwright-locators",
+  "level": "beginner",
+  "title": "Auto-waiting",
+  "description": "What actionability actually checks, why waitForTimeout is the wrong tool, and the two waits you still need.",
+  "estimatedMinutes": 10,
+  "order": 1,
+  "tags": ["auto-waiting", "flaky", "actionability"],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Actionability",
+      "body": "Before every action Playwright waits for the element to be attached, visible, stable (no animation), able to receive events (nothing covering it) and, for inputs, enabled. Only when all of them hold does the click happen — and if they never do, the error names the check that failed."
+    },
+    {
+      "type": "example",
+      "title": "What replaces a sleep",
+      "body": "A fixed timeout is a guess: too short on CI, wasted seconds locally. A web-first assertion waits for the condition you actually care about.",
+      "language": "typescript",
+      "code": "// guesswork\nawait page.waitForTimeout(2000);\nawait expect(page.getByText('Saved')).toBeVisible();\n\n// the condition itself\nawait expect(page.getByText('Saved')).toBeVisible({ timeout: 10_000 });"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "Auto-waiting covers the element, not your application's state. A spinner that has disappeared does not mean the list finished re-rendering — assert on the data you expect, not on the absence of the loader."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-waiting-001",
+      "type": "concept_question",
+      "topic": "Actionability checks",
+      "question": "Which of these does Playwright NOT wait for before clicking?",
+      "answers": [
+        { "id": "a", "text": "The element being visible" },
+        { "id": "b", "text": "The element being stable — no ongoing animation" },
+        { "id": "c", "text": "Every pending network request to finish" },
+        { "id": "d", "text": "The element receiving pointer events" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Network idle is not part of actionability, and waiting for it is usually a mistake — an app with polling or analytics never goes idle.",
+      "difficulty": 3,
+      "tags": ["auto-waiting", "actionability"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-002",
+      "type": "find_error",
+      "topic": "Sleep as a fix",
+      "question": "This test is flaky on CI and passes locally. What is the real problem?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('button', { name: 'Save' }).click();\n2  await page.waitForTimeout(1000);\n3  const rows = await page.getByRole('row').count();\n4  expect(rows).toBe(4);",
+      "answers": [
+        { "id": "a", "text": "Line 1 — click should be awaited twice" },
+        { "id": "b", "text": "Lines 2–4 — a fixed sleep plus a non-retrying assertion on a snapshot count" },
+        { "id": "c", "text": "Line 3 — count() is not supported" },
+        { "id": "d", "text": "Line 4 — toBe should be toEqual" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "count() reads once, so expect(number) cannot retry. await expect(page.getByRole('row')).toHaveCount(4) polls until the row appears and needs no sleep at all.",
+      "difficulty": 3,
+      "tags": ["auto-waiting", "flaky", "assertions"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-waiting-003",
+      "type": "code_multiple_choice",
+      "topic": "Locator handles vs values",
+      "question": "Why can the second line never retry?",
+      "language": "typescript",
+      "code": "const text = await page.getByTestId('total').textContent();\nexpect(text).toBe('120.00 PLN');",
+      "answers": [
+        { "id": "a", "text": "textContent() resolves once, so the assertion compares a plain string" },
+        { "id": "b", "text": "toBe never retries by design, but toEqual would" },
+        { "id": "c", "text": "getByTestId does not support textContent" },
+        { "id": "d", "text": "It does retry — expect is always web-first" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Retrying is a property of asserting on a *locator*: await expect(page.getByTestId('total')).toHaveText('120.00 PLN') re-reads until it matches or the timeout expires.",
+      "difficulty": 3,
+      "tags": ["auto-waiting", "assertions"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-004",
+      "type": "true_false",
+      "topic": "networkidle",
+      "question": "waitForLoadState('networkidle') is the recommended way to wait for a single-page app to settle.",
+      "correctAnswer": false,
+      "explanation": "The Playwright docs discourage it. Polling, websockets or analytics keep the network busy forever; assert on something the user can see instead.",
+      "difficulty": 4,
+      "tags": ["auto-waiting", "flaky"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-waiting-005",
+      "type": "code_completion",
+      "topic": "Waiting for a response",
+      "question": "You need the click and the request it triggers to be awaited together, without a race. Complete the call.",
+      "language": "typescript",
+      "code": "const responsePromise = page.waitForResponse('**/api/orders');\nawait page.getByRole('button', { name: 'Submit' }).click();\nconst response = ___ responsePromise;",
+      "answers": [
+        { "id": "a", "text": "await" },
+        { "id": "b", "text": "return" },
+        { "id": "c", "text": "yield" },
+        { "id": "d", "text": "expect" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Start the wait before the action, then await it after — that ordering is what avoids missing a fast response. Awaiting waitForResponse before the click would deadlock.",
+      "difficulty": 4,
+      "tags": ["auto-waiting", "network"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-006",
+      "type": "multiple_choice",
+      "topic": "Element covered by an overlay",
+      "question": "A click times out with \"element intercepts pointer events\". What does that mean?",
+      "answers": [
+        { "id": "a", "text": "The element is hidden behind something — a toast, a modal backdrop, a sticky header" },
+        { "id": "b", "text": "The element is disabled" },
+        { "id": "c", "text": "The selector matched two elements" },
+        { "id": "d", "text": "The page navigated during the click" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Playwright hit-tests the point it is about to click. force: true skips the check and usually just moves the failure somewhere less obvious — wait for the overlay to go instead.",
+      "difficulty": 3,
+      "tags": ["actionability", "auto-waiting"],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-waiting-007",
+      "type": "fill_blank",
+      "topic": "force clicks",
+      "question": "Complete the sentence.",
+      "sentence": "Passing force: true to click() skips the ___ checks.",
+      "answers": [
+        { "id": "a", "text": "actionability" },
+        { "id": "b", "text": "navigation" },
+        { "id": "c", "text": "strict mode" },
+        { "id": "d", "text": "assertion" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "It clicks at the coordinates regardless of visibility or interception. Useful for testing a deliberately blocked control; a liability everywhere else.",
+      "difficulty": 3,
+      "tags": ["actionability"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-waiting-008",
+      "type": "code_multiple_choice",
+      "topic": "Disappearing loader",
+      "question": "Which assertion actually proves the list has loaded?",
+      "language": "typescript",
+      "code": "// A\nawait expect(page.getByTestId('spinner')).toBeHidden();\n\n// B\nawait expect(page.getByRole('row')).toHaveCount(20);",
+      "answers": [
+        { "id": "a", "text": "B — it asserts on the data, not on the absence of a loader" },
+        { "id": "b", "text": "A — the spinner disappears exactly when loading ends" },
+        { "id": "c", "text": "Both are equivalent" },
+        { "id": "d", "text": "Neither — you need waitForTimeout" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A passes before the spinner ever appears, and again in the gap between the fetch resolving and the rows rendering. Assert the end state you care about.",
+      "difficulty": 4,
+      "tags": ["auto-waiting", "flaky", "assertions"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-waiting-009",
+      "type": "flashcard",
+      "topic": "Default timeouts",
+      "question": "Playwright · configuration",
+      "front": "expect timeout vs test timeout",
+      "back": "5 s per web-first assertion, 30 s for the whole test — tuned separately",
+      "explanation": "Raise expect.timeout in the config for a genuinely slow condition; raising the test timeout only hides where the time went.",
+      "difficulty": 3,
+      "tags": ["auto-waiting", "configuration"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-waiting-010",
+      "type": "concept_question",
+      "topic": "When an explicit wait is right",
+      "question": "Which case genuinely needs an explicit wait rather than an assertion?",
+      "answers": [
+        { "id": "a", "text": "Waiting for a button to become enabled" },
+        { "id": "b", "text": "Capturing a network response or a download triggered by an action" },
+        { "id": "c", "text": "Waiting for text to appear" },
+        { "id": "d", "text": "Waiting for a row count to settle" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Everything visible is covered by a retrying assertion. Events that are not part of the DOM — responses, downloads, popups, console messages — need waitFor* started before the action.",
+      "difficulty": 4,
+      "tags": ["auto-waiting", "network"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-waiting-011",
+      "type": "true_false",
+      "topic": "Animation stability",
+      "question": "Playwright will click an element that is still sliding into place.",
+      "correctAnswer": false,
+      "explanation": "Stability is an actionability check: it waits for the bounding box to stop moving across two consecutive animation frames, which is what prevents clicks landing next to a toast.",
+      "difficulty": 3,
+      "tags": ["actionability", "auto-waiting"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-waiting-012",
+      "type": "find_error",
+      "topic": "Race on navigation",
+      "question": "This occasionally fails with \"execution context was destroyed\". Why?",
+      "language": "typescript",
+      "code": "1  await page.getByRole('link', { name: 'Reports' }).click();\n2  const title = await page.title();\n3  expect(title).toContain('Reports');",
+      "answers": [
+        { "id": "a", "text": "Line 1 — links cannot be clicked" },
+        { "id": "b", "text": "Line 3 — toContain does not work on strings" },
+        { "id": "c", "text": "Line 2 — it reads the title mid-navigation, before the new document exists" },
+        { "id": "d", "text": "Nothing — this is a Playwright bug" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "await expect(page).toHaveTitle(/Reports/) retries across the navigation. One-shot reads taken right after a click are a classic source of CI-only flakiness.",
+      "difficulty": 4,
+      "tags": ["flaky", "auto-waiting", "navigation"],
+      "estimatedSeconds": 45
+    }
+  ]
+}

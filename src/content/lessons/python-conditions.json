@@ -1,0 +1,266 @@
+{
+  "id": "python-conditions",
+  "subject": "python",
+  "module": "python-basics",
+  "level": "beginner",
+  "title": "Conditions",
+  "description": "if / elif / else, comparison and boolean operators, and the traps around truthiness.",
+  "estimatedMinutes": 8,
+  "order": 1,
+  "tags": [
+    "conditions",
+    "control-flow"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definition",
+      "body": "A condition chooses which block runs. Python tests the branches in order and runs the first one whose expression is true; elif branches are only reached when every branch above them was false."
+    },
+    {
+      "type": "example",
+      "title": "Shape",
+      "body": "The colon and the indentation are part of the syntax, not a style choice.",
+      "language": "python",
+      "code": "if score >= 90:\n    grade = \"A\"\nelif score >= 75:\n    grade = \"B\"\nelse:\n    grade = \"C\""
+    },
+    {
+      "type": "callout",
+      "title": "Good practice",
+      "variant": "tip",
+      "body": "Compare with == and assign with =. Chained comparisons such as 0 <= x <= 10 read better than combining two tests with and."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "python-conditions-001",
+      "type": "code_multiple_choice",
+      "topic": "Branch order",
+      "question": "What does this print?",
+      "language": "python",
+      "code": "x = 95\nif x >= 75:\n    print(\"B\")\nelif x >= 90:\n    print(\"A\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "A"
+        },
+        {
+          "id": "b",
+          "text": "B"
+        },
+        {
+          "id": "c",
+          "text": "A then B"
+        },
+        {
+          "id": "d",
+          "text": "nothing"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The first true branch wins and the rest are skipped. Order the widest condition last, or the A branch can never be reached.",
+      "difficulty": 3,
+      "tags": [
+        "conditions",
+        "control-flow"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "python-conditions-002",
+      "type": "find_error",
+      "topic": "Assignment vs comparison",
+      "question": "Which line breaks this snippet?",
+      "language": "python",
+      "code": "1  status = \"new\"\n2  if status = \"new\":\n3      print(\"fresh\")",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Line 3 — print must be indented by two spaces"
+        },
+        {
+          "id": "b",
+          "text": "Line 2 — a condition needs ==, not ="
+        },
+        {
+          "id": "c",
+          "text": "No line breaks it"
+        },
+        {
+          "id": "d",
+          "text": "Line 1 — strings need single quotes"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "= assigns, == compares. Python rejects assignment inside an if header with a SyntaxError.",
+      "difficulty": 1,
+      "tags": [
+        "conditions",
+        "operators"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-conditions-003",
+      "type": "true_false",
+      "topic": "elif vs separate ifs",
+      "question": "Replacing elif with a second if can change which branches run.",
+      "correctAnswer": true,
+      "explanation": "Separate ifs are each tested independently, so two of them can both run. elif branches are mutually exclusive.",
+      "difficulty": 3,
+      "tags": [
+        "conditions",
+        "control-flow"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "python-conditions-004",
+      "type": "fill_blank",
+      "topic": "Boolean operators",
+      "question": "Complete the condition so it matches ages inside the range.",
+      "sentence": "if age >= 18 ___ age <= 65:",
+      "answers": [
+        {
+          "id": "a",
+          "text": "and"
+        },
+        {
+          "id": "b",
+          "text": "&&"
+        },
+        {
+          "id": "c",
+          "text": "or"
+        },
+        {
+          "id": "d",
+          "text": "not"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Both parts must hold, so the operator is and. Python spells the boolean operators as words: and, or, not.",
+      "difficulty": 2,
+      "tags": [
+        "conditions",
+        "operators"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-conditions-005",
+      "type": "concept_question",
+      "topic": "None checks",
+      "question": "Why is `if value is None` preferred over `if value == None`?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "is is faster, but otherwise identical"
+        },
+        {
+          "id": "b",
+          "text": "There is no difference; both are equally idiomatic"
+        },
+        {
+          "id": "c",
+          "text": "is compares identity, and None is a singleton — a custom __eq__ cannot fool it"
+        },
+        {
+          "id": "d",
+          "text": "== does not work with None at all"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "There is exactly one None object, so identity is the exact test. A class that overrides __eq__ could make == None return True by accident.",
+      "difficulty": 4,
+      "tags": [
+        "conditions",
+        "truthiness"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "python-conditions-006",
+      "type": "code_completion",
+      "topic": "Negation",
+      "question": "Complete the guard so the body runs only for non-empty lists.",
+      "language": "python",
+      "code": "if ___ items:\n    return None",
+      "answers": [
+        {
+          "id": "a",
+          "text": "!"
+        },
+        {
+          "id": "b",
+          "text": "is"
+        },
+        {
+          "id": "c",
+          "text": "not"
+        },
+        {
+          "id": "d",
+          "text": "no"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "An empty list is falsy, so `if not items` is the idiomatic early return. Python has no ! operator.",
+      "difficulty": 2,
+      "tags": [
+        "conditions",
+        "truthiness"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "python-conditions-007",
+      "type": "code_multiple_choice",
+      "topic": "Chained comparison",
+      "question": "What is the value of the expression?",
+      "language": "python",
+      "code": "x = 5\nprint(1 < x < 4)",
+      "answers": [
+        {
+          "id": "a",
+          "text": "SyntaxError"
+        },
+        {
+          "id": "b",
+          "text": "TypeError"
+        },
+        {
+          "id": "c",
+          "text": "False"
+        },
+        {
+          "id": "d",
+          "text": "True"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A chained comparison means 1 < x and x < 4. The second part is false for x = 5, so the whole thing is False.",
+      "difficulty": 3,
+      "tags": [
+        "conditions",
+        "operators"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "python-conditions-008",
+      "type": "flashcard",
+      "topic": "Conditional expression",
+      "question": "Syntax",
+      "front": "value = a if cond else b",
+      "back": "The ternary form — one expression, evaluates only the branch it needs",
+      "explanation": "Useful for short either/or assignments. Keep it to one line; nest it and readability drops fast.",
+      "difficulty": 2,
+      "tags": [
+        "conditions",
+        "syntax"
+      ],
+      "estimatedSeconds": 20
+    }
+  ]
+}

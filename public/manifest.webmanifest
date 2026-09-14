@@ -1,0 +1,13 @@
+{
+  "name": "RECALL/OS",
+  "short_name": "RECALL/OS",
+  "description": "Spaced-repetition learning for English, Python and TypeScript.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f2f3",
+  "theme_color": "#f2f2f3",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

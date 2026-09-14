@@ -1,0 +1,455 @@
+{
+  "id": "english-present-continuous",
+  "subject": "english",
+  "module": "english-present-tenses",
+  "level": "beginner",
+  "title": "Present Continuous",
+  "description": "Czynności w toku, sytuacje tymczasowe i czasowniki, które nie przyjmują formy -ing.",
+  "estimatedMinutes": 12,
+  "order": 1,
+  "tags": [
+    "present-continuous",
+    "grammar",
+    "tenses"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Kiedy go używać",
+      "body": "Present Continuous obejmuje to, co dzieje się teraz, co jest tymczasowe i jakie ustalenia są już umówione na bliską przyszłość: I'm working from home this week. We're meeting the client on Thursday."
+    },
+    {
+      "type": "theory",
+      "title": "Forma",
+      "body": "am / is / are + czasownik z -ing. Czasownik posiłkowy zgadza się z podmiotem i niesie przeczenie oraz pytanie: Is she working? She isn't working."
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Czasowniki statyczne (know, understand, own, prefer) zwykle nie mają formy ciągłej. \"I'm loving it\" to celowy zabieg marketingowy, a nie wzorcowe zdanie."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "english-pc-001",
+      "type": "fill_blank",
+      "topic": "Czynność teraz",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "Be quiet — the baby ___.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "slept"
+        },
+        {
+          "id": "b",
+          "text": "is sleeping"
+        },
+        {
+          "id": "c",
+          "text": "sleeps"
+        },
+        {
+          "id": "d",
+          "text": "has slept"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Czynność trwa w chwili mówienia, co jest podstawowym zastosowaniem Present Continuous.",
+      "difficulty": 1,
+      "tags": [
+        "present-continuous",
+        "grammar"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-002",
+      "type": "multiple_choice",
+      "topic": "Simple kontra continuous",
+      "question": "Które zdanie jest poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I take usually the bus, but this week I cycling."
+        },
+        {
+          "id": "b",
+          "text": "I am usually taking the bus, but this week I cycle."
+        },
+        {
+          "id": "c",
+          "text": "I usually take the bus, but this week I'm cycling."
+        },
+        {
+          "id": "d",
+          "text": "I usually am taking the bus, but this week I'm cycle."
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Nawyk bierze Present Simple, a tymczasowa zmiana Present Continuous. Ten kontrast jest dokładnie tym, po co te dwa czasy istnieją.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "tenses"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-003",
+      "type": "true_false",
+      "topic": "Czasowniki statyczne",
+      "question": "\"I am knowing the answer\" to poprawna angielszczyzna.",
+      "correctAnswer": false,
+      "explanation": "Know jest czasownikiem statycznym i bierze formę prostą: I know the answer.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 15
+    },
+    {
+      "id": "english-pc-004",
+      "type": "translation",
+      "topic": "Sytuacje tymczasowe",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "W tym tygodniu pracuję z domu.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I work from home this week."
+        },
+        {
+          "id": "b",
+          "text": "I'm working from home this week."
+        },
+        {
+          "id": "c",
+          "text": "I have worked from home this week."
+        },
+        {
+          "id": "d",
+          "text": "I worked from home this week."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "\"W tym tygodniu\" sygnalizuje tymczasowe ustalenie, więc angielski woli formę ciągłą.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-005",
+      "type": "fill_blank",
+      "topic": "Pisownia końcówki -ing",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "They are ___ a new office in Wrocław.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "opening"
+        },
+        {
+          "id": "b",
+          "text": "opens"
+        },
+        {
+          "id": "c",
+          "text": "opend"
+        },
+        {
+          "id": "d",
+          "text": "openning"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Spółgłoskę podwaja się tylko wtedy, gdy ostatnia sylaba jest akcentowana: run → running, ale open → opening.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "spelling"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pc-006",
+      "type": "concept_question",
+      "topic": "Ustalenia na przyszłość",
+      "question": "Dlaczego \"We're meeting the client on Thursday\" jest dopuszczalne dla zdarzenia przyszłego?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Present Continuous wyraża ustalenia, które są już umówione"
+        },
+        {
+          "id": "b",
+          "text": "Bo czwartek jest blisko teraźniejszości"
+        },
+        {
+          "id": "c",
+          "text": "Bo meet nie ma formy przyszłej"
+        },
+        {
+          "id": "d",
+          "text": "Nie jest dopuszczalne — potrzeba will"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Konkretne ustalenie, zwykle z drugą osobą i godziną, bierze formę ciągłą. Przewidywania i propozycje biorą will.",
+      "difficulty": 4,
+      "tags": [
+        "present-continuous",
+        "future"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "english-pc-007",
+      "type": "multiple_choice",
+      "topic": "Przeczenie",
+      "question": "Które przeczenie jest poprawne?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "She not listening."
+        },
+        {
+          "id": "b",
+          "text": "She don't listening."
+        },
+        {
+          "id": "c",
+          "text": "She doesn't listening."
+        },
+        {
+          "id": "d",
+          "text": "She isn't listening."
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "W czasach ciągłych przeczenie niesie czasownik to be; do i does należą do form prostych.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "negation"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pc-008",
+      "type": "flashcard",
+      "topic": "always + forma ciągła",
+      "question": "Słownictwo",
+      "front": "He's always losing his keys",
+      "back": "always + continuous expresses irritation about a repeated habit",
+      "explanation": "Forma prosta byłaby neutralna. Z formą ciągłą mówiący się skarży.",
+      "difficulty": 4,
+      "tags": [
+        "present-continuous",
+        "adverbs"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-009",
+      "type": "fill_blank",
+      "topic": "Sytuacje zmienne",
+      "question": "Uzupełnij zdanie.",
+      "sentence": "The number of remote jobs ___ every year.",
+      "answers": [
+        {
+          "id": "a",
+          "text": "has grown once"
+        },
+        {
+          "id": "b",
+          "text": "grew"
+        },
+        {
+          "id": "c",
+          "text": "is growing"
+        },
+        {
+          "id": "d",
+          "text": "grow"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Trendy i zmieniające się sytuacje biorą formę ciągłą: prices are rising, the climate is warming.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "grammar"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "english-pc-010",
+      "type": "fill_blank",
+      "topic": "Pytania",
+      "question": "Uzupełnij pytanie.",
+      "sentence": "___ they still working on the release?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Are"
+        },
+        {
+          "id": "b",
+          "text": "Do"
+        },
+        {
+          "id": "c",
+          "text": "Have"
+        },
+        {
+          "id": "d",
+          "text": "Does"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Pytania w formie ciągłej tworzy się czasownikiem to be, który wychodzi przed podmiot.",
+      "difficulty": 1,
+      "tags": [
+        "present-continuous",
+        "questions"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-011",
+      "type": "multiple_choice",
+      "topic": "Ustalenia na bliską przyszłość",
+      "question": "Które zdanie opisuje ustalony plan, a nie przewidywanie?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I think it will rain tomorrow."
+        },
+        {
+          "id": "b",
+          "text": "I am meeting the client at ten tomorrow."
+        },
+        {
+          "id": "c",
+          "text": "It is going to be a long week."
+        },
+        {
+          "id": "d",
+          "text": "I will call you tomorrow."
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Present Continuous z określeniem czasu sygnalizuje coś już umówionego z kimś innym. will służy decyzjom podejmowanym w chwili mówienia.",
+      "difficulty": 3,
+      "tags": [
+        "present-continuous",
+        "future"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-012",
+      "type": "translation",
+      "topic": "Właśnie teraz",
+      "question": "Przetłumacz zdanie.",
+      "sentence": "Właśnie przeglądam twojego pull requesta.",
+      "sourceLanguage": "pl",
+      "targetLanguage": "en",
+      "answers": [
+        {
+          "id": "a",
+          "text": "I review your pull request right now."
+        },
+        {
+          "id": "b",
+          "text": "I have reviewed your pull request."
+        },
+        {
+          "id": "c",
+          "text": "I am reviewing your pull request right now."
+        },
+        {
+          "id": "d",
+          "text": "I was reviewing your pull request."
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Czynność w toku w chwili mówienia to podstawowe zastosowanie Present Continuous.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "translation"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "english-pc-013",
+      "type": "true_false",
+      "topic": "Pisownia z końcowym e",
+      "question": "Forma -ing od \"make\" to \"makeing\".",
+      "correctAnswer": false,
+      "explanation": "Nieme końcowe e wypada: make → making, write → writing. Zostaje w see → seeing i agree → agreeing.",
+      "difficulty": 2,
+      "tags": [
+        "present-continuous",
+        "spelling"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "english-pc-014",
+      "type": "concept_question",
+      "topic": "Dwa znaczenia jednego czasownika",
+      "question": "\"I'm seeing the doctor at four\" jest poprawne, a \"I'm seeing what you mean\" nie. Dlaczego?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Pierwsze to ustalenie (czynność), drugie to percepcja, czyli stan"
+        },
+        {
+          "id": "b",
+          "text": "See nigdy nie przyjmuje określenia czasu"
+        },
+        {
+          "id": "c",
+          "text": "Drugie wymaga czasu przeszłego"
+        },
+        {
+          "id": "d",
+          "text": "Oba są w rzeczywistości poprawne"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Kilka czasowników ma znaczenie czynnościowe i stanowe, a formę ciągłą bierze tylko to czynnościowe. I see what you mean.",
+      "difficulty": 5,
+      "tags": [
+        "present-continuous",
+        "state-verbs"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "english-pc-015",
+      "type": "flashcard",
+      "topic": "Podwajanie spółgłoski",
+      "question": "Słownictwo",
+      "front": "run · sit · begin · prefer",
+      "back": "running · sitting · beginning · preferring — podwojona, gdy ostatnia sylaba jest akcentowana",
+      "explanation": "Porównaj open → opening i offer → offering, gdzie akcent pada na pierwszą sylabę.",
+      "difficulty": 4,
+      "tags": [
+        "present-continuous",
+        "spelling"
+      ],
+      "estimatedSeconds": 25
+    }
+  ]
+}

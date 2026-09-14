@@ -1,0 +1,379 @@
+{
+  "id": "playwright-debugging",
+  "subject": "playwright",
+  "module": "playwright-reliability",
+  "level": "intermediate",
+  "title": "Debugowanie flaky testów",
+  "description": "Czytanie trace'a, co naprawdę mówią retry i różnica między flaky testem a flaky aplikacją.",
+  "estimatedMinutes": 11,
+  "order": 2,
+  "tags": [
+    "debugging",
+    "trace",
+    "flaky"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Trace to dowód",
+      "body": "Trace nagrywa każdą akcję z migawką DOM-u przed i po, log sieci, konsolę i nagranie ekranu. Przy awarii widocznej tylko na CI to różnica między popołudniem prób odtworzenia a trzydziestoma sekundami, po których widzisz, że kliknięcie trafiło w baner cookie."
+    },
+    {
+      "type": "example",
+      "title": "Nagrywaj tam, gdzie ma to znaczenie",
+      "body": "on-first-retry to domyślna wartość warta zachowania: zero kosztu na zielonych przebiegach, pełny trace w chwili, gdy coś padnie.",
+      "language": "typescript",
+      "code": "export default defineConfig({\n  retries: process.env.CI ? 2 : 0,\n  use: {\n    trace: 'on-first-retry',\n    screenshot: 'only-on-failure',\n    video: 'retain-on-failure',\n  },\n});"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Test przechodzący dopiero przy ponowieniu nie jest naprawiony. Retry kupuje zielony pipeline i ukrywa albo realny wyścig w produkcie, albo realne założenie w teście — liczba flaky w raporcie to ta, która się liczy."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-debug-001",
+      "type": "concept_question",
+      "topic": "Co zawiera trace",
+      "question": "Czego NIE ma w trace Playwrighta?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Migawki DOM-u przed i po każdej akcji"
+        },
+        {
+          "id": "b",
+          "text": "Żądań sieciowych wykonanych przez stronę"
+        },
+        {
+          "id": "c",
+          "text": "Żywej, interaktywnej kopii aplikacji, którą można wyklikać"
+        },
+        {
+          "id": "d",
+          "text": "Komunikatów konsoli i miejsca w źródle testu"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Migawki da się przeglądać devtoolsami, ale są zamrożone — nic się nie wykonuje ponownie. Dlatego właśnie są wiarygodnym dowodem tego, jak strona wyglądała w tamtej chwili.",
+      "difficulty": 3,
+      "tags": [
+        "trace",
+        "debugging"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-debug-002",
+      "type": "code_completion",
+      "topic": "Otwieranie trace'a",
+      "question": "Uzupełnij komendę otwierającą trace pobrany z artefaktu CI.",
+      "language": "text",
+      "code": "npx playwright ___ trace.zip",
+      "answers": [
+        {
+          "id": "a",
+          "text": "show-trace"
+        },
+        {
+          "id": "b",
+          "text": "open-trace"
+        },
+        {
+          "id": "c",
+          "text": "trace"
+        },
+        {
+          "id": "d",
+          "text": "view"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Działa całkowicie lokalnie — bez serwera i bez ponownego uruchamiania testu. trace.playwright.dev robi to samo w karcie przeglądarki, jeśli wolisz nie pobierać CLI.",
+      "difficulty": 2,
+      "tags": [
+        "trace",
+        "debugging"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-debug-003",
+      "type": "true_false",
+      "topic": "Klasyfikacja flaky",
+      "question": "Test zaraportowany jako \"flaky\" zawiódł przynajmniej raz, a potem przeszedł przy ponowieniu.",
+      "correctAnswer": true,
+      "explanation": "Reporter rozdziela flaky od failed właśnie dlatego. Traktuj kolumnę flaky jak backlog, nie jak szum.",
+      "difficulty": 2,
+      "tags": [
+        "flaky",
+        "retries"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-debug-004",
+      "type": "find_error",
+      "topic": "Zapomniany kod debugowy",
+      "question": "Która linia sprawi, że ten test zawiesi się na CI na zawsze?",
+      "language": "typescript",
+      "code": "1  await page.goto('/orders');\n2  await page.pause();\n3  await expect(page.getByRole('row')).toHaveCount(3);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 1 — goto potrzebuje waitUntil"
+        },
+        {
+          "id": "b",
+          "text": "Linia 3 — toHaveCount nie istnieje"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — page.pause() czeka na człowieka w Inspectorze"
+        },
+        {
+          "id": "d",
+          "text": "Nic — pause jest pustą operacją w trybie headless"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To narzędzie do debugowania, a nie czekanie. Wyłapuj je lintem, bo w końcu kosztuje kogoś cały timeout pipeline'u.",
+      "difficulty": 2,
+      "tags": [
+        "debugging"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-debug-005",
+      "type": "multiple_choice",
+      "topic": "Odtwarzanie awarii z CI",
+      "question": "Test zawodzi tylko na CI, nigdy lokalnie. Którą różnicę warto sprawdzić najpierw?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Rozmiar viewportu, strefę czasową, locale i szybkość maszyny — domyślne wartości CI różnią się od twoich"
+        },
+        {
+          "id": "b",
+          "text": "Wersję Playwrighta, która i tak jest przypięta"
+        },
+        {
+          "id": "c",
+          "text": "System operacyjny, który nigdy nie wpływa na DOM"
+        },
+        {
+          "id": "d",
+          "text": "Nic — awarie tylko na CI to zawsze infrastruktura"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Węższy viewport chowa menu pod hamburgerem; inna strefa czasowa przesuwa etykietę daty. Przypnij viewport, locale i timezoneId w konfiguracji, żeby oba środowiska się zgadzały.",
+      "difficulty": 3,
+      "tags": [
+        "flaky",
+        "debugging",
+        "configuration"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-debug-006",
+      "type": "fill_blank",
+      "topic": "Krokowanie testu",
+      "question": "Uzupełnij zmienną środowiskową otwierającą Inspectora i krokującą przebieg.",
+      "sentence": "___=1 npx playwright test orders.spec.ts",
+      "answers": [
+        {
+          "id": "a",
+          "text": "PWDEBUG"
+        },
+        {
+          "id": "b",
+          "text": "DEBUG"
+        },
+        {
+          "id": "c",
+          "text": "PLAYWRIGHT_DEBUG"
+        },
+        {
+          "id": "d",
+          "text": "PW_INSPECT"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "PWDEBUG=1 otwiera Inspectora, wyłącza limity czasu i uruchamia headed. Druga warta znajomości to DEBUG=pw:api — loguje każde wywołanie API do terminala.",
+      "difficulty": 3,
+      "tags": [
+        "debugging"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-debug-007",
+      "type": "code_multiple_choice",
+      "topic": "Grupowanie kroków w raporcie",
+      "question": "Co dodaje test.step?",
+      "language": "typescript",
+      "code": "await test.step('sign in', async () => {\n  await page.getByLabel('Email').fill(user.email);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n});",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Nazwaną, zwijaną grupę w raporcie i trace, z własnym czasem trwania"
+        },
+        {
+          "id": "b",
+          "text": "Granicę retry — ponawiany jest tylko krok"
+        },
+        {
+          "id": "c",
+          "text": "Osobny kontekst przeglądarki dla tych akcji"
+        },
+        {
+          "id": "d",
+          "text": "Nic w czasie wykonania; to tylko komentarz"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Kroki czynią długi trace czytelnym i mówią, która faza zwolniła. Nie zmieniają wykonania ani semantyki ponawiania.",
+      "difficulty": 3,
+      "tags": [
+        "debugging",
+        "trace"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "playwright-debug-008",
+      "type": "concept_question",
+      "topic": "Flaky test czy flaky aplikacja",
+      "question": "Test sporadycznie klika przycisk chwilę przed podpięciem handlera. Jaka jest uczciwa diagnoza?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Realny problem produktu — kontrolka wygląda na interaktywną, zanim nią jest"
+        },
+        {
+          "id": "b",
+          "text": "Problem testu; dodaj krótki waitForTimeout"
+        },
+        {
+          "id": "c",
+          "text": "Problem Playwrighta z actionability"
+        },
+        {
+          "id": "d",
+          "text": "Problem CI; zwiększ liczbę workerów"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Playwright odtworzył wyścig, w który mógłby trafić też szybki użytkownik. Naprawa należy do aplikacji — wyłącz przycisk, dopóki nie jest podpięty — a test wtedy to dokumentuje.",
+      "difficulty": 5,
+      "tags": [
+        "flaky",
+        "debugging"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-debug-009",
+      "type": "flashcard",
+      "topic": "Powtarzanie testu",
+      "question": "Playwright · CLI",
+      "front": "npx playwright test spec.ts --repeat-each=20 --workers=4",
+      "back": "Uruchamia ten sam test dwadzieścia razy równolegle — najszybszy sposób potwierdzenia flaka",
+      "explanation": "Połącz z --grep, żeby zawęzić do jednego testu. Jeśli dwadzieścia przebiegów jest zielonych, flak jest raczej środowiskowy niż w teście.",
+      "difficulty": 3,
+      "tags": [
+        "debugging",
+        "flaky"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-debug-010",
+      "type": "true_false",
+      "topic": "Koszt trace'a",
+      "question": "trace: \"on\" to dobra wartość domyślna dla dużego suite'u na CI.",
+      "correctAnswer": false,
+      "explanation": "Nagrywa każdy test, co spowalnia przebieg i produkuje artefakty liczone w gigabajtach. on-first-retry daje trace dokładnie dla tych przebiegów, na które chcesz popatrzeć.",
+      "difficulty": 3,
+      "tags": [
+        "trace",
+        "configuration"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-debug-011",
+      "type": "find_error",
+      "topic": "Retry ukrywające zależność",
+      "question": "Ten suite jest zielony przy retries: 2 i czerwony przy retries: 0. Co ci to mówi?",
+      "language": "typescript",
+      "code": "1  test('shows the new invoice', async ({ page }) => {\n2    await page.goto('/invoices');\n3    await expect(page.getByText('INV-1001')).toBeVisible();\n4  });",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Limit czasu przy ponowieniu jest za krótki"
+        },
+        {
+          "id": "b",
+          "text": "Nic — po to właśnie są retry"
+        },
+        {
+          "id": "c",
+          "text": "Test zależy od danych tworzonych przez inny test i przechodzi dopiero, gdy tamten się wykona"
+        },
+        {
+          "id": "d",
+          "text": "toBeVisible potrzebuje dłuższego limitu"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Retry uruchamia test później, a wtedy tamten test wyprodukował już fakturę. Suite jest zależny od kolejności; retry tylko to przykrywa.",
+      "difficulty": 5,
+      "tags": [
+        "flaky",
+        "isolation",
+        "retries"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-debug-012",
+      "type": "code_multiple_choice",
+      "topic": "Załączanie dowodów",
+      "question": "Co robi ten kod?",
+      "language": "typescript",
+      "code": "await testInfo.attach('api-response', {\n  body: JSON.stringify(payload, null, 2),\n  contentType: 'application/json',\n});",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Dodaje payload do raportu HTML i trace'a dla tego testu"
+        },
+        {
+          "id": "b",
+          "text": "Wysyła go do zdalnego endpointu reportera"
+        },
+        {
+          "id": "c",
+          "text": "Wypisuje go na konsolę przy porażce"
+        },
+        {
+          "id": "d",
+          "text": "Zapisuje go do porównania przy następnym przebiegu"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Załączniki to najtańszy sposób, żeby awaria na CI dała się zdiagnozować: dokładna odpowiedź, id albo seed, którego użył przebieg, leżą obok trace'a.",
+      "difficulty": 4,
+      "tags": [
+        "debugging",
+        "trace"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

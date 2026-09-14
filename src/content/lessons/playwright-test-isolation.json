@@ -1,0 +1,231 @@
+{
+  "id": "playwright-test-isolation",
+  "subject": "playwright",
+  "module": "playwright-reliability",
+  "level": "intermediate",
+  "title": "Test isolation",
+  "description": "Browser contexts, fixtures, storageState, worker scope — and the shared state that makes a suite order-dependent.",
+  "estimatedMinutes": 11,
+  "order": 0,
+  "tags": ["isolation", "fixtures", "parallelism"],
+  "content": [
+    {
+      "type": "theory",
+      "title": "One context per test",
+      "body": "Every test gets a fresh BrowserContext: its own cookies, localStorage, sessionStorage and permissions, in a browser process shared with other tests. That is what makes tests independent by default, and it is also what you give up the moment you reach for module-level state."
+    },
+    {
+      "type": "example",
+      "title": "Signing in once",
+      "body": "Logging in through the UI in every test is the single biggest waste of time in most suites. Do it once in global setup, save the storage state, and reuse it.",
+      "language": "typescript",
+      "code": "// auth.setup.ts\nawait page.getByLabel('Email').fill(process.env.USER!);\nawait page.getByRole('button', { name: 'Sign in' }).click();\nawait expect(page.getByText('Dashboard')).toBeVisible();\nawait page.context().storageState({ path: '.auth/user.json' });\n\n// playwright.config.ts\nuse: { storageState: '.auth/user.json' }"
+    },
+    {
+      "type": "callout",
+      "title": "Watch out",
+      "variant": "warning",
+      "body": "Isolation stops at the browser. Tests that write to the same database row, the same account or the same feature flag are still coupled — and with parallel workers they now race as well as depend on order."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "playwright-isolation-001",
+      "type": "concept_question",
+      "topic": "What a context isolates",
+      "question": "Two tests run in the same file. What do they share by default?",
+      "answers": [
+        { "id": "a", "text": "Nothing — each gets its own context, cookies and storage" },
+        { "id": "b", "text": "Cookies, because the browser is the same process" },
+        { "id": "c", "text": "localStorage, but not cookies" },
+        { "id": "d", "text": "Everything, unless test.describe.configure is used" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The browser process is reused for speed; the context is not. Anything shared between those tests came from your own code or from the backend.",
+      "difficulty": 2,
+      "tags": ["isolation"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-isolation-002",
+      "type": "find_error",
+      "topic": "Shared module state",
+      "question": "The second test fails when run alone but passes in the full file. What is wrong?",
+      "language": "typescript",
+      "code": "1  let orderId: string;\n2\n3  test('creates an order', async ({ page }) => {\n4    orderId = await createOrder(page);\n5  });\n6\n7  test('cancels the order', async ({ page }) => {\n8    await page.goto(`/orders/${orderId}`);\n9  });",
+      "answers": [
+        { "id": "a", "text": "Line 8 — template literals are not allowed in goto" },
+        { "id": "b", "text": "Nothing is wrong; tests always run in order" },
+        { "id": "c", "text": "Line 1 — a module variable couples the two tests, so the second cannot run on its own or on another worker" },
+        { "id": "d", "text": "Line 4 — createOrder should be awaited twice" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Playwright may run them on different workers, in a different order, or one alone on a retry. Create what the test needs inside the test, or in a fixture.",
+      "difficulty": 3,
+      "tags": ["isolation", "fixtures"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-isolation-003",
+      "type": "code_multiple_choice",
+      "topic": "Fixture scope",
+      "question": "What does `{ scope: 'worker' }` change about this fixture?",
+      "language": "typescript",
+      "code": "export const test = base.extend<{}, { apiToken: string }>({\n  apiToken: [async ({}, use) => {\n    const token = await issueToken();\n    await use(token);\n  }, { scope: 'worker' }],\n});",
+      "answers": [
+        { "id": "a", "text": "It is created once per worker process and shared by every test that worker runs" },
+        { "id": "b", "text": "It is created once for the whole run, across all workers" },
+        { "id": "c", "text": "It is created per test, but torn down later" },
+        { "id": "d", "text": "It disables parallelism for that fixture" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Worker scope is for expensive, read-only setup — a token, a seeded tenant. Anything a test mutates belongs in test scope, or the isolation is gone again.",
+      "difficulty": 4,
+      "tags": ["fixtures", "parallelism"],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-isolation-004",
+      "type": "true_false",
+      "topic": "Retries and state",
+      "question": "When a test is retried, it gets a brand new browser context.",
+      "correctAnswer": true,
+      "explanation": "A retry re-runs the test fully, fixtures included. That is also why a test that only passes on retry usually depends on state another test left behind.",
+      "difficulty": 3,
+      "tags": ["isolation", "retries"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-isolation-005",
+      "type": "code_completion",
+      "topic": "Serial execution",
+      "question": "This describe block genuinely needs its tests to run in order on one worker. Complete the configuration.",
+      "language": "typescript",
+      "code": "test.describe.configure({ mode: '___' });",
+      "answers": [
+        { "id": "a", "text": "serial" },
+        { "id": "b", "text": "ordered" },
+        { "id": "c", "text": "sequential" },
+        { "id": "d", "text": "single" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "In serial mode a failure skips the rest of the block. It is a legitimate tool for a real multi-step wizard — and a common way to paper over accidental coupling.",
+      "difficulty": 3,
+      "tags": ["parallelism", "isolation"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-isolation-006",
+      "type": "multiple_choice",
+      "topic": "storageState",
+      "question": "What does storageState capture?",
+      "answers": [
+        { "id": "a", "text": "Cookies and localStorage for the origins visited" },
+        { "id": "b", "text": "Only cookies" },
+        { "id": "c", "text": "Cookies, localStorage and sessionStorage" },
+        { "id": "d", "text": "The whole browser profile including cache" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "sessionStorage is deliberately not included — it is per-tab by definition. Apps that keep their token there need it injected with an init script instead.",
+      "difficulty": 4,
+      "tags": ["isolation", "authentication"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-isolation-007",
+      "type": "fill_blank",
+      "topic": "Custom fixtures",
+      "question": "Complete the line that hands the value to the test and resumes for teardown afterwards.",
+      "sentence": "await ___(cart);",
+      "answers": [
+        { "id": "a", "text": "use" },
+        { "id": "b", "text": "provide" },
+        { "id": "c", "text": "yield" },
+        { "id": "d", "text": "inject" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Everything before use() is setup and everything after is teardown, which runs even when the test fails. That is the cleanest place to delete the data the test created.",
+      "difficulty": 3,
+      "tags": ["fixtures"],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "playwright-isolation-008",
+      "type": "concept_question",
+      "topic": "Fixtures vs beforeEach",
+      "question": "What does a fixture give you that a beforeEach hook does not?",
+      "answers": [
+        { "id": "a", "text": "It is typed, composable, and only runs for tests that actually request it" },
+        { "id": "b", "text": "It runs faster" },
+        { "id": "c", "text": "It can be asynchronous" },
+        { "id": "d", "text": "It runs after the test instead of before" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A beforeEach runs for every test in scope whether it needs the setup or not, and communicates through shared variables. Fixtures are lazy and their values arrive as typed arguments.",
+      "difficulty": 4,
+      "tags": ["fixtures"],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "playwright-isolation-009",
+      "type": "flashcard",
+      "topic": "fullyParallel",
+      "question": "Playwright · configuration",
+      "front": "fullyParallel: true",
+      "back": "Tests inside one file also run in parallel, not just across files",
+      "explanation": "It turns accidental in-file coupling into a failure immediately rather than six months later. Worth enabling early, while the suite is small.",
+      "difficulty": 3,
+      "tags": ["parallelism", "configuration"],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "playwright-isolation-010",
+      "type": "code_multiple_choice",
+      "topic": "Seeding through the API",
+      "question": "Why is the second version more reliable for a test about the order list?",
+      "language": "typescript",
+      "code": "// A — set up through the UI\nawait page.getByRole('button', { name: 'New order' }).click();\nawait page.getByLabel('Customer').fill('ACME');\nawait page.getByRole('button', { name: 'Create' }).click();\n\n// B — set up through the API, then look\nawait request.post('/api/orders', { data: { customer: 'ACME' } });\nawait page.goto('/orders');",
+      "answers": [
+        { "id": "a", "text": "B — the setup no longer depends on the create form, which this test is not about" },
+        { "id": "b", "text": "B — API calls are always faster than UI ones" },
+        { "id": "c", "text": "A — testing through the UI is always more realistic" },
+        { "id": "d", "text": "They are equivalent" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Speed is a bonus; the point is blast radius. With A, a change to the create form fails every test that merely needed an order to exist.",
+      "difficulty": 4,
+      "tags": ["isolation", "api"],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "playwright-isolation-011",
+      "type": "true_false",
+      "topic": "Parallel workers and data",
+      "question": "Running with four workers is safe as long as every test creates its own data.",
+      "correctAnswer": false,
+      "explanation": "Not if the data collides — a fixed email, a single test account, a global feature flag. Unique per-test identifiers, or a per-worker tenant, are what make it safe.",
+      "difficulty": 4,
+      "tags": ["parallelism", "isolation"],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "playwright-isolation-012",
+      "type": "find_error",
+      "topic": "Leaking auth between projects",
+      "question": "Every test in the suite is suddenly signed in as the admin. Which line explains it?",
+      "language": "typescript",
+      "code": "1  export default defineConfig({\n2    use: { storageState: '.auth/admin.json' },\n3    projects: [\n4      { name: 'user', use: { storageState: '.auth/user.json' } },\n5      { name: 'anonymous' },\n6    ],\n7  });",
+      "answers": [
+        { "id": "a", "text": "Line 4 — a project cannot override storageState" },
+        { "id": "b", "text": "Line 5 — the anonymous project inherits the top-level admin state" },
+        { "id": "c", "text": "Line 2 — top-level use is ignored" },
+        { "id": "d", "text": "Line 3 — projects must all define storageState" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Project-level use merges over the top-level one, so a project that says nothing inherits it. Give the anonymous project storageState: { cookies: [], origins: [] }.",
+      "difficulty": 5,
+      "tags": ["configuration", "authentication", "isolation"],
+      "estimatedSeconds": 50
+    }
+  ]
+}

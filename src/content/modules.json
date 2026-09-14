@@ -1,0 +1,106 @@
+[
+  {
+    "id": "python-basics",
+    "subject": "python",
+    "title": "Python Basics",
+    "description": "Names, values and control flow — the parts every later lesson leans on.",
+    "level": "beginner",
+    "order": 0,
+    "lessonIds": [
+      "python-variables",
+      "python-conditions",
+      "python-loops"
+    ]
+  },
+  {
+    "id": "python-core",
+    "subject": "python",
+    "title": "Functions & Collections",
+    "description": "Reusable behaviour and the containers you will reach for every day.",
+    "level": "intermediate",
+    "order": 1,
+    "lessonIds": [
+      "python-functions",
+      "python-lists-tuples",
+      "python-dictionaries"
+    ]
+  },
+  {
+    "id": "typescript-basics",
+    "subject": "typescript",
+    "title": "TypeScript Basics",
+    "description": "Annotations, object shapes and typed functions.",
+    "level": "beginner",
+    "order": 0,
+    "lessonIds": [
+      "typescript-types",
+      "typescript-interfaces",
+      "typescript-functions"
+    ]
+  },
+  {
+    "id": "typescript-type-system",
+    "subject": "typescript",
+    "title": "Working with the Type System",
+    "description": "Generics, narrowing and the utility types that save you writing code twice.",
+    "level": "intermediate",
+    "order": 1,
+    "lessonIds": [
+      "typescript-generics",
+      "typescript-narrowing",
+      "typescript-utility-types"
+    ]
+  },
+  {
+    "id": "english-present-tenses",
+    "subject": "english",
+    "title": "Present Tenses",
+    "description": "Present Simple, Present Continuous and Present Perfect, and when each one is wrong.",
+    "level": "beginner",
+    "order": 0,
+    "lessonIds": [
+      "english-present-simple",
+      "english-present-continuous",
+      "english-present-perfect"
+    ]
+  },
+  {
+    "id": "english-everyday-vocabulary",
+    "subject": "english",
+    "title": "Everyday vocabulary",
+    "description": "Connectors, office language and the phrasal verbs that come up in every meeting.",
+    "level": "intermediate",
+    "order": 1,
+    "lessonIds": [
+      "english-connectors",
+      "english-work-office",
+      "english-phrasal-verbs"
+    ]
+  },
+  {
+    "id": "playwright-locators",
+    "subject": "playwright",
+    "title": "Locators & waiting",
+    "description": "How to point at an element so the test does not break, and why sleep is always the wrong fix.",
+    "level": "beginner",
+    "order": 0,
+    "lessonIds": [
+      "playwright-locator-strategy",
+      "playwright-auto-waiting",
+      "playwright-assertions"
+    ]
+  },
+  {
+    "id": "playwright-reliability",
+    "subject": "playwright",
+    "title": "Reliability & debugging",
+    "description": "Test isolation, network mocking, and reading a trace when the run only failed on CI.",
+    "level": "intermediate",
+    "order": 1,
+    "lessonIds": [
+      "playwright-test-isolation",
+      "playwright-network-mocking",
+      "playwright-debugging"
+    ]
+  }
+]

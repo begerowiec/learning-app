@@ -1,0 +1,481 @@
+{
+  "id": "typescript-interfaces",
+  "subject": "typescript",
+  "module": "typescript-basics",
+  "level": "beginner",
+  "title": "Interfejsy",
+  "description": "Opis kształtu obiektu, składowe opcjonalne i readonly, extends oraz interface kontra type.",
+  "estimatedMinutes": 13,
+  "order": 1,
+  "tags": [
+    "interfaces",
+    "types",
+    "objects"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Interfejs opisuje kształt obiektu: jakie właściwości istnieją i jakiego są typu. To wyłącznie kontrakt czasu kompilacji — nie powstaje dla niego żaden kod."
+    },
+    {
+      "type": "example",
+      "title": "Opcjonalne i readonly",
+      "body": "Znak ? oznacza właściwość, która może nie istnieć; readonly blokuje przepięcie po utworzeniu.",
+      "language": "typescript",
+      "code": "interface User {\n  readonly id: string;\n  name: string;\n  email?: string;\n}\n\nconst u: User = { id: \"u1\", name: \"Anna\" };\nu.name = \"Ann\";   // ok\nu.id = \"u2\";      // error"
+    },
+    {
+      "type": "callout",
+      "title": "Dobra praktyka",
+      "variant": "tip",
+      "body": "Sięgaj po interfejs przy kształtach obiektów, które rozszerzasz, a po alias typu przy uniach, krotkach i typach mapowanych. Interfejsy dodatkowo się łączą między deklaracjami, co bywa przydatne przy rozszerzaniu typów bibliotek i zaskakujące wszędzie indziej."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-interfaces-001",
+      "type": "multiple_choice",
+      "topic": "Kształty obiektów",
+      "question": "Która konstrukcja TypeScriptu opisuje kształt obiektu i może być rozszerzana?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "namespace"
+        },
+        {
+          "id": "b",
+          "text": "declare"
+        },
+        {
+          "id": "c",
+          "text": "interface"
+        },
+        {
+          "id": "d",
+          "text": "enum"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Interfejs opisuje kształt obiektu i wspiera extends; aliasy typów używają zamiast tego przecięć.",
+      "difficulty": 1,
+      "tags": [
+        "interfaces",
+        "objects"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-interfaces-002",
+      "type": "code_multiple_choice",
+      "topic": "Właściwości opcjonalne",
+      "question": "Jaki jest typ u.email wewnątrz funkcji?",
+      "language": "typescript",
+      "code": "interface User { name: string; email?: string }\n\nfunction show(u: User) {\n  return u.email;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string | undefined"
+        },
+        {
+          "id": "b",
+          "text": "string"
+        },
+        {
+          "id": "c",
+          "text": "undefined"
+        },
+        {
+          "id": "d",
+          "text": "any"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Znak ? dodaje undefined do typu właściwości. Czytaj ją po sprawdzeniu, inaczej ścisły kompilator upomni się dalej.",
+      "difficulty": 2,
+      "tags": [
+        "interfaces",
+        "optional"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-003",
+      "type": "find_error",
+      "topic": "Kontrola nadmiarowych właściwości",
+      "question": "Którą linię kompilator odrzuci?",
+      "language": "typescript",
+      "code": "1  interface Point { x: number; y: number }\n2  const a: Point = { x: 1, y: 2 };\n3  const b: Point = { x: 1, y: 2, z: 3 };\n4  console.log(a, b);",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 3 — z to nadmiarowa właściwość literału obiektu"
+        },
+        {
+          "id": "b",
+          "text": "Linia 1 — interfejs nie może mieć dwóch składowych tego samego typu"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — Point wymaga konstruktora"
+        },
+        {
+          "id": "d",
+          "text": "Linia 4 — obiektów nie da się logować wprost"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Literały obiektów przypisywane wprost do adnotowanego celu przechodzą kontrolę nadmiarowych właściwości. Przypisanie przez zmienną przeszłoby, bo typowanie strukturalne wymaga tylko obecności składowych.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "objects"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-interfaces-004",
+      "type": "code_completion",
+      "topic": "Rozszerzanie interfejsu",
+      "question": "Uzupełnij deklarację tak, żeby Admin miał wszystkie składowe User plus własną.",
+      "language": "typescript",
+      "code": "interface Admin ___ User {\n  permissions: string[];\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "extends"
+        },
+        {
+          "id": "b",
+          "text": "implements"
+        },
+        {
+          "id": "c",
+          "text": "from"
+        },
+        {
+          "id": "d",
+          "text": "&"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Interfejsy dziedziczą przez extends. implements dotyczy klas; & to operator przecięcia używany z aliasami typów.",
+      "difficulty": 2,
+      "tags": [
+        "interfaces",
+        "inheritance"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-interfaces-005",
+      "type": "true_false",
+      "topic": "Głębokość readonly",
+      "question": "Oznaczenie właściwości jako readonly blokuje też modyfikację obiektu, który w niej siedzi.",
+      "correctAnswer": false,
+      "explanation": "readonly jest płytkie: nie przepniesz właściwości, ale nadal możesz zrobić push do readonly tablicy albo zmienić zagnieżdżony obiekt.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "readonly"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-interfaces-006",
+      "type": "concept_question",
+      "topic": "Typowanie strukturalne",
+      "question": "Obiekt z nadmiarowymi właściwościami trafia do zmiennej, a potem do funkcji oczekującej Point. Co się stanie?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Zostanie przyjęty — TypeScript wymaga tylko obecności oczekiwanych składowych"
+        },
+        {
+          "id": "b",
+          "text": "Zostanie odrzucony, bo kształty nie są identyczne"
+        },
+        {
+          "id": "c",
+          "text": "Zostanie przyjęty, ale nadmiarowe właściwości znikną"
+        },
+        {
+          "id": "d",
+          "text": "Zadziała tylko, jeśli Point jest klasą"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "TypeScript jest typowany strukturalnie: zgodność dotyczy wymaganych składowych, a nie nazw czy miejsca deklaracji.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "structural-typing"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-interfaces-007",
+      "type": "fill_blank",
+      "topic": "Sygnatura indeksu",
+      "question": "Uzupełnij sygnaturę indeksu dla mapy string → number.",
+      "sentence": "interface Counts { [key: ___]: number }",
+      "answers": [
+        {
+          "id": "a",
+          "text": "string"
+        },
+        {
+          "id": "b",
+          "text": "any"
+        },
+        {
+          "id": "c",
+          "text": "object"
+        },
+        {
+          "id": "d",
+          "text": "String"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Kluczem sygnatury indeksu może być string, number albo symbol. Record<string, number> wyraża to samo zwięźlej.",
+      "difficulty": 3,
+      "tags": [
+        "interfaces",
+        "index-signature"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-008",
+      "type": "flashcard",
+      "topic": "Łączenie deklaracji",
+      "question": "TypeScript · interfejsy",
+      "front": "Two interfaces with the same name",
+      "back": "Łączą się w jeden — ich składowe są sumowane, a nie zgłaszane jako konflikt",
+      "explanation": "Tylko interfejsy tak działają. Zadeklarowanie tego samego aliasu dwa razy to błąd, co zwykle jest tym, czego chcesz.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "declaration-merging"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-interfaces-009",
+      "type": "code_multiple_choice",
+      "topic": "Sygnatury metod",
+      "question": "Które wywołanie spełnia ten interfejs?",
+      "language": "typescript",
+      "code": "interface Repo {\n  find(id: string): Promise<string | null>;\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "await repo.find(\"u1\") — zwracające string albo null"
+        },
+        {
+          "id": "b",
+          "text": "repo.find() — id jest opcjonalne"
+        },
+        {
+          "id": "c",
+          "text": "repo.find(1) — liczby są konwertowane"
+        },
+        {
+          "id": "d",
+          "text": "repo.find(\"u1\") — zwracające zwykły string synchronicznie"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Sygnatura wymaga jednego argumentu string i zwraca obietnicę, więc wywołanie ją awaituje i obsługuje null.",
+      "difficulty": 3,
+      "tags": [
+        "interfaces",
+        "methods"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-interfaces-010",
+      "type": "concept_question",
+      "topic": "interface kontra alias typu",
+      "question": "Które zdanie jest prawdziwe dla aliasu typu, ale nie dla interfejsu?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Może opisać unię, krotkę albo typ mapowany"
+        },
+        {
+          "id": "b",
+          "text": "Może być rozszerzany"
+        },
+        {
+          "id": "c",
+          "text": "Może opisać kształt obiektu"
+        },
+        {
+          "id": "d",
+          "text": "Może być implementowany przez klasę"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Interfejsy opisują wyłącznie kształty obiektowe. Aliasy obejmują wszystko, ale nie łączą się między deklaracjami — co zwykle jest zaletą.",
+      "difficulty": 3,
+      "tags": [
+        "interfaces",
+        "types"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-interfaces-011",
+      "type": "code_multiple_choice",
+      "topic": "Opcjonalne kontra undefined",
+      "language": "typescript",
+      "question": "Przy exactOptionalPropertyTypes które przypisanie zostanie odrzucone?",
+      "code": "interface Options { retries?: number }\n\nconst a: Options = {};\nconst b: Options = { retries: undefined };",
+      "answers": [
+        {
+          "id": "a",
+          "text": "b — jawne undefined to nie to samo co brak właściwości"
+        },
+        {
+          "id": "b",
+          "text": "a — właściwość jest wymagana"
+        },
+        {
+          "id": "c",
+          "text": "Oba"
+        },
+        {
+          "id": "d",
+          "text": "Żadne"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Flaga rozdziela \"nie podano\" od \"podano jako undefined\", co ma znaczenie wszędzie tam, gdzie obiekty opcji się rozprasza albo scala.",
+      "difficulty": 5,
+      "tags": [
+        "interfaces",
+        "optional",
+        "strict-mode"
+      ],
+      "estimatedSeconds": 50
+    },
+    {
+      "id": "typescript-interfaces-012",
+      "type": "code_completion",
+      "topic": "Implementowanie interfejsu",
+      "language": "typescript",
+      "question": "Uzupełnij deklarację klasy tak, żeby kompilator sprawdzał ją względem interfejsu.",
+      "code": "class HttpUserRepo ___ UserRepository {\n  async find(id: string) { return null; }\n}",
+      "answers": [
+        {
+          "id": "a",
+          "text": "implements"
+        },
+        {
+          "id": "b",
+          "text": "extends"
+        },
+        {
+          "id": "c",
+          "text": "satisfies"
+        },
+        {
+          "id": "d",
+          "text": "as"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "implements sprawdza kształt, niczego nie dziedzicząc. extends służy do dziedziczenia po klasie bazowej.",
+      "difficulty": 2,
+      "tags": [
+        "interfaces",
+        "classes"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-013",
+      "type": "true_false",
+      "topic": "Zgodność strukturalna funkcji",
+      "question": "Funkcja typu (a: string) => void jest przypisywalna do właściwości typu (a: string, b: number) => void.",
+      "correctAnswer": true,
+      "explanation": "Pomijanie końcowych parametrów jest zawsze bezpieczne. Dlatego callbacki tablicowe mogą brać sam element i pomijać indeks.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "structural-typing"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-interfaces-014",
+      "type": "find_error",
+      "topic": "Modyfikacja readonly tablicy",
+      "language": "typescript",
+      "question": "Którą linię kompilator odrzuci?",
+      "code": "1  interface Config { readonly hosts: string[] }\n2  const c: Config = { hosts: ['a'] };\n3  c.hosts.push('b');\n4  c.hosts = ['c'];",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Linia 3 — push modyfikuje właściwość readonly"
+        },
+        {
+          "id": "b",
+          "text": "Linia 4 — właściwości nie da się przepiąć"
+        },
+        {
+          "id": "c",
+          "text": "Linia 2 — literał tablicy nie jest readonly"
+        },
+        {
+          "id": "d",
+          "text": "Linia 1 — readonly nie działa na tablicy"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "readonly jest płytkie: blokuje przepięcie, nie modyfikację. readonly string[] odrzuciłoby także linię 3.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "readonly"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-interfaces-015",
+      "type": "multiple_choice",
+      "topic": "Kształty z dyskryminantem",
+      "question": "Po co dodawać literalne pole `kind` do każdego wariantu unii interfejsów?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Pozwala switchowi zawęzić unię i zamienia nieobsłużony wariant w błąd kompilacji"
+        },
+        {
+          "id": "b",
+          "text": "Jest wymagane, żeby interfejsy dało się połączyć w unię"
+        },
+        {
+          "id": "c",
+          "text": "Poprawia wydajność w czasie wykonania"
+        },
+        {
+          "id": "d",
+          "text": "Umożliwia łączenie deklaracji"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Bez dyskryminanta kompilator udostępnia tylko składowe wspólne dla wszystkich gałęzi, a dodanie wariantu przechodzi bez śladu w każdym miejscu użycia.",
+      "difficulty": 4,
+      "tags": [
+        "interfaces",
+        "unions",
+        "narrowing"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}

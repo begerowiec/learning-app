@@ -1,0 +1,480 @@
+{
+  "id": "typescript-utility-types",
+  "subject": "typescript",
+  "module": "typescript-type-system",
+  "level": "intermediate",
+  "title": "Typy narzędziowe",
+  "description": "Partial, Required, Pick, Omit, Record i ReturnType — wyprowadzanie typów zamiast ich powtarzania.",
+  "estimatedMinutes": 15,
+  "order": 2,
+  "tags": [
+    "utility-types",
+    "types",
+    "mapped-types"
+  ],
+  "content": [
+    {
+      "type": "theory",
+      "title": "Definicja",
+      "body": "Typy narzędziowe przekształcają istniejący typ w pokrewny. Wyprowadzanie bije duplikowanie: gdy typ źródłowy się zmieni, wszystko, co z niego zbudowano, idzie za nim automatycznie."
+    },
+    {
+      "type": "example",
+      "title": "Cztery używane najczęściej",
+      "body": "Partial przy payloadach częściowej aktualizacji, Pick i Omit przy przyciętych widokach, Record przy mapach.",
+      "language": "typescript",
+      "code": "interface User { id: string; name: string; email: string }\n\ntype Patch    = Partial<User>;            // every field optional\ntype Card     = Pick<User, \"id\" | \"name\">;\ntype Public   = Omit<User, \"email\">;\ntype ByLevel  = Record<\"beginner\" | \"advanced\", User[]>;"
+    },
+    {
+      "type": "callout",
+      "title": "Uwaga",
+      "variant": "warning",
+      "body": "Partial jest płytkie, a Omit bez protestu przyjmuje klucze, które nie istnieją. Pick jest ostrzejszym wyborem, gdy chcesz, żeby literówka się wysypała."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "typescript-utility-001",
+      "type": "code_multiple_choice",
+      "topic": "Partial",
+      "question": "Co daje Partial<User> dla `interface User { id: string; name: string }`?",
+      "language": "typescript",
+      "code": "type Patch = Partial<User>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "{ id: string; name: string }"
+        },
+        {
+          "id": "b",
+          "text": "{ id: string | undefined; name: string | undefined }"
+        },
+        {
+          "id": "c",
+          "text": "Partial<{ id: string; name: string }> is not a valid type"
+        },
+        {
+          "id": "d",
+          "text": "{ id?: string; name?: string }"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Partial zamienia każdą właściwość na opcjonalną. Zwróć uwagę, że opcjonalna i `| undefined` to nie to samo przy exactOptionalPropertyTypes.",
+      "difficulty": 2,
+      "tags": [
+        "utility-types",
+        "partial"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-utility-002",
+      "type": "concept_question",
+      "topic": "Pick kontra Omit",
+      "question": "Który argument przemawia za Pick zamiast Omit?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Pick wymienia to, co zostaje, więc zmiana nazwy właściwości źródłowej psuje typ pochodny zamiast go po cichu rozszerzać"
+        },
+        {
+          "id": "b",
+          "text": "Pick kompiluje się szybciej"
+        },
+        {
+          "id": "c",
+          "text": "Omit nie działa z interfejsami"
+        },
+        {
+          "id": "d",
+          "text": "Omit usuwa tylko jeden klucz naraz"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Parametr kluczy Omit nie jest ograniczony do keyof T, więc nieaktualny klucz przechodzi bez słowa. Parametr Pick jest ograniczony i wysypuje się głośno.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "pick",
+        "omit"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-utility-003",
+      "type": "code_completion",
+      "topic": "Record",
+      "question": "Uzupełnij typ mapy z nazwy poziomu na listę lekcji.",
+      "language": "typescript",
+      "code": "type Catalog = ___<Level, Lesson[]>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Record"
+        },
+        {
+          "id": "b",
+          "text": "Map"
+        },
+        {
+          "id": "c",
+          "text": "Index"
+        },
+        {
+          "id": "d",
+          "text": "Dict"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Record<K, V> buduje typ obiektowy o podanej unii kluczy i typie wartości. Map to klasa czasu wykonania, nie typ narzędziowy.",
+      "difficulty": 2,
+      "tags": [
+        "utility-types",
+        "record"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-utility-004",
+      "type": "code_multiple_choice",
+      "topic": "ReturnType",
+      "question": "Jaki jest typ R?",
+      "language": "typescript",
+      "code": "function makeUser() {\n  return { id: \"u1\", active: true };\n}\n\ntype R = ReturnType<typeof makeUser>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "typeof makeUser"
+        },
+        {
+          "id": "b",
+          "text": "() => { id: string; active: boolean }"
+        },
+        {
+          "id": "c",
+          "text": "{ id: string; active: boolean }"
+        },
+        {
+          "id": "d",
+          "text": "unknown"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "typeof makeUser to typ funkcji; ReturnType wyciąga to, do czego się rozwiązuje. Tak unika się pisania tego kształtu dwa razy.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "returntype"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-005",
+      "type": "true_false",
+      "topic": "Głębokość Partial",
+      "question": "Partial<T> czyni opcjonalnymi także właściwości zagnieżdżonych obiektów.",
+      "correctAnswer": false,
+      "explanation": "Partial działa na jeden poziom. Rekurencyjne DeepPartial trzeba napisać ręcznie — albo, lepiej, go unikać.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "partial"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-utility-006",
+      "type": "fill_blank",
+      "topic": "keyof",
+      "question": "Uzupełnij typ będący unią nazw właściwości typu.",
+      "sentence": "type Keys = ___ User;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "keyof"
+        },
+        {
+          "id": "b",
+          "text": "typeof"
+        },
+        {
+          "id": "c",
+          "text": "valueof"
+        },
+        {
+          "id": "d",
+          "text": "in"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "keyof User daje \"id\" | \"name\" | \"email\". typeof działa na wartościach, nie na typach.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "keyof"
+      ],
+      "estimatedSeconds": 25
+    },
+    {
+      "id": "typescript-utility-007",
+      "type": "find_error",
+      "topic": "Omit z nieaktualnym kluczem",
+      "question": "Dlaczego to się kompiluje, mimo że jest błędne?",
+      "language": "typescript",
+      "code": "interface User { id: string; name: string }\n\ntype Public = Omit<User, \"emial\">;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Parametr kluczy Omit nie jest ograniczony do keyof User, więc literówka przechodzi i nic nie zostaje usunięte"
+        },
+        {
+          "id": "b",
+          "text": "Omit zupełnie ignoruje drugi argument"
+        },
+        {
+          "id": "c",
+          "text": "To się nie kompiluje"
+        },
+        {
+          "id": "d",
+          "text": "Omit tworzy zamiast tego brakującą właściwość"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "To znana ostra krawędź. Pick<User, \"id\" | \"name\"> albo własny ograniczony pomocnik wyłapuje literówkę.",
+      "difficulty": 5,
+      "tags": [
+        "utility-types",
+        "omit"
+      ],
+      "estimatedSeconds": 45
+    },
+    {
+      "id": "typescript-utility-008",
+      "type": "flashcard",
+      "topic": "NonNullable",
+      "question": "TypeScript · typy narzędziowe",
+      "front": "NonNullable<T>",
+      "back": "Usuwa null i undefined z unii",
+      "explanation": "We współczesnym TypeScripcie równoważne T & {}. Przydatne po filtrze, za którym kompilator nie nadąża.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "nonnullable"
+      ],
+      "estimatedSeconds": 20
+    },
+    {
+      "id": "typescript-utility-009",
+      "type": "multiple_choice",
+      "topic": "Readonly",
+      "question": "Co robi Readonly<T>?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Oznacza każdą właściwość jako readonly, na jeden poziom w głąb"
+        },
+        {
+          "id": "b",
+          "text": "Zamraża obiekt w czasie wykonania"
+        },
+        {
+          "id": "c",
+          "text": "Czyni typ niemutowalnym aż do samego dna"
+        },
+        {
+          "id": "d",
+          "text": "Usuwa wszystkie settery"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Jak Partial, działa płytko i wyłącznie w czasie kompilacji — Object.freeze to odpowiednik czasu wykonania.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "readonly"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-utility-010",
+      "type": "code_multiple_choice",
+      "topic": "Awaited",
+      "language": "typescript",
+      "question": "Jaki jest typ R?",
+      "code": "async function load(): Promise<{ id: string }> {\n  return { id: 'u1' };\n}\n\ntype R = Awaited<ReturnType<typeof load>>;",
+      "answers": [
+        {
+          "id": "a",
+          "text": "{ id: string }"
+        },
+        {
+          "id": "b",
+          "text": "Promise<{ id: string }>"
+        },
+        {
+          "id": "c",
+          "text": "unknown"
+        },
+        {
+          "id": "d",
+          "text": "never"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Awaited rozpakowuje obietnicę, rekurencyjnie. Połączenie z ReturnType to standardowy sposób nazwania tego, do czego rozwiązuje się funkcja async.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "awaited"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-011",
+      "type": "concept_question",
+      "topic": "Exclude i Extract",
+      "question": "Co daje Exclude<\"a\" | \"b\" | \"c\", \"b\">?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "'a' | 'c'"
+        },
+        {
+          "id": "b",
+          "text": "'b'"
+        },
+        {
+          "id": "c",
+          "text": "never"
+        },
+        {
+          "id": "d",
+          "text": "'a' | 'b' | 'c'"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Exclude usuwa z unii przypisywalne warianty; Extract je zostawia. Oba to typy warunkowe rozdzielające się nad unią.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "unions"
+      ],
+      "estimatedSeconds": 35
+    },
+    {
+      "id": "typescript-utility-012",
+      "type": "code_completion",
+      "topic": "Typ mapowany",
+      "language": "typescript",
+      "question": "Uzupełnij typ mapowany czyniący każdą właściwość nullowalną.",
+      "code": "type Nullable<T> = { [K ___ keyof T]: T[K] | null };",
+      "answers": [
+        {
+          "id": "a",
+          "text": "in"
+        },
+        {
+          "id": "b",
+          "text": "of"
+        },
+        {
+          "id": "c",
+          "text": "extends"
+        },
+        {
+          "id": "d",
+          "text": "from"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "`in keyof T` iteruje po kluczach. Partial, Required i Readonly są napisane tak samo, z modyfikatorem +/- na fladze optional albo readonly.",
+      "difficulty": 4,
+      "tags": [
+        "utility-types",
+        "mapped-types"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-013",
+      "type": "true_false",
+      "topic": "Parameters",
+      "question": "Parameters<typeof fn> daje krotkę typów parametrów funkcji.",
+      "correctAnswer": true,
+      "explanation": "Krotkę, nie unię — więc Parameters<typeof fn>[0] to pierwszy parametr. Przydatne przy opakowywaniu funkcji bez powtarzania sygnatury.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "parameters"
+      ],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "typescript-utility-014",
+      "type": "find_error",
+      "topic": "Record z wąskim kluczem",
+      "language": "typescript",
+      "question": "Dlaczego linia 2 się nie kompiluje?",
+      "code": "1  type ByLevel = Record<'beginner' | 'advanced', number>;\n2  const counts: ByLevel = { beginner: 1 };",
+      "answers": [
+        {
+          "id": "a",
+          "text": "Record wymaga sygnatury indeksu string"
+        },
+        {
+          "id": "b",
+          "text": "Każdy klucz unii jest wymagany — brakuje advanced"
+        },
+        {
+          "id": "c",
+          "text": "Typ wartości powinien być unią"
+        },
+        {
+          "id": "d",
+          "text": "Record nie przyjmuje unii literałów jako klucza"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Record nad skończoną unią jest z założenia wyczerpujący, co czyni go dobrym do tablic wyszukiwania. Partial<ByLevel>, jeśli luki są zamierzone.",
+      "difficulty": 3,
+      "tags": [
+        "utility-types",
+        "record"
+      ],
+      "estimatedSeconds": 40
+    },
+    {
+      "id": "typescript-utility-015",
+      "type": "multiple_choice",
+      "topic": "Typy szablonowe",
+      "question": "Co daje `type Event = `on${Capitalize<\"click\" | \"focus\">}``?",
+      "answers": [
+        {
+          "id": "a",
+          "text": "'onClick' | 'onFocus'"
+        },
+        {
+          "id": "b",
+          "text": "'onclick' | 'onfocus'"
+        },
+        {
+          "id": "c",
+          "text": "string"
+        },
+        {
+          "id": "d",
+          "text": "'on' | 'click' | 'focus'"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Typy szablonowe rozdzielają się nad uniami i komponują z wbudowanymi pomocnikami wielkości liter — podstawa typowanych map zdarzeń i mapowania nazw propsów.",
+      "difficulty": 5,
+      "tags": [
+        "utility-types",
+        "template-literal-types"
+      ],
+      "estimatedSeconds": 45
+    }
+  ]
+}
