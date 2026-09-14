@@ -3,35 +3,45 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:          # ręczny redeploy z zakładki Actions
 
-# Pages needs to read the repo and mint an id-token for the deployment.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# One deployment at a time; a newer push waits rather than cancelling.
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install
 
-      # The content gate runs here too: a broken lesson must not reach the
-      # published site, even if someone pushed straight to main.
-      - run: npm run validate:content
-      - run: npm run build
+      - name: Validate content
+        run: npm run validate:content
+
+      - name: Build
+        run: npm run build
+
+      # Bez tego pusty build publikuje się tak samo cicho jak działający.
+      - name: Check the build output
+        run: |
+          for f in dist/index.html dist/main.js dist/main.css; do
+            [ -s "$f" ] || { echo "::error::$f is missing or empty"; exit 1; }
+          done
+          grep -q './main.js' dist/index.html \
+            || { echo "::error::dist/index.html does not reference the built bundle"; exit 1; }
+          echo "dist/ looks good:"; ls -lh dist
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
@@ -39,6 +49,7 @@ jobs:
           path: dist
 
   deploy:
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
     environment:
