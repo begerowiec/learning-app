@@ -360,13 +360,13 @@ describe('durable storage: backup, reset and restore', () => {
       page.click('[data-testid="export-backup"]'),
     ]);
 
-    assert.match(download.suggestedFilename(), /^recall-os-backup-\d{4}-\d{2}-\d{2}\.json$/);
+    assert.match(download.suggestedFilename(), /^loop-backup-\d{4}-\d{2}-\d{2}\.json$/);
     const file = await download.path();
     assert.ok(file, 'the download must reach disk');
     backupText = fs.readFileSync(file, 'utf8');
 
     const parsed = JSON.parse(backupText) as Record<string, unknown>;
-    assert.equal(parsed.format, 'recall-os.backup');
+    assert.equal(parsed.format, 'loop.backup');
     const progress = parsed.progress as { attempts: unknown[]; lessons: unknown[] };
     assert.ok(progress.attempts.length > 0, 'the backup carries the answers');
     assert.ok(progress.lessons.length > 0, 'the backup carries lesson progress');
@@ -421,7 +421,7 @@ describe('durable storage: backup, reset and restore', () => {
     await page.waitForSelector('[data-testid="storage-notice"]');
     assert.match(
       (await page.textContent('[data-testid="storage-notice"]')) ?? '',
-      /isn.t a RECALL\/OS backup file/,
+      /isn.t a Loop backup file/,
     );
     const after = await readProgress(page);
     assert.equal(after?.attempts.length, before?.attempts.length, 'a refused import changes nothing');

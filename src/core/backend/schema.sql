@@ -1,4 +1,4 @@
--- RECALL/OS — reference backend schema (Postgres / Supabase flavour).
+-- Loop — reference backend schema (Postgres / Supabase flavour).
 --
 -- Nothing in the app imports this file: the UI talks to ContentRepository and
 -- ProgressService, never to a database. It is here so that the MVP's local

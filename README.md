@@ -1,4 +1,4 @@
-# RECALL/OS
+# Loop
 
 A content-driven learning app for **English**, **Python**, **TypeScript** and
 **Playwright**, built to the supplied mockups and functional specification.

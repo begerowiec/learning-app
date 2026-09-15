@@ -77,7 +77,7 @@ for (const lesson of catalog.lessons) {
   }
 }
 
-console.log('RECALL/OS content validation\n');
+console.log('Loop content validation\n');
 console.log(
   `  subjects  ${catalog.subjects.length}\n` +
     `  modules   ${catalog.modules.length}\n` +

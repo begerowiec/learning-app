@@ -28,9 +28,7 @@ export function App() {
   return (
     <div className="app-root" data-theme={app.theme}>
       <header className="app-topbar">
-        <div className="app-wordmark">
-          RECALL<span>/</span>OS
-        </div>
+        <div className="app-wordmark">Loop</div>
         <div className="app-topbar-actions">
           <Button size="micro" onClick={() => app.setTheme(app.theme === 'dark' ? 'light' : 'dark')} data-testid="theme-toggle">
             {app.theme === 'dark' ? app.t('app.themeLight') : app.t('app.themeDark')}

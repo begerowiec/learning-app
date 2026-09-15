@@ -158,7 +158,7 @@ export function ProfileScreen({ app }: { app: AppController }) {
         </div>
       </div>
 
-      <div className="build-stamp text-muted">RECALL/OS · v0.2 prototype</div>
+      <div className="build-stamp text-muted">Loop · v0.3</div>
     </div>
   );
 }

@@ -20,7 +20,7 @@
 /* Replaced at build time with a hash of the bundle. Assets are served
    cache-first and their filenames never change, so a new build has to arrive
    under a new cache name or the old one would be served forever. */
-const VERSION = 'recall-os-__BUILD_ID__';
+const VERSION = 'loop-__BUILD_ID__';
 const SHELL = ['./', './index.html', './main.js', './main.css', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', (event) => {

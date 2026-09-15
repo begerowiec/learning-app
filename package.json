@@ -1,9 +1,9 @@
 {
-  "name": "recall-os",
+  "name": "loop",
   "private": true,
   "version": "0.3.0",
   "type": "module",
-  "description": "RECALL/OS \u2014 content-driven, spaced-repetition learning app (English, Python, TypeScript).",
+  "description": "Loop — content-driven, spaced-repetition learning app (English, Python, TypeScript).",
   "engines": {
     "node": ">=20"
   },

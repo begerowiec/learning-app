@@ -27,7 +27,7 @@ export function registerServiceWorker(): void {
       })
       .catch((error: unknown) => {
         // Offline support is a bonus, never a requirement for booting.
-        console.warn('[recall-os] service worker registration failed', error);
+        console.warn('[loop] service worker registration failed', error);
       });
   });
 }

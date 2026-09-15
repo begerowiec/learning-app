@@ -266,26 +266,26 @@ describe('backup file', () => {
   });
 
   test('the filename is dated and sortable', () => {
-    assert.equal(backupFilename(new Date('2026-09-15T23:30:00.000Z')), 'recall-os-backup-2026-09-15.json');
+    assert.equal(backupFilename(new Date('2026-09-15T23:30:00.000Z')), 'loop-backup-2026-09-15.json');
   });
 
   test('nonsense is rejected with a reason, never half-applied', () => {
     assert.deepEqual(parseBackup('{not json'), { ok: false, problem: 'unreadable' });
     assert.deepEqual(parseBackup('"a string"'), { ok: false, problem: 'notABackup' });
     assert.deepEqual(parseBackup('{"format":"something-else"}'), { ok: false, problem: 'notABackup' });
-    assert.deepEqual(parseBackup('{"format":"recall-os.backup","version":99,"progress":{}}'), {
+    assert.deepEqual(parseBackup('{"format":"loop.backup","version":99,"progress":{}}'), {
       ok: false,
       problem: 'unsupportedVersion',
     });
     assert.deepEqual(
-      parseBackup('{"format":"recall-os.backup","version":1,"progress":{"attempts":"nope"}}'),
+      parseBackup('{"format":"loop.backup","version":1,"progress":{"attempts":"nope"}}'),
       { ok: false, problem: 'invalidProgress' },
     );
   });
 
   test('missing preferences degrade to defaults instead of failing the import', () => {
     const text = JSON.stringify({
-      format: 'recall-os.backup',
+      format: 'loop.backup',
       version: 1,
       exportedAt: '2026-09-15T09:00:00.000Z',
       progress: studiedState(),

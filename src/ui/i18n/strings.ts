@@ -274,8 +274,8 @@ export const UI_STRINGS = {
     pl: 'Tego pliku nie da się odczytać jako JSON.',
   },
   'storage.importFailed.notABackup': {
-    en: "That isn't a RECALL/OS backup file.",
-    pl: 'To nie jest plik kopii zapasowej RECALL/OS.',
+    en: "That isn't a Loop backup file.",
+    pl: 'To nie jest plik kopii zapasowej Loop.',
   },
   'storage.importFailed.unsupportedVersion': {
     en: 'That backup comes from a newer version of the app.',

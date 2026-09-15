@@ -1,4 +1,4 @@
-"""Draws the RECALL/OS launcher icons. Called by scripts/make-icons.mjs."""
+"""Draws the Loop launcher icons. Called by scripts/make-icons.mjs."""
 import sys, pathlib
 from PIL import Image, ImageDraw, ImageFont
 
@@ -23,7 +23,7 @@ def draw(size, *, padded):
     inset = size * (0.18 if padded else 0.125)
     d.rectangle([inset, inset, size - inset, size - inset], outline=FRAME, width=max(1, size // 96))
     f = font_for(int(size * (0.20 if padded else 0.24)))
-    d.text((size / 2, size / 2), "R/OS", font=f, fill=INK, anchor="mm")
+    d.text((size / 2, size / 2), "LOOP", font=f, fill=INK, anchor="mm")
     return img
 
 

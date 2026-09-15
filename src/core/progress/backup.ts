@@ -19,7 +19,7 @@ import {
   type UserPreferences,
 } from './models.ts';
 
-export const BACKUP_FORMAT = 'recall-os.backup';
+export const BACKUP_FORMAT = 'loop.backup';
 export const BACKUP_VERSION = 1;
 
 export interface Backup {
@@ -101,8 +101,8 @@ export function summarize(backup: Backup): BackupSummary {
   };
 }
 
-/** `recall-os-backup-2026-09-15.json` — sortable, and obvious a year later. */
+/** `loop-backup-2026-09-15.json` — sortable, and obvious a year later. */
 export function backupFilename(now: Date = new Date()): string {
   const iso = now.toISOString().slice(0, 10);
-  return `recall-os-backup-${iso}.json`;
+  return `loop-backup-${iso}.json`;
 }

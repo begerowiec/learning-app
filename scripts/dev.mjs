@@ -16,4 +16,4 @@ const ctx = await esbuild.context({
 });
 await ctx.watch();
 const { hosts, port } = await ctx.serve({ servedir: outdir, host: '127.0.0.1', port: 5173, fallback: path.join(outdir, 'index.html') });
-console.log(`\nRECALL/OS dev server → http://${hosts[0]}:${port}\n`);
+console.log(`\nLoop dev server → http://${hosts[0]}:${port}\n`);

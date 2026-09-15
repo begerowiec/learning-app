@@ -32,7 +32,7 @@ export function createServices(): Services {
   const content = LocalContentRepository.fromBundledContent({
     onProblems: (problems) => {
       // A bad generated lesson is dropped, not fatal — but it must be loud.
-      console.error(`[recall-os] content problems:\n${formatProblems(problems)}`);
+      console.error(`[loop] content problems:\n${formatProblems(problems)}`);
     },
   });
 

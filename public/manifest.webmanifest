@@ -1,6 +1,6 @@
 {
-  "name": "RECALL/OS",
-  "short_name": "RECALL/OS",
+  "name": "Loop",
+  "short_name": "Loop",
   "description": "Spaced-repetition learning for English, Python, TypeScript and Playwright.",
   "start_url": "./",
   "scope": "./",

@@ -52,7 +52,7 @@ export class LocalProgressStore implements ProgressStore {
     if (raw === null) return emptyProgressState();
     const parsed = ProgressStateSchema.safeParse(raw);
     if (!parsed.success) {
-      console.warn('[recall-os] stored progress did not validate; starting fresh', parsed.issues);
+      console.warn('[loop] stored progress did not validate; starting fresh', parsed.issues);
       return emptyProgressState();
     }
     return parsed.data;
