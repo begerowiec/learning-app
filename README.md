@@ -27,6 +27,8 @@ AI content generator
   ExerciseRenderer           ui/exercises/ExerciseRenderer.tsx
 ```
 
+**Live:** https://begerowiec.github.io/learning-app/
+
 ---
 
 ## Running it
@@ -69,6 +71,24 @@ Two things are hand-rolled rather than pulled in, and both are deliberate:
   used by scripts. The sandbox this was assembled in had no npm registry access,
   so `@types/react` and `@types/node` could not be installed. Install them, delete
   those two files, and nothing else changes.
+
+---
+
+## Deploying
+
+Two workflows, both on push to `main`:
+
+- `.github/workflows/ci.yml` — typecheck, content validation, unit tests,
+  build, and the Playwright end-to-end suite. It also fails if
+  `core/content/source.ts` is stale, so a lesson added without running
+  `npm run sync:content` cannot slip through.
+- `.github/workflows/pages.yml` — validates the content again, builds, and
+  publishes `dist/` to GitHub Pages.
+
+Enable it once in **Settings → Pages → Build and deployment → Source: GitHub
+Actions**. Nothing else is needed: every asset path in `index.html` and the
+manifest is relative, so the app works unchanged whether it is served from a
+domain root or from a `/<repo>/` project subpath.
 
 ---
 
@@ -218,20 +238,69 @@ single slot holds more than half the correct answers.
 
 ---
 
-## What is stored
+## What is stored, and how it survives
 
-`localStorage`, under two keys, both validated on read (a corrupt or
+There is no account and no server, so everything the learner has done lives on
+their device — which makes storage durability a product feature, not an
+implementation detail. Two keys hold it, both validated on read (a corrupt or
 half-migrated record degrades to a fresh start rather than a white screen):
 
 - `recall-os:progress:v1` — attempts, lesson progress, study sessions, the
   review queue, study days, and the session currently in flight
 - `recall-os:preferences:v1` — subjects, per-subject levels, daily goal, theme,
-  reminders
+  reminders, both languages
 
 Every answer is written immediately, which is what makes the offline
 requirement hold: close the app mid-lesson, reopen it with no connection, and
 the same session resumes at the same exercise. All lesson content ships in the
 bundle, so a lesson never needs the network at all.
+
+### Why `localStorage` alone is not enough
+
+It is the first thing a browser throws away. Safari deletes **all**
+script-writable storage — `localStorage`, IndexedDB and caches alike — after
+seven days without a visit to a *website*; "clear cookies and site data" takes
+it with the cookies; a private window keeps nothing at all. A learner
+experiences that as the app forgetting weeks of work, and no amount of
+correct write-on-every-answer logic prevents it.
+
+So persistence is layered, all of it behind the same `ProgressStore` port:
+
+| Layer | What it buys | Where |
+| --- | --- | --- |
+| `localStorage` | a synchronous read, so Home paints on the first frame | `ProgressStore.ts` |
+| IndexedDB mirror | a second copy that refills the first one after a sweep | `mirror.ts`, `DurableProgressStore.ts` |
+| `navigator.storage.persist()` | Chromium stops evicting the origin under disk pressure | `mirror.ts` |
+| installable PWA | an iOS Home Screen app is exempt from the seven-day sweep | `public/sw.js`, `registerServiceWorker.ts` |
+| JSON backup file | the copy no browser can delete, and how you move devices | `backup.ts`, `StorageSection.tsx` |
+
+Repair is deliberately one-directional and only fires when the fast store comes
+back **empty**: a mirror is never allowed to out-vote data that is actually
+there, so "reset my progress" cannot be undone by a stale copy. `clear()` wipes
+both. Profile → *Data & storage* shows the learner which of these guarantees
+are currently in force rather than claiming their data is safe.
+
+The service worker precaches the shell, so the app opens offline and is
+installable. Its cache is named after a content hash of the bundle, stamped in
+at build time — the app ships fixed filenames (`main.js`, `main.css`) served
+cache-first, so without that a returning learner would keep getting whichever
+build they first visited.
+
+### Moving to another device
+
+Profile → *Data & storage* → **Download a backup** writes one JSON file with
+every answer, and **Restore from a backup** reads it back on the other device.
+A restore is a replace, not a merge: merging two devices that both practised
+would need per-attempt conflict resolution, and guessing silently is worse than
+a restore the learner asked for. Imports go through the same schema as stored
+progress, so a truncated or hand-edited file is rejected with a reason instead
+of being half-applied.
+
+If cross-device sync ever matters more than zero infrastructure, the seam is
+already there: `ProgressStore` is one interface with one implementation swap in
+`src/ui/app/services.ts`. GitHub Pages can keep serving the app while a hosted
+store (Supabase, Firebase, a Cloudflare Worker with D1) backs that
+implementation — nothing above the port changes.
 
 ---
 

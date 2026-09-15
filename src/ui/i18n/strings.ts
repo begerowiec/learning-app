@@ -217,6 +217,75 @@ export const UI_STRINGS = {
     en: 'Reset all progress on this device?',
     pl: 'Wyczyścić cały postęp na tym urządzeniu?',
   },
+
+  /* ── data & storage ─────────────────────────────────────────────────── */
+  'storage.title': { en: 'Data & storage', pl: 'Dane i pamięć' },
+  'storage.intro': {
+    en: 'Your progress lives on this device — there is no account and no server. It is kept in two places at once so a browser clean-up cannot take it.',
+    pl: 'Twój postęp jest zapisany na tym urządzeniu — nie ma konta ani serwera. Trzymamy go w dwóch miejscach naraz, żeby czyszczenie przeglądarki go nie zabrało.',
+  },
+  'storage.protected': { en: 'Protected storage', pl: 'Pamięć chroniona' },
+  'storage.protectedYes': {
+    en: 'Granted — this browser will not evict your progress',
+    pl: 'Przyznana — przeglądarka nie usunie Twojego postępu',
+  },
+  'storage.protectedNo': {
+    en: 'Best effort. Install the app to make it durable.',
+    pl: 'Bez gwarancji. Zainstaluj aplikację, żeby postęp był trwały.',
+  },
+  'storage.protectedUnknown': { en: 'Not reported by this browser', pl: 'Ta przeglądarka tego nie podaje' },
+  'storage.backupCopy': { en: 'Second copy', pl: 'Druga kopia' },
+  'storage.backupCopyOn': { en: 'Active (IndexedDB)', pl: 'Aktywna (IndexedDB)' },
+  'storage.backupCopyOff': {
+    en: 'Unavailable — private browsing keeps nothing',
+    pl: 'Niedostępna — tryb prywatny nic nie zapisuje',
+  },
+  'storage.stored': { en: 'Stored here', pl: 'Zapisane tutaj' },
+  'storage.storedValue': { en: '{answers} · {days}', pl: '{answers} · {days}' },
+  'storage.restored': {
+    en: 'Your progress was recovered from the second copy after this browser cleared its site data.',
+    pl: 'Postęp został odzyskany z drugiej kopii po tym, jak przeglądarka wyczyściła dane strony.',
+  },
+  'storage.install': { en: 'Install as an app', pl: 'Zainstaluj jako aplikację' },
+  'storage.installHint': {
+    en: 'On iPhone: Share → Add to Home Screen. On Android or desktop Chrome: Install from the address bar. An installed app also keeps its data far longer.',
+    pl: 'Na iPhonie: Udostępnij → Do ekranu początkowego. Na Androidzie lub w Chrome na komputerze: Zainstaluj z paska adresu. Zainstalowana aplikacja trzyma dane znacznie dłużej.',
+  },
+  'storage.export': { en: 'Download a backup', pl: 'Pobierz kopię zapasową' },
+  'storage.exportHint': {
+    en: 'One JSON file with everything you have answered. The only copy no browser can delete — and how you move to another device.',
+    pl: 'Jeden plik JSON ze wszystkim, co odpowiedziałeś. Jedyna kopia, której żadna przeglądarka nie usunie — i sposób na przeniesienie się na inne urządzenie.',
+  },
+  'storage.import': { en: 'Restore from a backup', pl: 'Przywróć z kopii zapasowej' },
+  'storage.importHint': {
+    en: 'Replaces the progress on this device with the contents of the file.',
+    pl: 'Zastępuje postęp na tym urządzeniu zawartością pliku.',
+  },
+  'storage.importConfirm': {
+    en: 'Replace the progress on this device with this backup?',
+    pl: 'Zastąpić postęp na tym urządzeniu tą kopią zapasową?',
+  },
+  'storage.importDone': {
+    en: 'Restored {answers} from {date}.',
+    pl: 'Przywrócono {answers} z {date}.',
+  },
+  'storage.importFailed.unreadable': {
+    en: "That file isn't readable JSON.",
+    pl: 'Tego pliku nie da się odczytać jako JSON.',
+  },
+  'storage.importFailed.notABackup': {
+    en: "That isn't a RECALL/OS backup file.",
+    pl: 'To nie jest plik kopii zapasowej RECALL/OS.',
+  },
+  'storage.importFailed.unsupportedVersion': {
+    en: 'That backup comes from a newer version of the app.',
+    pl: 'Ta kopia pochodzi z nowszej wersji aplikacji.',
+  },
+  'storage.importFailed.invalidProgress': {
+    en: 'That backup is damaged, so nothing was changed.',
+    pl: 'Ta kopia jest uszkodzona, więc nic nie zostało zmienione.',
+  },
+
   'theme.light': { en: 'Light', pl: 'Jasny' },
   'theme.dark': { en: 'Dark', pl: 'Ciemny' },
 
@@ -227,6 +296,8 @@ export const UI_STRINGS = {
   'unit.subject': { en: 'subject|subjects', pl: 'przedmiot|przedmioty|przedmiotów' },
   'unit.minute': { en: 'minute|minutes', pl: 'minuta|minuty|minut' },
   'unit.day': { en: 'day|days', pl: 'dzień|dni|dni' },
+  'unit.answer': { en: 'answer|answers', pl: 'odpowiedź|odpowiedzi|odpowiedzi' },
+  'unit.studyDay': { en: 'study day|study days', pl: 'dzień nauki|dni nauki|dni nauki' },
 } satisfies Record<string, Entry>;
 
 export type UiKey = keyof typeof UI_STRINGS;

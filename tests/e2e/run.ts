@@ -34,7 +34,7 @@ before(async () => {
   server = createServer();
   await new Promise<void>((resolve) => server.listen(PORT, '127.0.0.1', resolve));
   browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM });
-  const context = await browser.newContext({ viewport: { width: 400, height: 860 } });
+  const context = await browser.newContext({ viewport: { width: 400, height: 860 }, acceptDownloads: true });
   page = await context.newPage();
   page.on('pageerror', (error) => consoleErrors.push(String(error)));
   page.on('console', (message) => {
@@ -326,6 +326,129 @@ describe('language switching', () => {
     await page.click('[data-testid="subject-card-playwright"]');
     await page.waitForSelector('[data-testid="module-card-playwright-locators"]');
     assert.match((await page.textContent('[data-testid="module-card-playwright-locators"]')) ?? '', /Lokatory/);
+  });
+});
+
+describe('durable storage: backup, reset and restore', () => {
+  /* The app has no backend, so a file is the only way progress survives a new
+     device or a browser that clears its site data. This walks the whole path:
+     take a backup, wipe the device, restore, and check the history is back. */
+  let backupText = '';
+
+  test('the interface language goes back to English for the remaining checks', async () => {
+    await page.click('[data-testid="nav-profile"]');
+    await page.locator('[data-testid="interface-language"] button', { hasText: 'English' }).click();
+    await page.waitForSelector('h3:has-text("Profile")');
+  });
+
+  test('the storage panel reports what is stored and how safe it is', async () => {
+    await page.waitForSelector('[data-testid="storage-section"]');
+    const counts = (await page.textContent('[data-testid="storage-counts"]')) ?? '';
+    assert.match(counts, /\d+ answers? · \d+ study days?/);
+    const answers = Number(counts.match(/(\d+) answers/)?.[1] ?? 0);
+    assert.ok(answers > 0, `expected some answers on record, got "${counts}"`);
+
+    // Chromium grants persistence headlessly or reports false; either is a
+    // legitimate answer, but the row must say something definite.
+    const persistent = (await page.textContent('[data-testid="storage-persistent"]')) ?? '';
+    assert.ok(persistent.trim().length > 0);
+  });
+
+  test('exporting hands over a file that parses as a backup', async () => {
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.click('[data-testid="export-backup"]'),
+    ]);
+
+    assert.match(download.suggestedFilename(), /^recall-os-backup-\d{4}-\d{2}-\d{2}\.json$/);
+    const file = await download.path();
+    assert.ok(file, 'the download must reach disk');
+    backupText = fs.readFileSync(file, 'utf8');
+
+    const parsed = JSON.parse(backupText) as Record<string, unknown>;
+    assert.equal(parsed.format, 'recall-os.backup');
+    const progress = parsed.progress as { attempts: unknown[]; lessons: unknown[] };
+    assert.ok(progress.attempts.length > 0, 'the backup carries the answers');
+    assert.ok(progress.lessons.length > 0, 'the backup carries lesson progress');
+  });
+
+  test('a reset really empties the device', async () => {
+    page.once('dialog', (dialog) => void dialog.accept());
+    await page.click('[data-testid="reset-progress"]');
+    await page.waitForSelector('[data-testid="continue-cta"]');
+
+    const after = await readProgress(page);
+    assert.deepEqual(after?.attempts, []);
+    assert.deepEqual(after?.lessons, []);
+    assert.equal((await page.textContent('[data-testid="streak"]'))?.trim(), '0');
+  });
+
+  test('importing the backup brings the whole history back', async () => {
+    await page.click('[data-testid="nav-profile"]');
+    await page.waitForSelector('[data-testid="storage-section"]');
+
+    const file = path.join(process.cwd(), 'dist/.e2e-backup.json');
+    fs.writeFileSync(file, backupText);
+    page.once('dialog', (dialog) => void dialog.accept());
+    await page.setInputFiles('[data-testid="import-backup"]', file);
+
+    // The learner stays on Profile so the confirmation is visible.
+    await page.waitForSelector('[data-testid="storage-notice"]');
+    assert.match((await page.textContent('[data-testid="storage-notice"]')) ?? '', /Restored \d+ answers from/);
+
+    const restored = await readProgress(page);
+    const original = JSON.parse(backupText) as { progress: { attempts: unknown[]; lessons: unknown[] } };
+    assert.equal(restored?.attempts.length, original.progress.attempts.length);
+    assert.equal(restored?.lessons.length, original.progress.lessons.length);
+
+    await page.click('[data-testid="nav-home"]');
+    await page.waitForSelector('[data-testid="continue-cta"]');
+    assert.equal((await page.textContent('[data-testid="streak"]'))?.trim(), '1');
+    fs.rmSync(file, { force: true });
+  });
+
+  test('a file that is not a backup is refused without touching the data', async () => {
+    await page.click('[data-testid="nav-profile"]');
+    await page.waitForSelector('[data-testid="storage-section"]');
+
+    const file = path.join(process.cwd(), 'dist/.e2e-not-a-backup.json');
+    fs.writeFileSync(file, '{"hello":"world"}');
+    const before = await readProgress(page);
+
+    page.once('dialog', (dialog) => void dialog.accept());
+    await page.setInputFiles('[data-testid="import-backup"]', file);
+
+    await page.waitForSelector('[data-testid="storage-notice"]');
+    assert.match(
+      (await page.textContent('[data-testid="storage-notice"]')) ?? '',
+      /isn.t a RECALL\/OS backup file/,
+    );
+    const after = await readProgress(page);
+    assert.equal(after?.attempts.length, before?.attempts.length, 'a refused import changes nothing');
+    fs.rmSync(file, { force: true });
+  });
+
+  test('progress survives a reload, which is the everyday case', async () => {
+    const before = await readProgress(page);
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForSelector('[data-testid="continue-cta"]');
+    const after = await readProgress(page);
+    assert.equal(after?.attempts.length, before?.attempts.length);
+  });
+
+  test('progress is recovered when the browser clears localStorage but not IndexedDB', async () => {
+    const before = await readProgress(page);
+    assert.ok((before?.attempts.length ?? 0) > 0, 'precondition: there is something to lose');
+
+    // Exactly what Safari's seven-day sweep of a *website* does to the fast
+    // store — the IndexedDB mirror is what has to save us here.
+    await page.evaluate(() => window.localStorage.clear());
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForSelector('[data-testid="continue-cta"]');
+
+    const after = await readProgress(page);
+    assert.equal(after?.attempts.length, before?.attempts.length, 'the mirror must refill the fast store');
+    assert.equal((await page.textContent('[data-testid="streak"]'))?.trim(), '1');
   });
 });
 

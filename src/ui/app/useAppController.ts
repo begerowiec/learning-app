@@ -11,6 +11,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { HomeView, SubjectView } from '@core/LearningService.ts';
 import type { Language, Level, Subject } from '@core/domain/schema.ts';
 import { track } from '@core/analytics/analytics.ts';
+import {
+  backupFilename,
+  parseBackup,
+  serializeBackup,
+  type BackupProblem,
+  type BackupSummary,
+} from '@core/progress/backup.ts';
+import type { StorageDiagnostics } from '@core/progress/DurableProgressStore.ts';
 import type { ProgressState, UserPreferences } from '@core/progress/models.ts';
 import { isSelfGraded } from '@core/session/grading.ts';
 import {
@@ -39,6 +47,11 @@ export interface SummaryView {
   practised: string[];
   weak: string[];
 }
+
+/** What came of an attempted restore, in a form the Profile screen can show. */
+export type ImportOutcome =
+  | { ok: true; summary: BackupSummary }
+  | { ok: false; problem: BackupProblem };
 
 export interface AppController extends Translator {
   services: Services;
@@ -73,6 +86,10 @@ export interface AppController extends Translator {
   startLesson: (lessonId: string) => void;
   startReview: () => void;
 
+  storage: StorageDiagnostics;
+  exportBackup: () => void;
+  importBackup: (text: string) => ImportOutcome;
+
   selectOption: (optionId: string) => void;
   flipCard: () => void;
   submit: () => void;
@@ -95,6 +112,7 @@ export function useAppController(): AppController {
   const [session, setSession] = useState<SessionState | null>(null);
   const [summary, setSummary] = useState<SummaryView | null>(null);
   const [loading, setLoading] = useState(true);
+  const [storage, setStorage] = useState<StorageDiagnostics>(() => services.storageDiagnostics());
 
   /* `session` is read inside callbacks that must not be re-created on every
      answer, so the latest value is mirrored in a ref. */
@@ -143,6 +161,35 @@ export function useAppController(): AppController {
       cancelled = true;
     };
   }, [learning, refresh]);
+
+  /**
+   * Reconcile the two copies of learner state.
+   *
+   * Runs alongside the first paint rather than blocking it: the synchronous
+   * store has already given us something to draw, and this only matters in the
+   * case where that something was empty because the browser had swept
+   * `localStorage`. When the mirror does have a history, the service reloads
+   * from the repaired store and the screens re-render with it.
+   */
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const restored = await services.hydrateStorage();
+      if (cancelled) return;
+      if (restored) {
+        const state = progress.reload();
+        track('progress_restored_from_mirror', { answers: state.attempts.length });
+        setPreferences(progress.getPreferences());
+        setProgressState(state);
+        setRoute(progress.getPreferences().onboarded ? { name: 'home' } : { name: 'onboarding-subjects' });
+        await refresh();
+      }
+      if (!cancelled) setStorage(services.storageDiagnostics());
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [progress, refresh, services]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -263,6 +310,49 @@ export function useAppController(): AppController {
     setRoute({ name: 'home' });
     void refresh();
   }, [progress, refresh]);
+
+  /* ──────────────────────────────────────────────────────────── backups */
+
+  /**
+   * Hands the learner a file.
+   *
+   * There is no backend to sync through, so this is the only way progress
+   * moves to a new phone — and the only copy a browser cannot decide to
+   * delete. Built as an object URL and revoked straight after; nothing here
+   * needs the network.
+   */
+  const exportBackup = useCallback(() => {
+    const backup = progress.exportBackup();
+    track('backup_exported', { answers: backup.progress.attempts.length });
+
+    const blob = new Blob([serializeBackup(backup)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = backupFilename(new Date());
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }, [progress]);
+
+  const importBackup = useCallback(
+    (text: string): ImportOutcome => {
+      const parsed = parseBackup(text);
+      if (!parsed.ok) return parsed;
+
+      const state = progress.importBackup(parsed.backup);
+      setPreferences(progress.getPreferences());
+      setProgressState(state);
+      setSession(null);
+      setSummary(null);
+      // Deliberately staying put: the learner asked for this from Profile and
+      // needs to see the result there. Navigating away would hide it.
+      void refresh();
+      return { ok: true, summary: parsed.summary };
+    },
+    [progress, refresh],
+  );
 
   /* ───────────────────────────────────────────────────────────── sessions */
 
@@ -470,6 +560,9 @@ export function useAppController(): AppController {
     setInterfaceLanguage,
     setContentLanguage,
     resetProgress,
+    storage,
+    exportBackup,
+    importBackup,
     startLesson,
     startReview,
     selectOption,

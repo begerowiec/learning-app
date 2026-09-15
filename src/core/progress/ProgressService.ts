@@ -26,6 +26,7 @@ import {
   type UserPreferences,
 } from './models.ts';
 import type { ProgressStore } from './ProgressStore.ts';
+import { createBackup, type Backup } from './backup.ts';
 import { localDate } from './stats.ts';
 
 export interface RecordAttemptInput {
@@ -299,6 +300,40 @@ export class ProgressService {
     this.state = emptyProgressState();
     this.store.saveProgress(this.state);
     return this.state;
+  }
+
+  /**
+   * Re-reads both records from the store.
+   *
+   * Needed because the durable store can refill an evicted `localStorage`
+   * from its mirror *after* this service has already loaded on boot.
+   */
+  reload(): ProgressState {
+    this.state = this.store.loadProgress();
+    this.preferences = this.store.loadPreferences();
+    return this.state;
+  }
+
+  /** Everything worth keeping, in a form the learner can save as a file. */
+  exportBackup(): Backup {
+    return createBackup(this.state, this.preferences, this.clock());
+  }
+
+  /**
+   * Replaces local history with a backup's.
+   *
+   * Deliberately a replace and not a merge: two devices that both practised
+   * would need per-attempt conflict resolution to merge honestly, and silently
+   * guessing is worse than a restore the learner asked for.
+   */
+  importBackup(backup: Backup): ProgressState {
+    this.preferences = backup.preferences;
+    this.store.savePreferences(this.preferences);
+    track('backup_imported', {
+      answers: backup.progress.attempts.length,
+      exportedAt: backup.exportedAt,
+    });
+    return this.commit(backup.progress);
   }
 
   private lesson(lessonId: string): LessonProgress | undefined {

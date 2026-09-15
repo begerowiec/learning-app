@@ -38,6 +38,8 @@ declare module 'react' {
   export function useMemo<T>(factory: () => T, deps: readonly unknown[]): T;
   export function useCallback<T extends (...args: never[]) => unknown>(fn: T, deps: readonly unknown[]): T;
   export function useRef<T>(initial: T): ReactShim.MutableRefObject<T>;
+  /** The DOM-element form: `useRef<HTMLInputElement>(null)`. */
+  export function useRef<T>(initial: null): ReactShim.MutableRefObject<T | null>;
   export function useContext<T>(context: ReactShim.Context<T>): T;
   export function createContext<T>(defaultValue: T): ReactShim.Context<T>;
   export function memo<T>(component: T): T;

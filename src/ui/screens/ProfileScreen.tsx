@@ -2,6 +2,7 @@ import { LANGUAGES, LANGUAGE_NAMES, levelLabel, LEVELS, type Language, type Leve
 import { overallStats } from '@core/progress/stats.ts';
 import { Button, SegmentedControl, Tag, Toggle } from '@ui/components/index.ts';
 import type { AppController } from '@ui/app/useAppController.ts';
+import { StorageSection } from './StorageSection.tsx';
 
 const languageOptions = LANGUAGES.map((value) => ({ value, label: LANGUAGE_NAMES[value] }));
 
@@ -129,6 +130,8 @@ export function ProfileScreen({ app }: { app: AppController }) {
           ]}
         />
       </div>
+
+      <StorageSection app={app} />
 
       <div className="section">
         <h6 style={{ margin: '0 0 8px' }}>{app.t('profile.account')}</h6>

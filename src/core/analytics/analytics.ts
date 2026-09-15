@@ -32,6 +32,10 @@ export interface AnalyticsEventMap {
   subject_selected: { subjectId: string; source: 'onboarding' | 'learn' | 'home' };
   level_changed: { subjectId: string; level: string; previousLevel: string | null };
   onboarding_completed: { subjects: string[]; dailyGoalMinutes: number };
+  backup_exported: { answers: number };
+  backup_imported: { answers: number; exportedAt: string };
+  /** Fires when an evicted `localStorage` was refilled from the IndexedDB mirror. */
+  progress_restored_from_mirror: { answers: number };
 }
 
 export type AnalyticsEventName = keyof AnalyticsEventMap;
